@@ -1,0 +1,19 @@
+{
+  "name": "tigerandeagle",
+  "version": "1.0.0",
+  "description": "Backend project for tigerandeagle",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mulmuri/tigerandeagle.git"
+  },
+  "author": "mulmuri, Yeeun411",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mulmuri/tigerandeagle/issues"
+  },
+  "homepage": "https://github.com/mulmuri/tigerandeagle#readme"
+}
