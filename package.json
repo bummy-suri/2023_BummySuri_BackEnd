@@ -1,34 +1,28 @@
 {
-  "name": "2023_BummySuri_BackEnd",
+  "name": "tigerandeagle",
   "version": "1.0.0",
-  "description": "Backend project for BummySuri 2023",
-  "main": "index.ts",
+  "description": "범이와 수리 2기 Project 의 Backend 입니다.",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prisma": "prisma"
+    "start": "ts-node ./index.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Bummy-Suri-Official/2023_BummySuri_BackEnd"
-  },
-  "author": "mulmuri, Yeeun411",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Bummy-Suri-Official/2023_BummySuri_BackEnd/issues"
-  },
-  "homepage": "https://github.com/Bummy-Suri-Official/2023_BummySuri_BackEnd#readme",
   "devDependencies": {
-    "@types/dotenv": "^8.2.0",
-    "@types/express": "^4.17.17",
-    "@types/node": "^20.5.1",
-    "prisma": "^5.1.1"
+    "@types/node": "^20.5.3",
+    "prisma": "^5.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@prisma/client": "^5.1.1",
+    "@prisma/client": "^5.2.0",
+    "@types/axios": "^0.14.0",
+    "@types/express": "^4.17.17",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
-    "ts-pattern": "^5.0.5",
+    "express": "^4.18.2",
     "zod": "^3.22.2"
   }
 }
