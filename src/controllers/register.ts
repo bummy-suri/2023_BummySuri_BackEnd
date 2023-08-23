@@ -57,3 +57,72 @@ export const register = (req: Request, res: Response) => {
         }        
     }
 };
+
+export interface getUserResponse {
+    userCardAddress: string;
+    name: string;
+    univ: 'YONSEI' | 'KOREA';
+    phone: string;
+    studentId: string;
+}
+
+export const getUser = (req: Request, res: Response) => {
+    try {
+        // const userData = getUserService();
+
+        // dummuData
+        const dummyUserData = {
+            userCardAddress: "0x123456789abcdef",
+            name: "John Doe",
+            univ: "YONSEI",
+            phone: "010-1234-5678",
+            studentId: "12345678"
+        };
+
+        res.send(dummyUserData as getUserResponse);
+
+
+    } catch (error) {
+        if (error instanceof ZodError) {
+            res.status(400).send(error.message);
+            return;
+        }
+        if (error instanceof PrismaError) {
+            res.status(503).send(error.message);
+            return;
+        }
+        if (error instanceof AxiosError) {
+            res.status(502).send(error.message);
+            return;
+        }
+        if (error instanceof Error) {
+            res.status(500).send(error.message);
+            return;
+        }        
+    }
+};
+export const deleteUser = async (req: Request, res: Response) => {
+    try {
+        //await deleteUserService();
+
+        res.sendStatus(204);  // successfully deleted
+
+    } catch (error) {
+        if (error instanceof ZodError) {
+            res.status(400).send(error.message);
+            return
+        }
+        if (error instanceof PrismaError) {
+            res.status(503).send(error.message);
+            return
+        }
+        if (error instanceof AxiosError) {
+            res.status(502).send(error.message);
+            return
+        }
+        if (error instanceof Error) {
+            res.status(500).send(error.message);
+            return
+        }  
+    }
+};
