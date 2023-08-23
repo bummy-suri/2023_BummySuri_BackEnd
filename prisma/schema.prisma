@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("mysql://34.64.161.193:3306/tigerandeagle")
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -22,8 +22,8 @@ model User {
 
 model Betting {
   id             Int      @id @default(autoincrement())
-  gameType       String   @relation(fields: [gameType], references: [gameType])
-  userId         Int      @relation(fields: [userId], references: [id])
+  gameType       String   
+  userId         Int      
   selected       Boolean
   playing        String
   predictedWinner String
@@ -32,7 +32,8 @@ model Betting {
   success        Boolean  @default(false)
   earnedPoint    Int      @default(0)
   totalPoint     Int
-  user           User
+  user           User     @relation(fields: [userId], references: [id])
+  game           Game     @relation(fields: [gameType], references: [gameType])
 }
 
 model Game {
@@ -45,8 +46,8 @@ model Game {
 
 model MiniGame {
   id           Int    @id @default(autoincrement())
-  userId       Int    @relation(fields: [userId], references: [id])
+  userId       Int    
   results      String
   totalPoint   Int
-  user         User
+  user         User   @relation(fields: [userId], references: [id])
 }
