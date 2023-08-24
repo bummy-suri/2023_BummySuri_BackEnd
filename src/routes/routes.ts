@@ -24,7 +24,7 @@ sampleRouter.post('/betting/:gameType', saveBettingController);
 sampleRouter.get('/betting/:gameType', getBettingController);
 
 // BettingResult routes
-sampleRouter.get('/bettingResult/:gameType', checkBettingResultController);
+sampleRouter.post('/bettingResult/:gameType', checkBettingResultController);
 
 // Game routes
 sampleRouter.post('/game/:gameType', createGameController);
