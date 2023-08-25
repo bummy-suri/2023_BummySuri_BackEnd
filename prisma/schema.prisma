@@ -10,13 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TeamType {
+    KOREA
+    YONSEI
+}
+
 model User {
-  id             Int       @id @default(autoincrement())
-  klaytn_address String
-  NFT_image      String?
-  totalPoint     Int
-  bettings       Betting[]
-  minigames      MiniGame[]
+    id              Int       @id @default(autoincrement())
+    userCardAddress String
+    name            String
+    univ            TeamType
+    phone           String
+    studentId       String
+    NFT_image      String?
+    totalPoint     Int
+    bettings       Betting[]
+    minigames      MiniGame[]
+
 }
 
 model Betting {
@@ -30,7 +40,6 @@ model Betting {
   bettingPoint   Int
   success        Boolean  @default(false)
   earnedPoint    Int      @default(0)
-  totalPoint     Int
   user           User     @relation(fields: [userId], references: [id])
   game           Game     @relation(fields: [gameType], references: [gameType])
 }
