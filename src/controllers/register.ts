@@ -7,11 +7,13 @@ import { mintUserService } from "../services";
 
 
 export const registerUserRequestSchema = z.object({
+    id: z.number(),
     userCardAddress: z.string(),
     name: z.string(),
     univ: z.enum(['YONSEI', 'KOREA']),
     phone: z.string().regex(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/),
     studentId: z.string(),
+    totalPoint: z.number()
 });
 
 export interface registerUserResponse {
@@ -25,11 +27,13 @@ export const register = async (req: Request, res: Response) => {
         const mintRequest = registerUserRequestSchema.parse(req.body);
 
         const { access, refresh } = await mintUserService({
+            id: mintRequest.id,
             userCardAddress: mintRequest.userCardAddress,
             name: mintRequest.name,
             univ: mintRequest.univ,
             phone: mintRequest.phone,
-            studentId: mintRequest.studentId
+            studentId: mintRequest.studentId,
+            totalPoint: mintRequest.totalPoint
         })
 
         res.send({
