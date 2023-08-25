@@ -12,26 +12,31 @@ import {
     changeMiniGamePointsController
 } from '../controllers';
 
-const sampleRouter = Router();
+
+
+export const authRouter = Router();
 
 // User routes
-sampleRouter.post('/user', registerController);
-sampleRouter.get('/user', getUserController);
-sampleRouter.delete('/user', deleteUserController);
+authRouter.get('/user', getUserController);
+authRouter.delete('/user', deleteUserController);
 
 // Betting routes
-sampleRouter.post('/betting/:gameType', saveBettingController);
-sampleRouter.get('/betting/:gameType', getBettingController);
+authRouter.post('/betting/:gameType', saveBettingController);
+authRouter.get('/betting/:gameType', getBettingController);
 
 // BettingResult routes
-sampleRouter.post('/bettingResult/:gameType', checkBettingResultController);
+authRouter.post('/bettingResult/:gameType', checkBettingResultController);
 
 // Game routes
-sampleRouter.post('/game/:gameType', createGameController);
-sampleRouter.get('/game/:gameType', getGameResultController);
-sampleRouter.put('/game/:gameType', updateGameResultController);
+authRouter.post('/game/:gameType', createGameController);
+authRouter.get('/game/:gameType', getGameResultController);
+authRouter.put('/game/:gameType', updateGameResultController);
 
 // MiniGame routes
-sampleRouter.post('/minigame', changeMiniGamePointsController);
+authRouter.post('/minigame', changeMiniGamePointsController);
 
-export default sampleRouter;
+
+
+export const nonAuthRouter = Router();
+
+nonAuthRouter.post('/user', registerController);
