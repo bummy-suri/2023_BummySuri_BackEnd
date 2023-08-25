@@ -1,2 +1,2 @@
-import { registerUser } from "./mint";
-export { registerUser as registerUserService};
+import { mintUser } from "./register";
+export { mintUser as mintUserService};
