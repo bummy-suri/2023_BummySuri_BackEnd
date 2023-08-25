@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-import { registerUserService } from "../services";
+import { mintUserService } from "../services";
 
 
 
@@ -20,11 +20,11 @@ export interface registerUserResponse {
 }
 
 
-export const register = (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
     try {
         const mintRequest = registerUserRequestSchema.parse(req.body);
 
-        const { access, refresh } = registerUserService({
+        const { access, refresh } = await mintUserService({
             userCardAddress: mintRequest.userCardAddress,
             name: mintRequest.name,
             univ: mintRequest.univ,
