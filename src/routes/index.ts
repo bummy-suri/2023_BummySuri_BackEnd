@@ -1,6 +1,6 @@
 import express from 'express';
 
-import sampleRouter from './user';
+import sampleRouter from './routes';
 
 const PORT = process.env.PORT || (() => { throw new Error('PORT not defined'); })();
 
