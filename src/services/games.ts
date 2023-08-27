@@ -1,7 +1,6 @@
 import {
     UserType,
     BettingRequest,
-    BettingResponse,
     GameResult,
     GameResultUpdate,
     BettingResultResponse} from "../models/sample";
@@ -11,7 +10,8 @@ import {
     saveGameResult,
     getGameResult,
     updateGameResult,
-    saveMiniGamePoint } from "../repositories/games";
+    saveMiniGamePoint,
+    checkBettingResult } from "../repositories/games";
 
 //사용자 베팅 저장
 export const saveBettingData = async (
@@ -31,11 +31,11 @@ export const saveBettingData = async (
 };
 
 //사용자 베팅 조회
-export const getBettingData = async (bettingId: number): Promise<BettingRequest> => {
+export const getBettingData = async (userId: number, gameType: string): Promise<BettingRequest> => {
     let bettingData: BettingRequest | null;
 
     try {
-        bettingData = await getBetting(bettingId);
+        bettingData = await getBetting(userId, gameType);
         if (!bettingData) {
             throw new Error("Betting data not found");
         }
@@ -139,18 +139,19 @@ const classifyScoreDifference = (gameType: string, KoreaScore: number, YonseiSco
 };
 
 // 사용자 베팅 결과_결과 확인
-export const checkBettingResult = async (bettingId: number): Promise<BettingResponse> => {
+export const checkBettingResultData = async (userId: number, gameType: string): Promise<BettingResultResponse> => {
     try {
-        const betting = await getBettingData(bettingId);
-        const gameResult = await getGameResultData(betting.playing);
+        const betting = await getBettingData(userId, gameType);
+        const gameResult = await getGameResultData(gameType);
         
-        const winner = gameResult.KoreaScore > gameResult.YonseiScore ? 'Korea' : 'Yonsei';
-        const scoreCase = classifyScoreDifference(betting.playing, gameResult.KoreaScore, gameResult.YonseiScore);
+        const winner = gameResult.KoreaScore > gameResult.YonseiScore ? 'Korea' :
+              gameResult.KoreaScore < gameResult.YonseiScore ? 'Yonsei' : 'draw';
+
+        const scoreCase = classifyScoreDifference(gameType, gameResult.KoreaScore, gameResult.YonseiScore);
 
         if (scoreCase === -1) {
             throw new Error("Unknown GameType");
         }
-
 
         let success = false;
         let earnedPoint = 0;
@@ -160,11 +161,14 @@ export const checkBettingResult = async (bettingId: number): Promise<BettingResp
             earnedPoint = betting.bettingPoint * 3;
         }
 
-        return {
+        const bettingResponse: BettingResultResponse = {
             success,
             earnedPoint,
             totalPoint: betting.bettingPoint + earnedPoint,
         };
+
+        const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);
+        return updatedBettingResponse;
     } catch (e) {
         throw e;
     }
