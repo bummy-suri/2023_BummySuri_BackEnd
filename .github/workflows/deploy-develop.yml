@@ -36,5 +36,5 @@ jobs:
           key: ${{ env.SSH_KEY }}
           port: ${{ env.PORT }}
           script: |
-            cd ${{ env.PATH }}
+            cd ${{ env.DIR }}
             make build
