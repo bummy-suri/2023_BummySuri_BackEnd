@@ -10,6 +10,8 @@ import {
     saveGameResult,
     getGameResult,
     updateGameResult,
+    saveMiniGameTimes,
+    getTimes,
     saveMiniGamePoint,
 checkBettingResult } from "../repositories/games";
 
@@ -86,6 +88,36 @@ export const updateGameResultData = async (gameType: string, gameData: GameResul
     }
 
     return updatedGameResult;
+};
+//미니게임 횟수 반영
+export const saveMiniGameTimesData = async (times: number, userId: number): Promise<string> => {
+    let updatedTimes: number;
+
+    try {
+        updatedTimes = await saveMiniGameTimes(times, userId)
+        if (updatedTimes > 3) {
+            throw new Error("Times is over 3");
+        }
+    } catch (e) {
+        throw e;
+    }
+    
+    return updatedTimes.toString();
+};
+
+//미니게임 횟수 조회
+export const getTimesData = async (userId: number): Promise<number | null> => {
+    let times: number | null;
+    try {
+        times = await getTimes(userId);
+        if (!times) {
+            throw new Error("Times result not found");
+        }
+    } catch (e) {
+        throw e;
+    }
+
+    return times;
 };
 
 //미니게임 결과 포인트에 반영

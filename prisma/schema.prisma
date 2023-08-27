@@ -53,8 +53,7 @@ model Game {
 
 model MiniGame {
   id           Int    @id @default(autoincrement())
-  userId       Int    
-  results      String
-  totalPoint   Int
+  userId       Int
+  times       Int     @default(0)
   user         User   @relation(fields: [userId], references: [id])
 }
