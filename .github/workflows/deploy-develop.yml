@@ -4,7 +4,7 @@ on:
       - main
       - feature/cicd
 
-ENV:
+env:
   HOST: ${{ secrets.HOST }}
   USERNAME: ${{ secrets.USERNAME }}
   SSH_KEY: ${{ secrets.SSH_KEY }}
