@@ -10,8 +10,6 @@ export const createUser = async (user: UserType): Promise<number> => {
             userCardAddress: user.userCardAddress,
             name: user.name,
             univ: user.univ,
-            phone: user.phone,
-            studentId: user.studentId,
             NFT_image: user.NFT_image,
             totalPoint: user.totalPoint
         },
@@ -22,10 +20,10 @@ export const createUser = async (user: UserType): Promise<number> => {
     })
 }
 
-export const getUser = async (user: UserType): Promise<UserType | null> => {
+export const getUser = async (userId: number): Promise<UserType | null> => {
     return prisma.user.findUnique({
         where: {
-            id: user.id
+            id: userId
         }
     }).then((result) => {
         return result ? result : null;
@@ -34,13 +32,13 @@ export const getUser = async (user: UserType): Promise<UserType | null> => {
     })
 }
 
-export const deleteUser = async (user: UserType): Promise<number> => {
+export const deleteUser = async (userId: number): Promise<string> => {
     return prisma.user.delete({
         where: {
-            id: user.id
+            id: userId
         }
     }).then((result) => {
-        return result.id;
+        return "User successfully deleted.";
     }).catch((e) => {
         throw new PrismaError(e?.message);
     })

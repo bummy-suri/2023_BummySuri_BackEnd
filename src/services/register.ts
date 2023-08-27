@@ -23,10 +23,10 @@ export const mintUser = async (user: UserType) : Promise<TokenType> => {
     }
 }
 
-export const getUserData = async (user: UserType): Promise<UserType> => {
+export const getUserData = async (userId: number): Promise<UserType> => {
     
     try {
-        const userData = await getUser(user);
+        const userData = await getUser(userId);
         
         if (!userData) {
             throw new Error("User not found");
@@ -39,11 +39,11 @@ export const getUserData = async (user: UserType): Promise<UserType> => {
     }
 }
 
-export const deleteUserData = async (user: UserType): Promise<string> => {
+export const deleteUserData = async (userId: number): Promise<string> => {
     let deletedUserId: string;
 
     try {
-        deletedUserId = (await deleteUser(user)).toString();
+        deletedUserId = (await deleteUser(userId)).toString();
     } catch (e) {
         throw e;
     }
