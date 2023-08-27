@@ -1,12 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, UserType, GameResult, GameResultUpdate, BettingResponse} from "../models/sample";
+import { BettingRequest, BettingResultResponse, UserType, GameResult, GameResultUpdate} from "../models/sample";
 
 const prisma = new PrismaClient();
 
 //사용자 베팅 정보 저장
 export const saveBetting = async (
-    bettingData: BettingRequest, 
+    bettingData: BettingRequest,
     userId: number, 
     gameType: string
 ): Promise<number> => {
@@ -24,10 +24,13 @@ export const saveBetting = async (
 }
 
 //사용자 베팅 정보 조회
-export const getBetting = async (bettingId: number): Promise<BettingRequest | null> => {
+export const getBetting = async (userId: number, gameType: string): Promise<BettingRequest | null> => {
     return prisma.betting.findUnique({
         where: {
-            id: bettingId
+            userId_gameType: {
+                userId: userId,
+                gameType: gameType
+            }
         }
     }).then((result) => {
         if (result) {
@@ -45,6 +48,7 @@ export const getBetting = async (bettingId: number): Promise<BettingRequest | nu
         throw new PrismaError(e?.message);
     });
 }
+
 
 //게임 결과 저장
 export const saveGameResult = async (gameType: string, gameData: GameResult): Promise<string> => {
@@ -99,9 +103,44 @@ export const updateGameResult = async (gameType: string, gameData: GameResultUpd
     });
 }
 
-//베팅 결과 확인
+//베팅 결과 확인 저장 및 포인트 반영
+export const checkBettingResult = async (BettingResultData: BettingResultResponse, userId: number, gameType: string): Promise<BettingResultResponse> => {
+    return prisma.betting.update({
+            where: {
+                userId_gameType: {
+                    userId: userId,
+                    gameType: gameType
+                }
+            },
+            data: {
+                success: BettingResultData.success,
+                earnedPoint: BettingResultData.earnedPoint
+            }
+        }).then(async (result) => {
 
-//미니게임 저장
+            await prisma.user.update({
+                where: {
+                    id: userId
+                },
+                data: {
+                    totalPoint: BettingResultData.totalPoint
+                }
+            });
+
+            return {
+                success: result.success,
+                earnedPoint: result.earnedPoint,
+                totalPoint: BettingResultData.totalPoint
+            };
+        }).catch((e) => {
+            throw new PrismaError(e?.message);
+        });
+};
+
+
+
+
+//미니게임 포인트 저장
 export const saveMiniGamePoint = async (userId: number): Promise<number> => {
     return prisma.user.findUnique({
         where: {
