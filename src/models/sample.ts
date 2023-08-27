@@ -24,12 +24,6 @@ export type BettingRequest = {
     bettingPoint: number;
 }
 
-export type BettingResponse = {
-    success: boolean;
-    earnedPoint: number;
-    totalPoint: number;
-}
-
 export type GameResult = {
     playing: string;
     KoreaScore: number;
