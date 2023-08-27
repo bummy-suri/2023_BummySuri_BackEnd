@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, UserType, GameResult, GameResultUpdate} from "../models/sample";
+import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate} from "../models/sample";
 
 const prisma = new PrismaClient();
 

@@ -11,9 +11,9 @@ import {
     getGameResult,
     updateGameResult,
     saveMiniGamePoint,
-    checkBettingResult } from "../repositories/games";
+checkBettingResult } from "../repositories/games";
 
-//사용자 베팅 저장
+//사용자 베팅 저장시 bettingId 반환
 export const saveBettingData = async (
     bettingData: BettingRequest, 
     userId: number, 

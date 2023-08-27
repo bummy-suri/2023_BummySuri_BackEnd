@@ -28,7 +28,7 @@ export const saveBetting = (req: Request, res: Response) => {
         const userid = req.userid;
         const gameType = req.params.gameType;
 
-        // await saveBettingService(bettingData, userid, gameType);
+        // const result = await saveBettingService(bettingData, userid, gameType);
 
         res.sendStatus(201);
 
@@ -56,7 +56,7 @@ export const getBetting = (req: Request, res: Response) => {
     try {
         const userid = req.userid;
         const gameType = req.params.gameType;
-        // await saveBettingService(userid, gameType);
+        // const result = await saveBettingService(userid, gameType);
         // 더미 데이터
         const dummyData: GetBettingResponse = {
             selected: true,

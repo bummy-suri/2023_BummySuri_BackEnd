@@ -22,12 +22,11 @@ export interface CheckBettingResultResponse {
 
 export const checkBettingResult = (req: Request, res: Response) => {
     try {
+
         const bettingData = checkBettingResultRequestSchema.parse(req.body);
 
-        // 실제 서비스 호출은 주석 처리
         // const result = await checkBettingResultService(bettingData);
         
-        // 더미 데이터로 응답
         const dummyResult: CheckBettingResultResponse = {
             success: true,
             earnedPoint: 100,
