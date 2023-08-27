@@ -9,7 +9,7 @@ env:
   USERNAME: ${{ secrets.USERNAME }}
   SSH_KEY: ${{ secrets.SSH_KEY }}
   PORT: ${{ secrets.PORT }}
-  DIR: ~/backend
+  DIR: ~/backend-dev
 
 jobs:
   deploy:
