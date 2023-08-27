@@ -3,6 +3,5 @@ build-release:
 build-dev:
 	EXPORTED_PORT=8001 docker compose up --build -d
 
-
 clean:
 	docker compose down
