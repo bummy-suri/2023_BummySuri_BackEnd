@@ -22,10 +22,11 @@ export interface CheckBettingResultResponse {
 
 export const checkBettingResult = (req: Request, res: Response) => {
     try {
-
+        const userid = req.userid;
+        const gameType = req.params.gameType;
         const bettingData = checkBettingResultRequestSchema.parse(req.body);
 
-        // const result = await checkBettingResultService(bettingData);
+        // const result = await checkBettingResultService(bettingData, userid, gameType);
         
         const dummyResult: CheckBettingResultResponse = {
             success: true,

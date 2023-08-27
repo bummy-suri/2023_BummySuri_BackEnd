@@ -11,10 +11,9 @@ export const miniGamePointChangeRequestSchema = z.object({
 // 미니게임 포인트 변동 POST
 export const changeMiniGamePoints = async (req: Request, res: Response) => {
     try {
-        const requestData = miniGamePointChangeRequestSchema.parse(req.body);
+        const userId = req.userid;
         
-        // 실제 서비스 로직 호출 예시
-        // const { totalPoint } = await changeMiniGamePointsService(requestData.results);
+        // const totalPoint = await changeMiniGamePointsService(userId);
 
         // 더미 데이터로 응답
         const dummyTotalPoint = 100;
