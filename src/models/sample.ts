@@ -5,8 +5,6 @@ export type UserType = {
     userCardAddress: string;
     name: string;
     univ: TeamType;
-   /* phone: string;
-    studentId: string;*/
     NFT_image?: string | null;
     totalPoint: number;
 }
