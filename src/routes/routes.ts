@@ -20,6 +20,7 @@ import {
 export const authRouter = Router();
 
 // User routes
+authRouter.post('/user', registerController);
 authRouter.get('/user/:userid', getUserController);
 authRouter.delete('/user/:userid', deleteUserController);
 
