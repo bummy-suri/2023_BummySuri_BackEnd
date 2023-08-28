@@ -5,6 +5,11 @@ export {
     deleteUser as deleteUserController
  };
 
+import { authenticate } from "./user";
+export {
+    authenticate as authenticateController
+ };
+
 import { saveBetting, getBetting } from "./betting";
 export {
     saveBetting as saveBettingController,

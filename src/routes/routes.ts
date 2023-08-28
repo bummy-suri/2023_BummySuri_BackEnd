@@ -9,7 +9,8 @@ import {
     createGameController, 
     getGameResultController, 
     updateGameResultController,
-    changeMiniGamePointsController
+    changeMiniGamePointsController,
+    authenticateController
 } from '../controllers';
 
 
@@ -39,4 +40,4 @@ authRouter.post('/minigame', changeMiniGamePointsController);
 
 export const nonAuthRouter = Router();
 
-nonAuthRouter.post('/user', registerController);
+nonAuthRouter.post('/user', authenticateController);

@@ -15,3 +15,8 @@ export {
     saveMiniGamePointData as saveMiniGamePointService,
     checkBettingResultData as checkBettingResultService
 };
+
+import { grantUser } from "./register";
+export {
+    grantUser as grantUserService
+};

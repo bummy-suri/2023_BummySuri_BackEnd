@@ -18,7 +18,7 @@ export const registerUserRequestSchema = z.object({
 
 export interface registerUserResponse {
     accessToken: string;
-    refreshToken: string;
+    refreshToken?: string;
 }
 
 
@@ -63,28 +63,21 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export interface getUserResponse {
-    userCardAddress: string;
-    name: string;
     univ: 'YONSEI' | 'KOREA';
-    phone: string;
-    studentId: string;
+    totalPoint: number;
 }
 
 export const getUser = (req: Request, res: Response) => {
     try {
         // const userData = getUserService();
 
-        // dummuData
+        // dummyData
         const dummyUserData = {
-            userCardAddress: "0x123456789abcdef",
-            name: "John Doe",
             univ: "YONSEI",
-            phone: "010-1234-5678",
-            studentId: "12345678"
+            totalPoint: 1000
         };
 
         res.send(dummyUserData as getUserResponse);
-
 
     } catch (error) {
         if (error instanceof ZodError) {
