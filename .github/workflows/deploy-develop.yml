@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - main
-      - feature/cicd
 
 env:
   HOST: ${{ secrets.HOST }}
@@ -18,7 +17,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Deploy
+      - name: Aquire Lock
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          key: ${{ env.SSH_KEY }}
+          port: ${{ env.PORT }}
+          script: |
+            while [ -f ~/SEMAPHORE_FILE ]; do sleep 10; done
+            touch ~/SEMAPHORE_FILE
+
+      - name: Send & Deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.HOST }}
@@ -28,8 +38,10 @@ jobs:
           script: |
             cd ${{ env.DIR }}
             make checkout
-
-      - name: Deploy
+            make build-develop
+      
+      - name: Release Lock
+        if: always()
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.HOST }}
@@ -37,5 +49,4 @@ jobs:
           key: ${{ env.SSH_KEY }}
           port: ${{ env.PORT }}
           script: |
-            cd ${{ env.DIR }}
-            make build-develop
+            rm ~/SEMAPHORE_FILE
