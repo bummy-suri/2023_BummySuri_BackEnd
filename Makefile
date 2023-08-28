@@ -5,3 +5,6 @@ build-develop:
 
 clean:
 	docker compose down
+
+checkout:
+	git pull origin main
