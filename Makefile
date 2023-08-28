@@ -6,3 +6,9 @@ build-develop:
 
 clean:
 	docker compose down
+
+checkout-release:
+	git checkout release
+
+checkout-develop:
+	git checkout main
