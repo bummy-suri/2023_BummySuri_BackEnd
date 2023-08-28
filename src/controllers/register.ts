@@ -11,8 +11,6 @@ export const registerUserRequestSchema = z.object({
     userCardAddress: z.string(),
     name: z.string(),
     univ: z.enum(['YONSEI', 'KOREA']),
-    // phone: z.string().regex(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/),
-    // studentId: z.string(),
     totalPoint: z.number()
 });
 
@@ -31,8 +29,6 @@ export const register = async (req: Request, res: Response) => {
             userCardAddress: mintRequest.userCardAddress,
             name: mintRequest.name,
             univ: mintRequest.univ,
-            // phone: mintRequest.phone,
-            // studentId: mintRequest.studentId,
             totalPoint: mintRequest.totalPoint
         })
 
