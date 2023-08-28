@@ -16,9 +16,9 @@ app.use(cors({
     methods: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 }));
 
-app.use(nonAuthRouter);
-app.use(authRouter);//수정 필요
-app.use(authenticateMiddleware);
+//  app.use(nonAuthRouter);
+ app.use(authRouter);
+// app.use(authenticateMiddleware);
 //app.use(authRouter);
 
 const run = async () => {
