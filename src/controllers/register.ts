@@ -24,20 +24,29 @@ export const register = async (req: Request, res: Response) => {
     try {
         const mintRequest = registerUserRequestSchema.parse(req.body);
 
-        const { access, refresh } = await mintUserService({
-            id: mintRequest.id,
-            userCardAddress: mintRequest.userCardAddress,
-            name: mintRequest.name,
-            univ: mintRequest.univ,
-            NFT_image: mintRequest.NFT_image,
-            totalPoint: mintRequest.totalPoint
-        })
-        res.send({ access, refresh })
+        // const { access, refresh } = await mintUserService({
+        //     id: mintRequest.id,
+        //     userCardAddress: mintRequest.userCardAddress,
+        //     name: mintRequest.name,
+        //     univ: mintRequest.univ,
+        //     NFT_image: mintRequest.NFT_image,
+        //     totalPoint: mintRequest.totalPoint
+        // })
 
         // res.send({
         //     accessToken: access,
         //     refreshToken: refresh
         // } as registerUserResponse)
+
+        const dummyData = await mintUserService({
+                id: mintRequest.id,
+                userCardAddress: mintRequest.userCardAddress,
+                name: mintRequest.name,
+                univ: mintRequest.univ,
+                NFT_image: mintRequest.NFT_image,
+                totalPoint: mintRequest.totalPoint
+            })
+        res.send(dummyData)
 
     } catch (error) {
 
@@ -59,24 +68,27 @@ export const register = async (req: Request, res: Response) => {
         }        
     }
 };
+export const useridtSchema = z.object({
+    userid: z.number()
+});
 
 export interface getUserResponse {
     univ: 'YONSEI' | 'KOREA';
     totalPoint: number;
 }
 
-export const getUser = (req: Request, res: Response) => {
+        
+export const getUser = async (req: Request, res: Response) => {
     try {
-        const userid = req.userid
-        // const userData = getUserService(userid);
+        const userid = parseInt(req.params.userid);
+        const userData = await getUserService(userid);
 
-        // dummyData
-        const dummyUserData = {
-            univ: "YONSEI",
-            totalPoint: 1000
-        };
+        // const dummyUserData = {
+        //     univ: "YONSEI",
+        //     totalPoint: 1000
+        // };
 
-        res.send(dummyUserData as getUserResponse);
+        res.send(userData);
 
     } catch (error) {
         if (error instanceof ZodError) {
@@ -100,8 +112,8 @@ export const getUser = (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const userid = req.userid
-        //await deleteUserService(userid);
+        const userid = parseInt(req.params.userid);
+        await deleteUserDataService(userid);
 
         res.sendStatus(204);  // successfully deleted
 
