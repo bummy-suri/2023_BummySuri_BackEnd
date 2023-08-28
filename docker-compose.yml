@@ -1,0 +1,22 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "${EXPORTED_PORT}:8000"
+
+  mysql:
+    image: 'bitnami/mysql:latest'
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    ports:
+      - '${MYSQL_PORT}:3306'
+    volumes:
+      - mysql_data:/bitnami/mysql/data
+
+volumes:
+  mysql_data:
