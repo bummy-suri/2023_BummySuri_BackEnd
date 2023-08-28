@@ -10,6 +10,7 @@ export const registerUserRequestSchema = z.object({
     userCardAddress: z.string(),
     name: z.string(),
     univ: z.enum(['YONSEI', 'KOREA']),
+    NFT_image: z.string(),
     totalPoint: z.number()
 });
 
@@ -28,6 +29,7 @@ export const register = async (req: Request, res: Response) => {
             userCardAddress: mintRequest.userCardAddress,
             name: mintRequest.name,
             univ: mintRequest.univ,
+            NFT_image: mintRequest.NFT_image,
             totalPoint: mintRequest.totalPoint
         })
 
