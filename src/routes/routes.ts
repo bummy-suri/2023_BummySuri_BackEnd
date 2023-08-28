@@ -20,8 +20,8 @@ import {
 export const authRouter = Router();
 
 // User routes
-authRouter.get('/user', getUserController);
-authRouter.delete('/user', deleteUserController);
+authRouter.get('/user/:userid', getUserController);
+authRouter.delete('/user/:userid', deleteUserController);
 
 // Betting routes
 authRouter.post('/betting/:gameType', saveBettingController);
