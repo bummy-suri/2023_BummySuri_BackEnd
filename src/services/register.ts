@@ -24,24 +24,6 @@ export const mintUser = async (user: UserType) : Promise<TokenType> => {
     }
 }
 
-export const grantUser = async (requestKey: string) : Promise<TokenType> => {
-
-    try {
-        const address = await handleApp2AppResultStateAPIs(requestKey)
-
-        // regard user exists at userid = 1
-        const userid = 1
-
-        const token = generateToken(userid.toString())
-
-        return {
-            access: token,
-        }
-
-    } catch (e) {
-        throw e;
-    }
-}
 
 export const grantUser = async (requestKey: string) : Promise<TokenType> => {
 
