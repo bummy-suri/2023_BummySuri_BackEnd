@@ -37,7 +37,7 @@ jobs:
           port: ${{ env.PORT }}
           script: |
             cd ${{ env.DIR }}
-            make checkout
+            make checkout-release
             make build-release
 
       - name: Release Lock
