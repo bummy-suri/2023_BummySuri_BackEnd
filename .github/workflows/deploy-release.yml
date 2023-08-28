@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - release
+      - feature/cicd
 
 env:
   HOST: ${{ secrets.HOST }}
