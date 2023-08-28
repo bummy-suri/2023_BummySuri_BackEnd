@@ -29,8 +29,12 @@ export const handleApp2AppResultState = async (requestKey: string) : Promise<str
         return response.result.klaytn_address
     }).catch((error) => {
 
-        if (error instanceof ZodError || error instanceof ClientError || error instanceof AxiosError) {
+        if (error instanceof ZodError || error instanceof ClientError) {
             throw error
+        }
+
+        if (error instanceof AxiosError) {
+            throw new ClientError("invalid request key")
         }
 
         throw new UnexpectedError(error.message)
