@@ -18,8 +18,8 @@ app.use(cors({
 
 //  app.use(nonAuthRouter);
  app.use(authRouter);
-// app.use(authenticateMiddleware);
-//app.use(authRouter);
+/*app.use(authenticateMiddleware);
+app.use(authRouter);*/
 
 const run = async () => {
     app.listen(PORT, () => {

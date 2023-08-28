@@ -25,7 +25,8 @@ export interface GetBettingResponse {
 export const saveBetting = (req: Request, res: Response) => {
     try {
         const bettingData = saveBettingRequestSchema.parse(req.body);
-        const userid = req.userid;
+        //const userid = req.userid;
+        const userid = 1;
         const gameType = req.params.gameType;
 
         // const result = await saveBettingService(bettingData, userid, gameType);

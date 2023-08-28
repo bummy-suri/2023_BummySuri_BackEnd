@@ -68,9 +68,7 @@ export const register = async (req: Request, res: Response) => {
         }        
     }
 };
-export const useridtSchema = z.object({
-    userid: z.number()
-});
+
 
 export interface getUserResponse {
     univ: 'YONSEI' | 'KOREA';
@@ -115,7 +113,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         const userid = parseInt(req.params.userid);
         await deleteUserDataService(userid);
 
-        res.sendStatus(204);  // successfully deleted
+        res.sendStatus(204);
 
     } catch (error) {
         if (error instanceof ZodError) {
