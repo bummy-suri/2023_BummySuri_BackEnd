@@ -8,6 +8,8 @@ const PORT = process.env.PORT || (() => { throw new Error('PORT not defined'); }
 
 const app = express();
 
+app.use(express.json());
+
 app.use(cors({
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 204,
