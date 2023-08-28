@@ -10,15 +10,17 @@ const app = express();
 
 app.use(express.json());
 
+const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN || (() => { throw new Error('ALLOW_ORIGIN not defined'); })();
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', ALLOW_ORIGIN],
     optionsSuccessStatus: 204,
     methods: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 }));
 
 app.use(nonAuthRouter)
-app.use(authenticateMiddleware);
 app.use(authRouter);
+app.use(authenticateMiddleware);
 
 const run = async () => {
     app.listen(PORT, () => {
