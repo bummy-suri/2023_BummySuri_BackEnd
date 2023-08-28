@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-// import { createGameResultService, getGameResultService, updateGameResultService } from "../services";
+import { saveGameResultService, getGameResultService, updateGameResultService } from "../services";
 
 export const gameResultRequestSchema = z.object({
     playing: z.string(),
@@ -15,7 +15,7 @@ export const createGameResult = async (req: Request, res: Response) => {
     try {
         const gameData = gameResultRequestSchema.parse(req.body);
         const gameType = req.params.gameType;
-        //const result = await createGameResultService(gameType, gameData);
+        const result = await saveGameResultService(gameType, gameData);
 
         res.sendStatus(201);  // successfully created
 

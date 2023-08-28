@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-// import { checkBettingResultService } from "../services"; // 실제 서비스 호출은 주석 처리
+import { checkBettingResultService } from "../services"; // 실제 서비스 호출은 주석 처리
 
 // 베팅 결과 확인을 위한 요청 스키마
 export const checkBettingResultRequestSchema = z.object({

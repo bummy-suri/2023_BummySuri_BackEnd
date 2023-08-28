@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-import { mintUserService } from "../services";
-
+import { mintUserService , getUserService, deleteUserDataService } from "../services";
 
 
 export const registerUserRequestSchema = z.object({
