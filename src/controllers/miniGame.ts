@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-// import { changeMiniGamePointsService } from "../services"; // 추후에 서비스 로직을 추가할 경우
+import { saveMiniGamePointService, saveMiniGameTimesService, getTimesService } from "../services"; // 추후에 서비스 로직을 추가할 경우
 
 export const miniGamePointChangeRequestSchema = z.object({
     results: z.string(),
@@ -19,7 +19,7 @@ export const miniGameTimes = async (req: Request, res: Response) => {
     try {
         const userId = req.userid;
         const times = miniGameTimesChangeRequestSchema.parse(req.body);
-        // const result = miniGameTimesService(userId, times);
+        // const result = saveMiniGameTimesService(userId, times);
         const dummyTimes = 1;
         res.json({
             times: dummyTimes
@@ -82,7 +82,7 @@ export const changeMiniGamePoints = async (req: Request, res: Response) => {
     try {
         const userId = req.userid;
         
-        // const totalPoint = await changeMiniGamePointsService(userId);
+        // const totalPoint = await saveMiniGamePointsService(userId);
 
         // 더미 데이터로 응답
         const dummyTotalPoint = 100;
