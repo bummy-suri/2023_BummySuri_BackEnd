@@ -32,11 +32,12 @@ export const register = async (req: Request, res: Response) => {
             NFT_image: mintRequest.NFT_image,
             totalPoint: mintRequest.totalPoint
         })
+        res.send({ access, refresh })
 
-        res.send({
-            accessToken: access,
-            refreshToken: refresh
-        } as registerUserResponse)
+        // res.send({
+        //     accessToken: access,
+        //     refreshToken: refresh
+        // } as registerUserResponse)
 
     } catch (error) {
 
