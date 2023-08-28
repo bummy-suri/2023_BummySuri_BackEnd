@@ -5,8 +5,8 @@ export type UserType = {
     userCardAddress: string;
     name: string;
     univ: TeamType;
-    phone: string;
-    studentId: string;
+   /* phone: string;
+    studentId: string;*/
     NFT_image?: string | null;
     totalPoint: number;
 }
@@ -22,12 +22,6 @@ export type BettingRequest = {
     predictedWinner: string;
     predictedScore: string;
     bettingPoint: number;
-}
-
-export type BettingResponse = {
-    success: boolean;
-    earnedPoint: number;
-    totalPoint: number;
 }
 
 export type GameResult = {

@@ -43,10 +43,29 @@ export const grantUser = async (requestKey: string) : Promise<TokenType> => {
     }
 }
 
-export const getUserData = async (user: UserType): Promise<UserType> => {
+export const grantUser = async (requestKey: string) : Promise<TokenType> => {
+
+    try {
+        const address = await handleApp2AppResultStateAPIs(requestKey)
+
+        // regard user exists at userid = 1
+        const userid = 1
+
+        const token = generateToken(userid.toString())
+
+        return {
+            access: token,
+        }
+
+    } catch (e) {
+        throw e;
+    }
+}
+
+export const getUserData = async (userId: number): Promise<UserType> => {
     
     try {
-        const userData = await getUser(user);
+        const userData = await getUser(userId);
         
         if (!userData) {
             throw new Error("User not found");
@@ -59,11 +78,11 @@ export const getUserData = async (user: UserType): Promise<UserType> => {
     }
 }
 
-export const deleteUserData = async (user: UserType): Promise<string> => {
+export const deleteUserData = async (userId: number): Promise<string> => {
     let deletedUserId: string;
 
     try {
-        deletedUserId = (await deleteUser(user)).toString();
+        deletedUserId = (await deleteUser(userId)).toString();
     } catch (e) {
         throw e;
     }

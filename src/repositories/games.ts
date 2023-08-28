@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, UserType, GameResult, GameResultUpdate} from "../models/sample";
+import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate} from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -138,30 +138,63 @@ export const checkBettingResult = async (BettingResultData: BettingResultRespons
 };
 
 
-
-
-//미니게임 포인트 저장
-export const saveMiniGamePoint = async (userId: number): Promise<number> => {
-    return prisma.user.findUnique({
-        where: {
-            id: userId
+//미니게임 횟수 저장
+export const saveMiniGameTimes = async (
+    times: number,
+    userId: number
+): Promise<number> => {
+    return prisma.miniGame.create({
+        data: {
+            userId: userId,
+            times: times
         }
-    }).then((user) => {
-        if (!user) {
-            throw new Error("User not found");
-        }
-
-        return prisma.user.update({
-            where: {
-                id: userId
-            },
-            data: {
-                totalPoint: user.totalPoint + 300,
-            },
-        });
-    }).then((updatedUser) => {
-        return updatedUser.totalPoint;
+    }).then((result) => {
+        return result.times;
     }).catch((e) => {
         throw new PrismaError(e?.message);
     });
+}
+
+//미니게임 횟수 조회
+export const getTimes = async (userId: number): Promise<number | null> => {
+    return prisma.miniGame.findUnique({
+        where: {
+            id: userId
+        }
+    }).then((result) => {
+        if (result) {
+            return result.times;
+        } else {
+            return null;
+        }
+    }).catch((e) => {
+        throw new PrismaError(e?.message);
+    })
+}
+
+//미니게임 포인트 저장
+export const saveMiniGamePoint = async (userId: number): Promise<number> => {
+
+        return prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        }).then((user) => {
+            if (!user) {
+                throw new Error("User not found");
+            }
+
+            return prisma.user.update({
+                where: {
+                    id: userId
+                },
+                data: {
+                    totalPoint: user.totalPoint + 300,
+                },
+            });
+        }).then((updatedUser) => {
+            return updatedUser.totalPoint;
+        }).catch((e) => {
+            throw new PrismaError(e?.message);
+        });
 };

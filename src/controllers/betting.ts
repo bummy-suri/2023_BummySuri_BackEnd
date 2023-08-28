@@ -25,11 +25,12 @@ export interface GetBettingResponse {
 export const saveBetting = (req: Request, res: Response) => {
     try {
         const bettingData = saveBettingRequestSchema.parse(req.body);
+        const userid = req.userid;
+        const gameType = req.params.gameType;
 
-        // 실제 서비스 호출은 주석 처리
-        // await saveBettingService(bettingData);
+        // const result = await saveBettingService(bettingData, userid, gameType);
 
-        res.sendStatus(201); // Created
+        res.sendStatus(201);
 
     } catch (error) {
         if (error instanceof ZodError) {
@@ -53,6 +54,9 @@ export const saveBetting = (req: Request, res: Response) => {
 
 export const getBetting = (req: Request, res: Response) => {
     try {
+        const userid = req.userid;
+        const gameType = req.params.gameType;
+        // const result = await saveBettingService(userid, gameType);
         // 더미 데이터
         const dummyData: GetBettingResponse = {
             selected: true,

@@ -11,8 +11,8 @@ export const registerUserRequestSchema = z.object({
     userCardAddress: z.string(),
     name: z.string(),
     univ: z.enum(['YONSEI', 'KOREA']),
-    phone: z.string().regex(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/),
-    studentId: z.string(),
+    // phone: z.string().regex(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/),
+    // studentId: z.string(),
     totalPoint: z.number()
 });
 
@@ -31,8 +31,8 @@ export const register = async (req: Request, res: Response) => {
             userCardAddress: mintRequest.userCardAddress,
             name: mintRequest.name,
             univ: mintRequest.univ,
-            phone: mintRequest.phone,
-            studentId: mintRequest.studentId,
+            // phone: mintRequest.phone,
+            // studentId: mintRequest.studentId,
             totalPoint: mintRequest.totalPoint
         })
 
@@ -69,7 +69,8 @@ export interface getUserResponse {
 
 export const getUser = (req: Request, res: Response) => {
     try {
-        // const userData = getUserService();
+        const userid = req.userid
+        // const userData = getUserService(userid);
 
         // dummyData
         const dummyUserData = {
@@ -98,9 +99,11 @@ export const getUser = (req: Request, res: Response) => {
         }        
     }
 };
+
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        //await deleteUserService();
+        const userid = req.userid
+        //await deleteUserService(userid);
 
         res.sendStatus(204);  // successfully deleted
 

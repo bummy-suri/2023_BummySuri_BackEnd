@@ -14,8 +14,8 @@ export const gameResultRequestSchema = z.object({
 export const createGameResult = async (req: Request, res: Response) => {
     try {
         const gameData = gameResultRequestSchema.parse(req.body);
-        
-        // await createGameResultService(gameData);
+        const gameType = req.params.gameType;
+        //const result = await createGameResultService(gameType, gameData);
 
         res.sendStatus(201);  // successfully created
 
@@ -42,7 +42,8 @@ export const createGameResult = async (req: Request, res: Response) => {
 // 경기 결과 조회 GET
 export const getGameResult = async (req: Request, res: Response) => {
     try {
-        // const gameData = await getGameResultService(req.params.gameType);
+        const gameType = req.params.gameType;
+        // const result = await getGameResultService(gameType);
 
         // Dummy data
         const dummyGameResult = {
@@ -76,9 +77,10 @@ export const getGameResult = async (req: Request, res: Response) => {
 // 경기 결과 수정 PUT
 export const updateGameResult = async (req: Request, res: Response) => {
     try {
+        const gameType = req.params.gameType;
         const updatedGameData = gameResultRequestSchema.parse(req.body);
         
-        // const updatedGame = await updateGameResultService(req.params.gameType, updatedGameData);
+        // const result = await updateGameResultService(gameType, updatedGameData);
 
         // Dummy data
         const dummyUpdatedGameResult = {
