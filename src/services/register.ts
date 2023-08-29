@@ -20,7 +20,8 @@ export const mintUser = async (user: UserType) : Promise<TokenType> => {
     }
 
     return {
-        access: token,
+        //access: token,
+        access: userid,
     }
 }
 
@@ -61,13 +62,13 @@ export const getUserData = async (userId: number): Promise<UserType> => {
 }
 
 export const deleteUserData = async (userId: number): Promise<string> => {
-    let deletedUserId: string;
+    let deletedUser: string;
 
     try {
-        deletedUserId = (await deleteUser(userId)).toString();
+        deletedUser = (await deleteUser(userId)).toString();
     } catch (e) {
         throw e;
     }
 
-    return deletedUserId;
+    return deletedUser;
 }
