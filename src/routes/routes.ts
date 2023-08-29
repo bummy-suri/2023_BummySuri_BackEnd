@@ -21,7 +21,7 @@ import {
 export const authRouter = Router();
 
 // User routes
-authRouter.post('/user', registerController);
+// authRouter.post('/user', registerController);
 authRouter.get('/user', getUserController);
 authRouter.delete('/user', deleteUserController);
 
