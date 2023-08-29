@@ -81,7 +81,6 @@ export const register = async (req: Request, res: Response) => {
 
 
 export interface getUserResponse {
-    univ: 'YONSEI' | 'KOREA';
     totalPoint: number;
 }
 
@@ -90,12 +89,12 @@ export const getUser = async (req: Request, res: Response) => {
     try {
         const userid = parseInt(req.params.userid);
         // const userData = await getUserService(userid);
-        // res.send(userData);
+        // res.json(userData);
 
         const dummyUserData = {
-            univ: "YONSEI",
             totalPoint: 1000
         };
+        
         res.json(dummyUserData as getUserResponse);
 
     } catch (error) {
