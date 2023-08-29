@@ -21,7 +21,20 @@ export const createUser = async (user: UserType): Promise<number> => {
     })
 }
 
-export const getUser = async (userId: number): Promise<UserType | null> => {
+export const getUserByCardAddress = async (cardAddress: string): Promise<UserType | null> => {
+    return prisma.user.findFirst({
+        where: {
+            userCardAddress: cardAddress
+        }
+    }).then((result) => {
+        return result ? result : null;
+    }).catch((e) => {
+        throw new PrismaError(e?.message);
+    })
+}
+
+export 
+const getUser = async (userId: number): Promise<UserType | null> => {
     return prisma.user.findUnique({
         where: {
             id: userId

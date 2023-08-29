@@ -1,29 +1,33 @@
 import { handleApp2AppResultStateAPIs } from "../apis";
 import { TokenType, UserType } from "../models/sample";
-import { createUser, getUser, deleteUser } from "../repositories/users";
+import { createUser, getUserByCardAddress, getUser, deleteUser } from "../repositories/users";
 import { generateToken } from "./auth";
 
 
-export const mintUser = async (user: UserType) : Promise<TokenType> => {
-
+export const mintUser = async (user: UserType): Promise<TokenType> => {
     let token: string = ''
     let userid: string = ''
 
     try {
-        // TODO: a minting api call
+        const existingUser = await getUserByCardAddress(user.userCardAddress);
+        
+        if (existingUser) {
+            userid = existingUser.id.toString();
+        } else {
+            userid = (await createUser(user)).toString();
+        }
 
-        userid = (await createUser(user)).toString()
-        //token = generateToken(userid)
+        token = generateToken(userid);
 
     } catch (e) {
         throw e;
     }
 
     return {
-        //access: token,
-        access: userid,
+        access: token,
     }
 }
+
 
 
 export const grantUser = async (requestKey: string) : Promise<TokenType> => {
