@@ -55,11 +55,16 @@ export const updateBettingData = async (
     userId: number, 
     gameType: string
 ) => {
+    let updatedData: BettingRequest | null;
     try {
-        await updateBetting(bettingData, userId, gameType);
+        updatedData = await updateBetting(bettingData, userId, gameType);
+        if (!bettingData) {
+            throw new Error("Betting data not found");
+        }
     } catch (e) {
         throw e;
     }
+    return updatedData;
 };
 
 //게임 결과 저장
