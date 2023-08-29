@@ -5,10 +5,11 @@ export {
     deleteUserData as deleteUserDataService
 };
 
-import { saveBettingData, getBettingData, saveGameResultData, getGameResultData, updateGameResultData, saveMiniGameTimesData,getTimesData ,saveMiniGamePointData, checkBettingResultData } from "./games";
+import { saveBettingData, getBettingData,updateBettingData, saveGameResultData, getGameResultData, updateGameResultData, saveMiniGameTimesData,getTimesData ,saveMiniGamePointData, checkBettingResultData } from "./games";
 export {
     saveBettingData as saveBettingSerVice,
     getBettingData as getBettingService,
+    updateBettingData as updateBettingService,
     saveGameResultData as saveGameResultService,
     getGameResultData as getGameResultService,
     updateGameResultData as updateGameResultService,
