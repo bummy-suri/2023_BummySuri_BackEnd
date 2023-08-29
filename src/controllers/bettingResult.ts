@@ -20,21 +20,22 @@ export interface CheckBettingResultResponse {
     totalPoint: number;
 }
 
-export const checkBettingResult = (req: Request, res: Response) => {
+export const checkBettingResult = async (req: Request, res: Response) => {
     try {
         const userid = req.userid;
         const gameType = req.params.gameType;
         const bettingData = checkBettingResultRequestSchema.parse(req.body);
 
-        // const result = await checkBettingResultService(bettingData, userid, gameType);
+        const result = await checkBettingResultService(userid, gameType);
+        res.json(result);
         
-        const dummyResult: CheckBettingResultResponse = {
-            success: true,
-            earnedPoint: 100,
-            totalPoint: 200
-        };
+        // const dummyResult: CheckBettingResultResponse = {
+        //     success: true,
+        //     earnedPoint: 100,
+        //     totalPoint: 200
+        // };
 
-        res.json(dummyResult);
+        // res.json(dummyResult);
 
     } catch (error) {
         if (error instanceof ZodError) {
