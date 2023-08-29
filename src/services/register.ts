@@ -13,10 +13,10 @@ export const mintUser = async (user: UserType) : Promise<TokenType> => {
         // TODO: a minting api call
 
         userid = (await createUser(user)).toString()
-        token = generateToken(userid)
+        //token = generateToken(userid)
 
     } catch (e) {
-
+        throw e;
     }
 
     return {
