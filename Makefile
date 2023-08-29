@@ -8,9 +8,9 @@ clean:
 	docker compose down
 
 checkout-release:
-	git switch release \
+	git switch release; \
 	git pull origin release
 
 checkout-develop:
-	git switch main \
+	git switch main; \
 	git pull origin main
