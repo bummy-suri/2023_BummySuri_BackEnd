@@ -33,8 +33,7 @@ export const getUserByCardAddress = async (cardAddress: string): Promise<UserTyp
     })
 }
 
-export 
-const getUser = async (userId: number): Promise<UserType | null> => {
+export const getUser = async (userId: number): Promise<UserType | null> => {
     try {
         const userData = {
           id: 1111,

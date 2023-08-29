@@ -20,11 +20,12 @@ export const miniGameTimes = async (req: Request, res: Response) => {
         const userId = req.userid;
         const getTimes = miniGameTimesChangeRequestSchema.parse(req.body);
         const times = getTimes.times;
-        const result = saveMiniGameTimesService(userId, times);
-        const dummyTimes = 1;
-        res.json({
-            times: dummyTimes
-        });
+        const result = await saveMiniGameTimesService(userId, times);
+        res.json(result);
+        // const dummyTimes = 1;
+        // res.json({
+        //     times: dummyTimes
+        // });
     } catch (error) {
             if (error instanceof ZodError) {
                 res.status(400).send(error.message);
@@ -46,16 +47,17 @@ export const miniGameTimes = async (req: Request, res: Response) => {
     };
 
 //미니게임 횟수 GET
-export const getTimes = (req: Request, res: Response) => {
+export const getTimes = async (req: Request, res: Response) => {
     try {
         const userid = req.userid
-        // const result = getTimesService(userId);
-        // dummuData
-        const dummyUserData = {
-            times: 1
-        };
+        const result = await getTimesService(userid);
+        res.json(result);
+        // // dummuData
+        // const dummyUserData = {
+        //     times: 1
+        // };
 
-        res.send(dummyUserData as getTimesResponse);
+        // res.send(dummyUserData as getTimesResponse);
 
 
     } catch (error) {
@@ -83,14 +85,15 @@ export const changeMiniGamePoints = async (req: Request, res: Response) => {
     try {
         const userId = req.userid;
         
-        // const totalPoint = await saveMiniGamePointsService(userId);
+        const totalPoint = await saveMiniGamePointService(userId);
+        res.json(totalPoint);
 
-        // 더미 데이터로 응답
-        const dummyTotalPoint = 100;
+        // // 더미 데이터로 응답
+        // const dummyTotalPoint = 100;
 
-        res.json({
-            totalPoint: dummyTotalPoint
-        });
+        // res.json({
+        //     totalPoint: dummyTotalPoint
+        // });
 
     } catch (error) {
         if (error instanceof ZodError) {
