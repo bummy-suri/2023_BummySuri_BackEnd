@@ -35,6 +35,25 @@ export const getUserByCardAddress = async (cardAddress: string): Promise<UserTyp
 
 export 
 const getUser = async (userId: number): Promise<UserType | null> => {
+    try {
+        const userData = {
+          id: 1111,
+          userCardAddress: "0x1234567890abcdef",
+          name: "John Doe",
+          univ: "KOREA" as const,
+          NFT_image: "https://example.com/path/to/image.png",
+          totalPoint: 100
+        };
+    
+        const result = await prisma.user.create({
+          data: userData
+        });
+    
+      } catch (error) {
+        console.error("Error saving user:", error);
+        throw error;
+      }
+
     return prisma.user.findUnique({
         where: {
             id: userId
