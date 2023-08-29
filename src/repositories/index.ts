@@ -1,8 +1,9 @@
-import { createUser, getUser, deleteUser } from "./users";
+import { createUser, getUserByCardAddress, getUser, deleteUser } from "./users";
 import { saveBetting, getBetting, updateBetting, saveGameResult, getGameResult, updateGameResult, saveMiniGameTimes, getTimes, saveMiniGamePoint } from "./games";
 
 export {
   createUser as createUserPersistence,
+  getUserByCardAddress as getUserByCardAddressPersistence,
   getUser as getUserPersistance,
   deleteUser as deleteUserUserPersistance,
 }
