@@ -7,6 +7,7 @@ import {
 import {
     saveBetting,
     getBetting,
+    updateBetting,
     saveGameResult,
     getGameResult,
     updateGameResult,
@@ -46,6 +47,19 @@ export const getBettingData = async (userId: number, gameType: string): Promise<
     }
 
     return bettingData
+};
+
+//사용자 베팅 수정
+export const updateBettingData = async (
+    bettingData: Partial<BettingRequest>, 
+    userId: number, 
+    gameType: string
+) => {
+    try {
+        await updateBetting(bettingData, userId, gameType);
+    } catch (e) {
+        throw e;
+    }
 };
 
 //게임 결과 저장

@@ -49,6 +49,25 @@ export const getBetting = async (userId: number, gameType: string): Promise<Bett
     });
 }
 
+//베팅 정보 수정
+export const updateBetting = async (
+    bettingData: Partial<BettingRequest>,
+    userId: number,
+    gameType: string
+) => {
+    return prisma.betting.update({
+        where: {
+            userId_gameType: {
+                userId: userId,
+                gameType: gameType
+            }
+        },
+        data: bettingData
+    }).catch((e) => {
+        throw new PrismaError(e?.message);
+    });
+};
+
 
 //게임 결과 저장
 export const saveGameResult = async (gameType: string, gameData: GameResult): Promise<string> => {
