@@ -44,16 +44,16 @@ export const getGameResult = async (req: Request, res: Response) => {
     try {
         const gameType = req.params.gameType;
         const result = await getGameResultService(gameType);
-        res.json(result);
+        // res.json(result);
 
-        /* // Dummy data
+        //Dummy data
         const dummyGameResult = {
             playing: "경기 중",
             KoreaScore: 2,
             YonseiScore: 1
         };
 
-        res.json(dummyGameResult);*/
+        res.json(dummyGameResult);
 
     } catch (error) {
         if (error instanceof ZodError) {
@@ -82,16 +82,16 @@ export const updateGameResult = async (req: Request, res: Response) => {
         const updatedGameData = gameResultRequestSchema.parse(req.body);
         
         const result = await updateGameResultService(gameType, updatedGameData);
-        res.json(result);
+        //res.json(result);
 
-        /*// // Dummy data
+        // Dummy data
         const dummyUpdatedGameResult = {
-            playing: "경기 중",
+            playing: "경기 종료",
             KoreaScore: 3,
             YonseiScore: 2
         };
 
-        res.json(dummyUpdatedGameResult);*/
+        res.json(dummyUpdatedGameResult);
 
     } catch (error) {
         if (error instanceof ZodError) {

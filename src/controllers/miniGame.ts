@@ -18,8 +18,9 @@ export interface getTimesResponse {
 export const miniGameTimes = async (req: Request, res: Response) => {
     try {
         const userId = req.userid;
-        const times = miniGameTimesChangeRequestSchema.parse(req.body);
-        // const result = saveMiniGameTimesService(userId, times);
+        const getTimes = miniGameTimesChangeRequestSchema.parse(req.body);
+        const times = getTimes.times;
+        const result = saveMiniGameTimesService(userId, times);
         const dummyTimes = 1;
         res.json({
             times: dummyTimes
@@ -48,7 +49,7 @@ export const miniGameTimes = async (req: Request, res: Response) => {
 export const getTimes = (req: Request, res: Response) => {
     try {
         const userid = req.userid
-        // const result = getTimesService(userId;
+        // const result = getTimesService(userId);
         // dummuData
         const dummyUserData = {
             times: 1
