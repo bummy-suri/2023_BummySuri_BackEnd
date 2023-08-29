@@ -61,8 +61,8 @@ export const getBetting = (req: Request, res: Response) => {
         // 더미 데이터
         const dummyData: GetBettingResponse = {
             selected: true,
-            playing: "Korea vs Yonsei",
-            predictedWinner: "Korea",
+            playing: "경기 중",
+            predictedWinner: "KOREA",
             predictedScore: "1-2",
             bettingPoint: 100
         };
