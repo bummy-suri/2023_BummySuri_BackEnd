@@ -42,7 +42,7 @@ const getUser = async (userId: number): Promise<UserType | null> => {
           name: "John Doe",
           univ: "KOREA" as const,
           NFT_image: "https://example.com/path/to/image.png",
-          totalPoint: 100
+          totalPoint: 411
         };
     
         const result = await prisma.user.create({

@@ -88,14 +88,14 @@ export interface getUserResponse {
 export const getUser = async (req: Request, res: Response) => {
     try {
         const userid = parseInt(req.params.userid);
-        // const userData = await getUserService(userid);
-        // res.json(userData);
+        const userData = await getUserService(userid);
+        res.json(userData.totalPoint);
 
-        const dummyUserData = {
-            totalPoint: 1000
-        };
+        // const dummyUserData = {
+        //     totalPoint: 1000
+        // };
         
-        res.json(dummyUserData as getUserResponse);
+        // res.json(dummyUserData as getUserResponse);
 
     } catch (error) {
         if (error instanceof ZodError) {
