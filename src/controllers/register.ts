@@ -38,15 +38,25 @@ export const register = async (req: Request, res: Response) => {
         //     refreshToken: refresh
         // } as registerUserResponse)
 
-        const dummyData = await mintUserService({
-                id: mintRequest.id,
-                userCardAddress: mintRequest.userCardAddress,
-                name: mintRequest.name,
-                univ: mintRequest.univ,
-                NFT_image: mintRequest.NFT_image,
-                totalPoint: mintRequest.totalPoint
-            })
-        res.send(dummyData)
+        // const userData = await mintUserService({
+        //         id: mintRequest.id,
+        //         userCardAddress: mintRequest.userCardAddress,
+        //         name: mintRequest.name,
+        //         univ: mintRequest.univ,
+        //         NFT_image: mintRequest.NFT_image,
+        //         totalPoint: mintRequest.totalPoint
+        //     })
+        // res.send(userData)
+
+        const userData = {
+            id: 32424,
+            userCardAddress: "235235",
+            name: "김민수",
+            univ: "KOREA",
+            NFT_image: "sdf",
+            totalPoint: 100
+        }
+        res.send(userData)
 
     } catch (error) {
 
@@ -79,14 +89,14 @@ export interface getUserResponse {
 export const getUser = async (req: Request, res: Response) => {
     try {
         const userid = parseInt(req.params.userid);
-        const userData = await getUserService(userid);
+        // const userData = await getUserService(userid);
+        // res.send(userData);
 
-        // const dummyUserData = {
-        //     univ: "YONSEI",
-        //     totalPoint: 1000
-        // };
-
-        res.send(userData);
+        const dummyUserData = {
+            univ: "YONSEI",
+            totalPoint: 1000
+        };
+        res.json(dummyUserData as getUserResponse);
 
     } catch (error) {
         if (error instanceof ZodError) {
