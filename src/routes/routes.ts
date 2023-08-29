@@ -5,6 +5,7 @@ import {
     deleteUserController,
     saveBettingController, 
     getBettingController,
+    updateBettingController,
     checkBettingResultController,
     createGameController, 
     getGameResultController, 
@@ -21,12 +22,13 @@ export const authRouter = Router();
 
 // User routes
 authRouter.post('/user', registerController);
-authRouter.get('/user/:userid', getUserController);
-authRouter.delete('/user/:userid', deleteUserController);
+authRouter.get('/user', getUserController);
+authRouter.delete('/user', deleteUserController);
 
 // Betting routes
 authRouter.post('/betting/:gameType', saveBettingController);
 authRouter.get('/betting/:gameType', getBettingController);
+authRouter.put('/betting/:gameType', updateBettingController);
 
 // BettingResult routes
 authRouter.post('/bettingResult/:gameType', checkBettingResultController);
