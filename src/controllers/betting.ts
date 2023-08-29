@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-import { saveBettingSerVice, getBettingService, updateBettingService } from "../services"; // 실제 서비스 호출은 주석 처리
+import { saveBettingService, getBettingService, updateBettingService } from "../services"; // 실제 서비스 호출은 주석 처리
 
 // 베팅 저장을 위한 요청 스키마
 export const saveBettingRequestSchema = z.object({
@@ -22,14 +22,13 @@ export interface GetBettingResponse {
     bettingPoint: number;
 }
 
-export const saveBetting = (req: Request, res: Response) => {
+export const saveBetting = async (req: Request, res: Response) => {
     try {
         const bettingData = saveBettingRequestSchema.parse(req.body);
-        //const userid = req.userid;
-        const userid = 1;
+        const userid = req.userid;
         const gameType = req.params.gameType;
 
-        // const result = await saveBettingService(bettingData, userid, gameType);
+        const result = await saveBettingService(bettingData, userid, gameType);
 
         res.sendStatus(201);
 
@@ -53,21 +52,23 @@ export const saveBetting = (req: Request, res: Response) => {
     }
 };
 
-export const getBetting = (req: Request, res: Response) => {
+export const getBetting = async (req: Request, res: Response) => {
     try {
         const userid = req.userid;
         const gameType = req.params.gameType;
-        // const result = await saveBettingService(userid, gameType);
-        // 더미 데이터
-        const dummyData: GetBettingResponse = {
-            selected: true,
-            playing: "경기 전",
-            predictedWinner: "KOREA",
-            predictedScore: "1-2점차",
-            bettingPoint: 100
-        };
+        const result = await getBettingService(userid, gameType);
+        res.json(result);
 
-        res.json(dummyData);
+        // // 더미 데이터
+        // const dummyData: GetBettingResponse = {
+        //     selected: true,
+        //     playing: "경기 전",
+        //     predictedWinner: "KOREA",
+        //     predictedScore: "1-2점차",
+        //     bettingPoint: 100
+        // };
+
+        // res.json(dummyData);
 
     } catch (error) {
         if (error instanceof ZodError) {
@@ -103,21 +104,38 @@ export const updateBetting = async (req: Request, res: Response) => {
         const userid = req.userid;
         const gameType = req.params.gameType;
 
-        // Dummy data
-        const dummyUpdatedGameResult = {
-            selected: true,
-            playing: "경기 전",
-            predictedWinner: "KOREA",
-            predictedScore: "2-3점차",
-            bettingPoint: 100
-        };
+        // // Dummy data
+        // const dummyUpdatedGameResult = {
+        //     selected: true,
+        //     playing: "경기 전",
+        //     predictedWinner: "KOREA",
+        //     predictedScore: "2-3점차",
+        //     bettingPoint: 100
+        // };
 
-        res.json(dummyUpdatedGameResult);
+        // res.json(dummyUpdatedGameResult);
 
-        //await updateBettingService(bettingData, userid, gameType);
+        const result = await updateBettingService(bettingData, userid, gameType);
+        res.send(result);
+
 
     } catch (error) {
-        // Handle errors...
+        if (error instanceof ZodError) {
+            res.status(400).send(error.message);
+            return
+        }
+        if (error instanceof PrismaError) {
+            res.status(503).send(error.message);
+            return
+        }
+        if (error instanceof AxiosError) {
+            res.status(502).send(error.message);
+            return
+        }
+        if (error instanceof Error) {
+            res.status(500).send(error.message);
+            return
+        }      
     }
 };
 
