@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 export const createUser = async (user: UserType): Promise<number> => {
     return prisma.user.create({
         data: {
+            id: user.id,
             userCardAddress: user.userCardAddress,
             name: user.name,
             univ: user.univ,
