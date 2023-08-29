@@ -61,9 +61,9 @@ export const getBetting = (req: Request, res: Response) => {
         // 더미 데이터
         const dummyData: GetBettingResponse = {
             selected: true,
-            playing: "경기 중",
+            playing: "경기 전",
             predictedWinner: "KOREA",
-            predictedScore: "1-2",
+            predictedScore: "1-2점차",
             bettingPoint: 100
         };
 
@@ -106,9 +106,9 @@ export const updateBetting = async (req: Request, res: Response) => {
         // Dummy data
         const dummyUpdatedGameResult = {
             selected: true,
-            playing: "경기 중",
+            playing: "경기 전",
             predictedWinner: "KOREA",
-            predictedScore: "1-2점차",
+            predictedScore: "2-3점차",
             bettingPoint: 100
         };
 

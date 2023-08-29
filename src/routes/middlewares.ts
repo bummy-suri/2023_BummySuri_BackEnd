@@ -6,7 +6,7 @@ import { parseToken } from "../services/auth";
 declare global {
     namespace Express {
         interface Request {
-            userid?: string;
+            userid: number;
         }
     }
 }
@@ -27,7 +27,7 @@ export const authenticateMiddleware = (req: Request, res: Response, next: NextFu
         return res.sendStatus(403);
     }
 
-    req.userid = userid;
+    req.userid = parseInt(userid);
     next();
 };
 
