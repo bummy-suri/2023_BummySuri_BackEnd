@@ -15,8 +15,8 @@ app.use(cors({
     optionsSuccessStatus: 204,
     methods: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 }));
-
- app.use(authRouter);
+app.use(nonAuthRouter);
+app.use(authRouter);
 /*app.use(nonAuthRouter);
 app.use(authenticateMiddleware);
 app.use(authRouter);*/
