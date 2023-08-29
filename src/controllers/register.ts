@@ -87,7 +87,7 @@ export interface getUserResponse {
         
 export const getUser = async (req: Request, res: Response) => {
     try {
-        const userid = parseInt(req.params.userid);
+        const userid = req.userid;
         const userData = await getUserService(userid);
         res.json(userData.totalPoint);
 
