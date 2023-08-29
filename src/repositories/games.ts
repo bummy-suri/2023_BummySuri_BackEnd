@@ -63,6 +63,18 @@ export const updateBetting = async (
             }
         },
         data: bettingData
+    }).then((result) => {
+        if (result) {
+            return {
+                selected: result.selected,
+                playing: result.playing,
+                predictedWinner: result.predictedWinner,
+                predictedScore: result.predictedScore,
+                bettingPoint: result.bettingPoint
+            };
+        } else {
+            return null;
+        }
     }).catch((e) => {
         throw new PrismaError(e?.message);
     });
