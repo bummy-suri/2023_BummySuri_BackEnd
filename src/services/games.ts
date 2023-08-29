@@ -157,28 +157,28 @@ const classifyScoreDifference = (gameType: string, KoreaScore: number, YonseiSco
     const difference = Math.abs(KoreaScore - YonseiScore);
 
     switch (gameType) {
-        case '야구':
+        case 'baseball':
             if (difference >= 1 && difference <= 2) return 0;
             if (difference >= 3 && difference <= 4) return 1;
             if (difference >= 5 && difference <= 7) return 2;
             return 3;
         
-        case '농구':
+        case 'basketball':
             if (difference >= 1 && difference <= 5) return 0;
             if (difference >= 6 && difference <= 10) return 1;
             if (difference >= 11 && difference <= 15) return 2;
             return 3;
-        case '빙구':
+        case 'hockey':
             if (difference == 1) return 0;
             if (difference == 2) return 1;
             if (difference == 3) return 2;
             return 3;
-        case '축구':
+        case 'soccer':
             if (difference == 1) return 0;
             if (difference == 2) return 1;
             if (difference == 3) return 2;
             return 3;
-        case '럭비':
+        case 'rugby':
             if (difference >= 1 && difference <= 5) return 0;
             if (difference >= 6 && difference <= 10) return 1;
             if (difference >= 11 && difference <= 15) return 2;
@@ -195,8 +195,8 @@ export const checkBettingResultData = async (userId: number, gameType: string): 
         const betting = await getBettingData(userId, gameType);
         const gameResult = await getGameResultData(gameType);
         
-        const winner = gameResult.KoreaScore > gameResult.YonseiScore ? 'Korea' :
-              gameResult.KoreaScore < gameResult.YonseiScore ? 'Yonsei' : 'draw';
+        const winner = gameResult.KoreaScore > gameResult.YonseiScore ? 'KOREA' :
+              gameResult.KoreaScore < gameResult.YonseiScore ? 'YONSEI' : 'DRAW';
 
         const scoreCase = classifyScoreDifference(gameType, gameResult.KoreaScore, gameResult.YonseiScore);
 
