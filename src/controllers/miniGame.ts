@@ -14,7 +14,7 @@ export const miniGameTimesChangeRequestSchema = z.object({
 export interface getTimesResponse {
     times: number;
 }
-// 미니게임 횟수 POST
+// 미니게임 횟수 PUT
 export const miniGameTimes = async (req: Request, res: Response) => {
     try {
         const userId = req.userid;
