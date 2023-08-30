@@ -174,7 +174,7 @@ export const saveMiniGameTimes = async (
     times: number,
     userId: number
 ): Promise<number> => {
-    return prisma.user.findFirst({
+    return prisma.user.findUnique({
         where: {
             id: userId
         }
@@ -198,7 +198,7 @@ export const saveMiniGameTimes = async (
         } else {
             return prisma.miniGame.update({
                 where: {
-                    id: miniGame.userId // 수정: miniGame.userId -> miniGame.id
+                    id: miniGame.id
                 },
                 data: {
                     times: miniGame.times + 1
