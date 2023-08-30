@@ -20,7 +20,7 @@ export const miniGameTimes = async (req: Request, res: Response) => {
         const userId = req.userid;
         const getTimes = miniGameTimesChangeRequestSchema.parse(req.body);
         const times = getTimes.times;
-        const result = await saveMiniGameTimesService(userId, times);
+        const result = await saveMiniGameTimesService(times,userId);
         res.json(result);
         // const dummyTimes = 1;
         // res.json({
