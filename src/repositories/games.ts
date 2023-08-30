@@ -176,7 +176,7 @@ export const saveMiniGameTimes = async (
 ): Promise<number> => {
     return prisma.user.findUnique({
         where: {
-            id: userId
+            id: 1111
         }
     }).then((user) => {
         if (!user) {
