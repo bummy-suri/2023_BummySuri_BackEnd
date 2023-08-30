@@ -201,7 +201,7 @@ export const saveMiniGameTimes = async (
                     id: miniGame.id
                 },
                 data: {
-                    times: miniGame.times + 1
+                    times: times
                 }
             });
         }
