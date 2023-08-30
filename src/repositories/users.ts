@@ -53,7 +53,7 @@ export const getUser = async (userId: number): Promise<UserType | null> => {
         throw error;
       }
 
-    return prisma.user.findUnique({
+    return prisma.user.findFirst({
         where: {
             id: userId
         }
