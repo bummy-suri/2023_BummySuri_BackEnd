@@ -70,9 +70,8 @@ export const deleteUserData = async (userId: number): Promise<string> => {
 
     try {
         deletedUser = (await deleteUser(userId)).toString();
+        return deletedUser;
     } catch (e) {
         throw e;
     }
-
-    return deletedUser;
 }

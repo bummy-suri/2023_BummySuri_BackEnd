@@ -119,7 +119,7 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const userid = parseInt(req.params.userid);
+        const userid = req.userid;
         await deleteUserDataService(userid);
 
         res.sendStatus(204);
