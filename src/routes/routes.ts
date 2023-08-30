@@ -21,7 +21,7 @@ import {
 export const authRouter = Router();
 
 // User routes
-// authRouter.post('/users', registerController);
+//authRouter.post('/users', registerController);
 authRouter.get('/users', getUserController);
 authRouter.delete('/users', deleteUserController);
 
@@ -47,4 +47,4 @@ authRouter.get('/minigame/times', getMiniGameTimesController);
 
 export const nonAuthRouter = Router();
 
-nonAuthRouter.post('/user', authenticateController);
+nonAuthRouter.post('/users', authenticateController);
