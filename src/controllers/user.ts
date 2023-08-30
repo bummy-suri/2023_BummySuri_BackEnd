@@ -12,7 +12,7 @@ export const authenticateRequestSchema = z.object({
 
 export interface authenticateResponse {
     accessToken: string;
-    refreshToken?: string;
+    // refreshToken?: string;
 }
 
 export const authenticate = async (req: Request, res: Response) => {
@@ -23,8 +23,8 @@ export const authenticate = async (req: Request, res: Response) => {
         // const { access } = await grantUserService(authenticateRequest.requestKey)
         const access = "298475"
 
-        res.send({
-            accessToken: access,
+        res.json({
+            accessToken: access
         } as authenticateResponse)
 
     } catch (error) {

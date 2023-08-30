@@ -91,11 +91,11 @@ export const getBetting = async (req: Request, res: Response) => {
 };
 
 export const updateBettingRequestSchema = z.object({
-    selected: z.boolean().optional(),
-    playing: z.string().optional(),
-    predictedWinner: z.string().optional(),
-    predictedScore: z.string().optional(),
-    bettingPoint: z.number().optional()
+    selected: z.boolean(),
+    playing: z.string(),
+    predictedWinner: z.string(),
+    predictedScore: z.string(),
+    bettingPoint: z.number()
 });
 
 export const updateBetting = async (req: Request, res: Response) => {
