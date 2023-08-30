@@ -223,7 +223,7 @@ export const getTimes = async (userId: number): Promise<number | null> => {
         if (result) {
             return result.times;
         } else {
-            return null;
+            return 10000;
         }
     }).catch((e) => {
         throw new PrismaError(e?.message);
