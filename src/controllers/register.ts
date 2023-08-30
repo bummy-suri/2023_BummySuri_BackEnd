@@ -8,9 +8,7 @@ import { mintUserService , getUserService, deleteUserDataService } from "../serv
 export const registerUserRequestSchema = z.object({
     id: z.number(),
     userCardAddress: z.string(),
-    name: z.string(),
     univ: z.enum(['YONSEI', 'KOREA']),
-    NFT_image: z.string(),
     totalPoint: z.number()
 });
 
@@ -51,9 +49,7 @@ export const register = async (req: Request, res: Response) => {
         const userData = {
             id: 32424,
             userCardAddress: "235235",
-            name: "김민수",
             univ: "KOREA",
-            NFT_image: "sdf",
             totalPoint: 100
         }
         res.send(userData)
