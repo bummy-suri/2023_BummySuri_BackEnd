@@ -39,8 +39,8 @@ authRouter.get('/game/:gameType', getGameResultController);
 authRouter.put('/game/:gameType', updateGameResultController);
 
 // MiniGame routes
-authRouter.post('/minigame/points', changeMiniGamePointsController);
-authRouter.post('/minigame/times', miniGameTimesController);
+authRouter.put('/minigame/points', changeMiniGamePointsController);
+authRouter.put('/minigame/times', miniGameTimesController);
 authRouter.get('/minigame/times', getMiniGameTimesController);
 
 

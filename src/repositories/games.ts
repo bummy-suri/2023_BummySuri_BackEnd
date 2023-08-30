@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate} from "../models/sample";
+import { UserType, BettingRequest, BettingResultResponse, GameResult, GameResultUpdate} from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -174,17 +174,34 @@ export const saveMiniGameTimes = async (
     times: number,
     userId: number
 ): Promise<number> => {
-    return prisma.miniGame.create({
-        data: {
-            userId: userId,
-            times: times
+    return prisma.miniGame.findFirst({
+        where: {
+            userId: userId
+        }
+    }).then((miniGame) => {
+        if (!miniGame) {
+            return prisma.miniGame.create({
+                data: {
+                    userId: userId,
+                    times: 0
+                }
+            });
+        } else {
+            return prisma.miniGame.update({
+                where: {
+                    id: miniGame.userId
+                },
+                data: {
+                    times: miniGame.times + 1
+                }
+            });
         }
     }).then((result) => {
         return result.times;
     }).catch((e) => {
         throw new PrismaError(e?.message);
     });
-}
+};
 
 //미니게임 횟수 조회
 export const getTimes = async (userId: number): Promise<number | null> => {
