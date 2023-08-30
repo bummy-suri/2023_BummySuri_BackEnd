@@ -1,23 +1,20 @@
 import { handleApp2AppResultStateAPIs } from "../apis";
-import { TokenType, UserType } from "../models/sample";
+import { TeamType, TokenType, UserType } from "../models/sample";
 import { createUser, getUserByCardAddress, getUser, deleteUser } from "../repositories/users";
 import { generateToken } from "./auth";
 
 
-export const mintUser = async (user: UserType): Promise<TokenType> => {
+export const mintUser = async (userid: number, univ: TeamType): Promise<TokenType> => {
     let token: string = ''
-    let userid: string = ''
 
     try {
-        const existingUser = await getUserByCardAddress(user.userCardAddress);
-        
-        if (existingUser) {
-            userid = existingUser.id.toString();
-        } else {
-            userid = (await createUser(user)).toString();
-        }
-
-        token = generateToken(userid);
+        /* 
+        1. get card address by userid
+        2. check if user already minted
+        3. mint card calling klaytn api
+        4. save isMinted = true at user table
+        5. renew token
+        */
 
     } catch (e) {
         throw e;
@@ -35,10 +32,15 @@ export const grantUser = async (requestKey: string) : Promise<TokenType> => {
     try {
         const address = await handleApp2AppResultStateAPIs(requestKey)
 
-        // regard user exists at userid = 1
-        const userid = 1
+        /*
+        1. address 를 통해 사용자가 존재하는지 확인, 없으면 등록
+        2. 민팅을 한 사용자인지를 확인
+        3. token 을 발급
+        */
 
-        const token = generateToken(userid.toString())
+        const userid = 1111
+
+        const token = generateToken(userid, true)
 
         return {
             access: token,
