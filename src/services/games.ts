@@ -129,7 +129,7 @@ export const getTimesData = async (userId: number): Promise<number | null> => {
     let times: number | null;
     try {
         times = await getTimes(userId);
-        if (!times) {
+        if (times == 10000) {
             throw new Error("Times result not found");
         }
     } catch (e) {
