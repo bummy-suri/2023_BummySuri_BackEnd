@@ -17,11 +17,10 @@ enum TeamType {
 
 model User {
     id              Int       @id @default(autoincrement())
-    userCardAddress String
-    name            String
-    univ            TeamType
-    NFT_image      String?
-    totalPoint     Int
+    userCardAddress String    @unique
+    univ            TeamType?
+    totalPoint     Int       @default(2000)
+    isMinted       Boolean   @default(false)
     bettings       Betting[]
     minigames      MiniGame[]
 

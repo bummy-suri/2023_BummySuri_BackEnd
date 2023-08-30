@@ -1,5 +1,5 @@
 import { handleApp2AppResultStateAPIs } from "../apis";
-import { TeamType, TokenType, UserType } from "../models/sample";
+import { TeamType, TokenType, UserType, UserTypeIncludeID } from "../models/sample";
 import { createUser, getUserByCardAddress, getUser, deleteUser } from "../repositories/users";
 import { generateToken } from "./auth";
 
@@ -28,30 +28,43 @@ export const mintUser = async (userid: number, univ: TeamType): Promise<TokenTyp
 
 
 export const grantUser = async (requestKey: string) : Promise<TokenType> => {
-
     try {
-        const address = await handleApp2AppResultStateAPIs(requestKey)
+        const address = await handleApp2AppResultStateAPIs(requestKey);
+        
+        let existingUser = await getUserByCardAddress(address);
 
-        /*
-        1. address 를 통해 사용자가 존재하는지 확인, 없으면 등록
-        2. 민팅을 한 사용자인지를 확인
-        3. token 을 발급
-        */
+        if (!existingUser) {
+            await createUser({userCardAddress: address, totalPoint: 2000, isMinted: false });
+        }
 
-        const userid = 1111
+        existingUser = await getUserByCardAddress(address);
 
-        const token = generateToken(userid, true)
+        if (!existingUser) {
+            throw new Error('User not found.');
+        }
+
+        const existingUserData = await getUserData(existingUser);
+
+        if (!existingUserData.isMinted) {
+            throw new Error('User has not minted yet.');
+        }
+
+        const userid = existingUserData.id;
+        const token = generateToken(userid, true);
 
         return {
-            access: token,
-        }
+            access: token
+        };
 
     } catch (e) {
         throw e;
     }
 }
 
-export const getUserData = async (userId: number): Promise<UserType> => {
+
+
+
+export const getUserData = async (userId: number): Promise<UserTypeIncludeID> => {
     
     try {
         const userData = await getUser(userId);

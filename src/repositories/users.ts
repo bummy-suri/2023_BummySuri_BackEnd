@@ -1,39 +1,37 @@
-import { UserType } from "../models/sample";
-import { PrismaClient } from '@prisma/client';
+import { UserType, UserTypeIncludeID } from "../models/sample";
+import { PrismaClient, User } from '@prisma/client';
 import { PrismaError } from "../utils/errors";
 
 const prisma = new PrismaClient();
 
-export const createUser = async (user: UserType): Promise<number> => {
+export const createUser = async (user: UserType): Promise<UserTypeIncludeID> => {
     return prisma.user.create({
         data: {
-            id: user.id,
             userCardAddress: user.userCardAddress,
-            name: user.name,
             univ: user.univ,
-            NFT_image: user.NFT_image,
-            totalPoint: user.totalPoint
+            totalPoint: user.totalPoint,
+            isMinted: user.isMinted
         },
     }).then((result) => {
-        return result.id;
+        return result;
     }).catch((e) => {
         throw new PrismaError(e?.message);
     })
 }
 
-export const getUserByCardAddress = async (cardAddress: string): Promise<UserType | null> => {
+export const getUserByCardAddress = async (cardAddress: string): Promise<number | null> => {
     return prisma.user.findFirst({
         where: {
             userCardAddress: cardAddress
         }
     }).then((result) => {
-        return result ? result : null;
+        return result ? result.id : null;
     }).catch((e) => {
         throw new PrismaError(e?.message);
     })
 }
 
-export const getUser = async (userId: number): Promise<UserType | null> => {
+export const getUser = async (userId: number): Promise<UserTypeIncludeID | null> => {
     try {
         const userData = {
           id: 1111,

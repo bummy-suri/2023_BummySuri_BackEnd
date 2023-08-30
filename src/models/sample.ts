@@ -1,12 +1,15 @@
 export type TeamType = 'YONSEI' | 'KOREA';
 
+
 export type UserType = {
-    id: number;
     userCardAddress: string;
-    name: string;
-    univ: TeamType;
-    NFT_image?: string | null;
+    univ?: TeamType | null;
     totalPoint: number;
+    isMinted: boolean;
+}
+
+export type UserTypeIncludeID = UserType & {
+    id: number;
 }
 
 export type TokenType = {
