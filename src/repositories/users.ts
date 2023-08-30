@@ -65,13 +65,31 @@ export const getUser = async (userId: number): Promise<UserType | null> => {
 }
 
 export const deleteUser = async (userId: number): Promise<string> => {
-    return prisma.user.delete({
-        where: {
-            id: userId
-        }
-    }).then((result) => {
+    try {
+        // Delete relatedBettings
+        await prisma.betting.deleteMany({
+            where: {
+                userId: userId
+            }
+        });
+
+        // Delete relatedMiniGames
+        await prisma.miniGame.deleteMany({
+            where: {
+                userId: userId
+            }
+        });
+
+        // Delete User
+        await prisma.user.delete({
+            where: {
+                id: userId
+            }
+        });
+        
         return "User successfully deleted.";
-    }).catch((e) => {
+
+    } catch (e: any) {
         throw new PrismaError(e?.message);
-    })
+    }
 }
