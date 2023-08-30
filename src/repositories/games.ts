@@ -215,9 +215,9 @@ export const saveMiniGameTimes = async (
 
 //미니게임 횟수 조회
 export const getTimes = async (userId: number): Promise<number | null> => {
-    return prisma.miniGame.findUnique({
+    return prisma.miniGame.findFirst({
         where: {
-            id: userId
+            userId: userId
         }
     }).then((result) => {
         if (result) {
