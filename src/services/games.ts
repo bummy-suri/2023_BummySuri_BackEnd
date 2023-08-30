@@ -115,7 +115,7 @@ export const saveMiniGameTimesData = async (times: number, userId: number): Prom
     try {
         updatedTimes = await saveMiniGameTimes(times, userId)
         if (updatedTimes > 3) {
-            throw new Error("Times is over 3");
+            throw new Error("Times are over 3");
         }
     } catch (e) {
         throw e;
