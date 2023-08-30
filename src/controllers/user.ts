@@ -12,7 +12,7 @@ export const authenticateRequestSchema = z.object({
 
 export interface authenticateResponse {
     accessToken: string;
-    // refreshToken?: string;
+    refreshToken?: string;
 }
 
 export const authenticate = async (req: Request, res: Response) => {
