@@ -32,24 +32,24 @@ export const getUserByCardAddress = async (cardAddress: string): Promise<number 
 }
 
 export const getUser = async (userId: number): Promise<UserTypeIncludeID | null> => {
-    try {
-        const userData = {
-          id: 1111,
-          userCardAddress: "0x1234567890abcdef",
-          name: "John Doe",
-          univ: "KOREA" as const,
-          NFT_image: "https://example.com/path/to/image.png",
-          totalPoint: 411
-        };
+    // try {
+    //     const userData = {
+    //       id: 1111,
+    //       userCardAddress: "0x1234567890abcdef",
+    //       name: "John Doe",
+    //       univ: "KOREA" as const,
+    //       NFT_image: "https://example.com/path/to/image.png",
+    //       totalPoint: 411
+    //     };
     
-        const result = await prisma.user.create({
-          data: userData
-        });
+    //     const result = await prisma.user.create({
+    //       data: userData
+    //     });
     
-      } catch (error) {
-        console.error("Error saving user:", error);
-        throw error;
-      }
+    //   } catch (error) {
+    //     console.error("Error saving user:", error);
+    //     throw error;
+    //   }
 
     return prisma.user.findFirst({
         where: {
