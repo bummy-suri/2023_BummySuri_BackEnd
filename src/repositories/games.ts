@@ -19,7 +19,7 @@ export const saveBetting = async (
     }).then((result) => {
         return result.id;
     }).catch((e) => {
-        throw new PrismaError(e?.message);
+        throw new PrismaError(e.message);
     });
 }
 
@@ -45,7 +45,7 @@ export const getBetting = async (userId: number, gameType: string): Promise<Bett
             return null;
         }
     }).catch((e) => {
-        throw new PrismaError(e?.message);
+        throw new PrismaError(e.message);
     });
 }
 
@@ -76,7 +76,7 @@ export const updateBetting = async (
             return null;
         }
     }).catch((e) => {
-        throw new PrismaError(e?.message);
+        throw new PrismaError(e.message);
     });
 };
 
@@ -91,7 +91,7 @@ export const saveGameResult = async (gameType: string, gameData: GameResult): Pr
     }).then((result) => {
         return result.gameType;
     }).catch((e) => {
-        throw new PrismaError(e?.message);
+        throw new PrismaError(e.message);
     });
 }
 
@@ -112,7 +112,7 @@ export const getGameResult = async (gameType: string): Promise<GameResult | null
             return null;
         }
     }).catch((e) => {
-        throw new PrismaError(e?.message);
+        throw new PrismaError(e.message);
     });
 }
 
@@ -130,7 +130,7 @@ export const updateGameResult = async (gameType: string, gameData: GameResultUpd
             YonseiScore: result.YonseiScore,
         };
     }).catch((e) => {
-        throw new PrismaError(e?.message);
+        throw new PrismaError(e.message);
     });
 }
 
@@ -164,7 +164,7 @@ export const checkBettingResult = async (BettingResultData: BettingResultRespons
                 totalPoint: BettingResultData.totalPoint
             };
         }).catch((e) => {
-            throw new PrismaError(e?.message);
+            throw new PrismaError(e.message);
         });
 };
 
@@ -201,14 +201,14 @@ export const saveMiniGameTimes = async (
                     id: miniGame.id
                 },
                 data: {
-                    times: time
+                    times: time + 1
                 }
             });
         }
     }).then((result) => {
         return result.times;
     }).catch((e) => {
-        throw new PrismaError(e?.message);
+        throw new PrismaError(e.message);
     });
 };
 
@@ -226,7 +226,7 @@ export const getTimes = async (userId: number): Promise<number | null> => {
             return 10000;
         }
     }).catch((e) => {
-        throw new PrismaError(e?.message);
+        throw new PrismaError(e.message);
     })
 }
 
@@ -253,6 +253,6 @@ export const saveMiniGamePoint = async (userId: number): Promise<number> => {
         }).then((updatedUser) => {
             return updatedUser.totalPoint;
         }).catch((e) => {
-            throw new PrismaError(e?.message);
+            throw new PrismaError(e.message);
         });
 };
