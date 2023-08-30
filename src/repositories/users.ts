@@ -44,9 +44,9 @@ export const getUser = async (userId: number): Promise<UserType | null> => {
           totalPoint: 411
         };
     
-        // const result = await prisma.user.create({
-        //   data: userData
-        // });
+        const result = await prisma.user.create({
+          data: userData
+        });
     
       } catch (error) {
         console.error("Error saving user:", error);
