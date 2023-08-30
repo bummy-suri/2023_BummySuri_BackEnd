@@ -171,7 +171,7 @@ export const checkBettingResult = async (BettingResultData: BettingResultRespons
 
 //미니게임 횟수 저장
 export const saveMiniGameTimes = async (
-    times: number,
+    time: number,
     userId: number
 ): Promise<number> => {
     return prisma.user.findUnique({
@@ -201,7 +201,7 @@ export const saveMiniGameTimes = async (
                     id: miniGame.id
                 },
                 data: {
-                    times: times
+                    times: time
                 }
             });
         }
