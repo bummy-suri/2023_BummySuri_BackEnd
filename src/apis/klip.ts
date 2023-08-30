@@ -34,7 +34,7 @@ export const handleApp2AppResultState = async (requestKey: string) : Promise<str
         }
 
         if (error instanceof AxiosError) {
-            throw new ClientError(`invalid argument: request_key is ${requestKey}`)
+            throw new ClientError(`invalid request_key: ${requestKey}`)
         }
 
         throw new UnexpectedError(error.message)
