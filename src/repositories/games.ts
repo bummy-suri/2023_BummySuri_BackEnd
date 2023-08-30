@@ -174,10 +174,19 @@ export const saveMiniGameTimes = async (
     times: number,
     userId: number
 ): Promise<number> => {
-    return prisma.miniGame.findFirst({
+    return prisma.user.findUnique({
         where: {
-            userId: userId
+            id: userId
         }
+    }).then((user) => {
+        if (!user) {
+            throw new Error("User not found");
+        }
+        return prisma.miniGame.findFirst({
+            where: {
+                userId: userId
+            }
+        });
     }).then((miniGame) => {
         if (!miniGame) {
             return prisma.miniGame.create({
@@ -189,7 +198,7 @@ export const saveMiniGameTimes = async (
         } else {
             return prisma.miniGame.update({
                 where: {
-                    id: miniGame.userId
+                    id: miniGame.id // 수정: miniGame.userId -> miniGame.id
                 },
                 data: {
                     times: miniGame.times + 1
@@ -202,6 +211,7 @@ export const saveMiniGameTimes = async (
         throw new PrismaError(e?.message);
     });
 };
+
 
 //미니게임 횟수 조회
 export const getTimes = async (userId: number): Promise<number | null> => {
