@@ -23,7 +23,7 @@ export const handleApp2AppResultState = async (requestKey: string) : Promise<str
         const response = handleApp2AppResultStateResponseSchema.parse(res.data)
 
         if (response.status != "completed") {
-            throw new ClientError(`response status is ${response.status}`)
+            throw new ClientError(`response status is ${response.status}, should be completed`)
         }
 
         return response.result.klaytn_address
@@ -33,6 +33,10 @@ export const handleApp2AppResultState = async (requestKey: string) : Promise<str
         }
 
         if (error instanceof AxiosError && error.response?.status == 500) {
+            throw error
+        }
+
+        if (error instanceof ClientError) {
             throw error
         }
 
