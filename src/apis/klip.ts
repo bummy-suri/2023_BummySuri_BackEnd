@@ -28,15 +28,18 @@ export const handleApp2AppResultState = async (requestKey: string) : Promise<str
 
         return response.result.klaytn_address
     }).catch((error) => {
+        if (error instanceof AxiosError && error.response?.status == 400) {
+            throw new ClientError(JSON.stringify(error.response?.data))
+        }
 
-        if (error instanceof ZodError || error instanceof ClientError) {
+        if (error instanceof AxiosError && error.response?.status == 500) {
             throw error
         }
 
-        if (error instanceof AxiosError) {
-            throw new ClientError(`invalid request_key: ${requestKey}`)
+        if (error instanceof ZodError) {
+            throw new ClientError(`invalid response schema. type of request should be "Auth" `)
         }
 
-        throw new UnexpectedError(error.message)
+        throw new UnexpectedError(error)
     })
 }
