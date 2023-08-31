@@ -15,11 +15,14 @@ const handleApp2AppResultStateResponseSchema = z.object({
 
 export const handleApp2AppResultState = async (requestKey: string) : Promise<string> => {
 
+    let data: any
+
     return axios.get("https://a2a-api.klipwallet.com/v2/a2a/result", {
         params: {
             request_key: requestKey
         }
     }).then((res) => {
+        data = res.data
         const response = handleApp2AppResultStateResponseSchema.parse(res.data)
 
         if (response.status != "completed") {
@@ -36,13 +39,17 @@ export const handleApp2AppResultState = async (requestKey: string) : Promise<str
             throw error
         }
 
+        if (error instanceof ZodError) {
+            throw new ClientError(`schema error: ${JSON.stringify(error.errors)}, received: ${JSON.stringify(data)}`)
+        }
+
         if (error instanceof ClientError) {
             throw error
         }
 
-        if (error instanceof ZodError) {
-            throw new ClientError(`invalid response schema. type of request should be "Auth" `)
-        }
+        //if (error instanceof ZodError) {
+        //    throw new ClientError(`invalid response schema. type of request should be "Auth" `)
+        //}
 
         throw new UnexpectedError(error)
     })
