@@ -10,9 +10,7 @@ import {
     createGameController, 
     getGameResultController, 
     updateGameResultController,
-    changeMiniGamePointsController,
-    miniGameTimesController,
-    getMiniGameTimesController,
+    saveMiniGameResultController,
     authenticateController
 } from '../controllers';
 
@@ -39,9 +37,7 @@ authRouter.get('/game/:gameType', getGameResultController);
 authRouter.put('/game/:gameType', updateGameResultController);
 
 // MiniGame routes
-authRouter.put('/minigame/points', changeMiniGamePointsController);
-authRouter.put('/minigame/times', miniGameTimesController);
-authRouter.get('/minigame/times', getMiniGameTimesController);
+authRouter.put('/minigame/points', saveMiniGameResultController);
 
 
 
