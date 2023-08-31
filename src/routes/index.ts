@@ -5,13 +5,14 @@ import cors from 'cors';
 
 
 const PORT = process.env.PORT || (() => { throw new Error('PORT not defined'); })();
+const CORS_ALLOW_ORIGIN = process.env.CORS_ALLOW_ORIGIN || (() => { throw new Error('CORS_ALLOW_ORIGIN not defined'); })();
 
 const app = express();
 
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', CORS_ALLOW_ORIGIN],
     optionsSuccessStatus: 204,
     methods: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 }));
