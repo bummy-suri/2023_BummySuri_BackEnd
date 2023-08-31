@@ -12,8 +12,9 @@ export const mintUser = async (userid: number, univ: TeamType): Promise<TokenTyp
         1. get card address by userid
         2. check if user already minted
         3. mint card calling klaytn api
-        4. save isMinted = true at user table
-        5. renew token
+        4. check user.univ at user and increase NFTcount of user.univ at NFTCount
+        5. save isMinted = true at user table
+        6. renew token
         */
 
     } catch (e) {

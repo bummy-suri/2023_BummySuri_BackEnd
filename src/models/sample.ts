@@ -48,3 +48,8 @@ export type totalEarnedPoint = {
     totalPoint: number;   
     isTaken: boolean;
 }
+
+export type NFTCountType = {
+    KoreaCount: number;
+    YonseiCount: number;
+}

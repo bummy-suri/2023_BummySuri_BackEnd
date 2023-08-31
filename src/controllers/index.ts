@@ -34,3 +34,8 @@ import { saveMiniGameResultController } from "./miniGame";
 export {
     saveMiniGameResultController as saveMiniGameResultController
  };
+
+ import { getNFTCount} from "./mint";
+ export {
+        getNFTCount as getNFTCountController
+};
