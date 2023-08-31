@@ -29,9 +29,7 @@ export {
     updateGameResult as updateGameResultController
  };
 
-import { changeMiniGamePoints, miniGameTimes, getTimes } from "./miniGame";
+import { saveMiniGameResultController } from "./miniGame";
 export {
-    changeMiniGamePoints as changeMiniGamePointsController,
-    miniGameTimes as miniGameTimesController,
-    getTimes as getMiniGameTimesController
+    saveMiniGameResultController as saveMiniGameResultController
  };
