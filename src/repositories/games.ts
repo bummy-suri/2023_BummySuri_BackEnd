@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { UserType, BettingRequest, BettingResultResponse, GameResult, GameResultUpdate} from "../models/sample";
+import { UserType, BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, totalEarnedPoint } from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -166,6 +166,45 @@ export const checkBettingResult = async (BettingResultData: BettingResultRespons
         }).catch((e) => {
             throw new PrismaError(e.message);
         });
+};
+
+//
+export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number): Promise<totalEarnedPoint> => {
+    return prisma.user.findUnique({
+        where: { id: userId }
+    })
+    .then(user => {
+        if (!user) {
+            throw new Error('User does not exist.');
+        }
+        
+        if (user.isTaken) {
+            throw new Error('Points have already been taken.');
+        }
+
+        const totalPoint = user.totalPoint + totalEarnedPoint;
+        
+        return prisma.user.update({
+            where: { id: userId },
+            data: {
+                totalPoint: totalPoint,
+                isTaken: true
+            }
+        });
+    })
+    .then(updatedUser => {
+        return {
+            totalPoint: updatedUser.totalPoint,
+            isTaken: updatedUser.isTaken
+        };
+    })
+    .catch(e => {
+        if (e instanceof PrismaError) {
+            throw new PrismaError(e.message);
+        } else {
+            throw new Error(e.message);
+        }
+    });
 };
 
 

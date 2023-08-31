@@ -1,5 +1,5 @@
 import { createUser, getUserByCardAddress, getUser, deleteUser } from "./users";
-import { saveBetting, getBetting, updateBetting, saveGameResult, getGameResult, updateGameResult, saveMiniGameResult } from "./games";
+import { saveBetting, getBetting, updateBetting, saveGameResult, getGameResult, updateGameResult, saveMiniGameResult, totalEarnedPointResult } from "./games";
 
 export {
   createUser as createUserPersistence,
@@ -14,5 +14,6 @@ export{
   saveGameResult as saveGameResultPersistence,
   getGameResult as getGameResultPersistence,
   updateGameResult as updateGameResultPersistance,
+  totalEarnedPointResult as totalEarnedPointsPersistance,
   saveMiniGameResult as saveMiniGameResultPersistance,
 }

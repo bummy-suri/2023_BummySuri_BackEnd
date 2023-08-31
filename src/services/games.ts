@@ -12,7 +12,8 @@ import {
     getGameResult,
     updateGameResult,
     saveMiniGameResult,
-checkBettingResult } from "../repositories/games";
+checkBettingResult, 
+totalEarnedPointResult} from "../repositories/games";
 
 //사용자 베팅 저장시 bettingId 반환
 export const saveBettingData = async (
@@ -186,6 +187,15 @@ export const checkBettingResultData = async (userId: number, gameType: string): 
 
         const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);
         return updatedBettingResponse;
+    } catch (e) {
+        throw e;
+    }
+};
+
+export const totalEarnedPointData = async (userId: number, totalEarnedPoint: number) => {
+    try {
+        const result = await totalEarnedPointResult(userId, totalEarnedPoint);
+        return result;
     } catch (e) {
         throw e;
     }
