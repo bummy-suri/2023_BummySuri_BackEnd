@@ -8,13 +8,14 @@ const EXP = 60 * 60 * 24 * 7;
 
 type JWTData = {
     userid: number;
-    minted: boolean;
+    isMinted: boolean;
 };
 
 
-export const generateToken = (userid: number, minted: boolean): string => {
+export const generateToken = (userid: number, isMinted: boolean): string => {
     let data = {
         userid: userid,
+        isMinted: isMinted
     }
     return jwt.sign(data, SECRET, { expiresIn: Math.floor(Date.now() / 1000) + EXP });
 };
