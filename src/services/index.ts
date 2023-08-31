@@ -22,3 +22,8 @@ import { grantUser } from "./register";
 export {
     grantUser as grantUserService
 };
+
+import { getNFTCountData } from "./mint";
+export {
+    getNFTCountData as getNFTCountService
+};

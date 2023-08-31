@@ -57,3 +57,9 @@ model MiniGame {
   times       Int     @default(0)
   user         User   @relation(fields: [userId], references: [id])
 }
+
+model NFTCount {
+  id           Int    @id @default(autoincrement())
+  KoreaCount   Int     @default(0)
+  YonseiCount  Int     @default(0)
+}
