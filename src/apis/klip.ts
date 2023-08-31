@@ -15,21 +15,19 @@ const handleApp2AppResultStateResponseSchema = z.object({
 
 export const handleApp2AppResultState = async (requestKey: string) : Promise<string> => {
 
-    let data: any
-
     return axios.get("https://a2a-api.klipwallet.com/v2/a2a/result", {
         params: {
             request_key: requestKey
         }
     }).then((res) => {
-        data = res.data
-        const response = handleApp2AppResultStateResponseSchema.parse(res.data)
 
-        if (response.status != "completed") {
-            throw new ClientError(`response status is ${response.status}, should be completed`)
+        if (res.data?.status && res.data.status != "completed") {
+            throw new ClientError(`response status is ${res.data.status}, should be completed`)
         }
 
+        const response = handleApp2AppResultStateResponseSchema.parse(res.data)
         return response.result.klaytn_address
+
     }).catch((error) => {
         if (error instanceof AxiosError && error.response?.status == 400) {
             throw new ClientError(JSON.stringify(error.response?.data))
