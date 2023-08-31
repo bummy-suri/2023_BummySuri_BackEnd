@@ -11,9 +11,7 @@ import {
     saveGameResult,
     getGameResult,
     updateGameResult,
-    saveMiniGameTimes,
-    getTimes,
-    saveMiniGamePoint,
+    saveMiniGameResult,
 checkBettingResult } from "../repositories/games";
 
 //사용자 베팅 저장시 bettingId 반환
@@ -108,49 +106,17 @@ export const updateGameResultData = async (gameType: string, gameData: GameResul
 
     return updatedGameResult;
 };
-//미니게임 횟수 반영
-export const saveMiniGameTimesData = async (times: number, userId: number): Promise<string> => {
-    let updatedTimes: number;
 
+//미니게임 결과 저장
+export const saveMiniGameResultData = async (userId: number, result: boolean) => {
     try {
-        updatedTimes = await saveMiniGameTimes(times, userId)
-        if (updatedTimes > 3) {
-            throw new Error("Times are over 3");
-        }
+        const { times, totalPoint } = await saveMiniGameResult(userId, result);
+        return { times, totalPoint };
     } catch (e) {
         throw e;
     }
-    
-    return updatedTimes.toString();
 };
 
-//미니게임 횟수 조회
-export const getTimesData = async (userId: number): Promise<number | null> => {
-    let times: number | null;
-    try {
-        times = await getTimes(userId);
-        if (times == 10000) {
-            throw new Error("Times result not found");
-        }
-    } catch (e) {
-        throw e;
-    }
-
-    return times;
-};
-
-//미니게임 결과 포인트에 반영
-export const saveMiniGamePointData = async (userId: number): Promise<string> => {
-    let updatedPoint: string;
-
-    try {
-        updatedPoint = (await saveMiniGamePoint(userId)).toString();
-    } catch (e) {
-        throw e;
-    }
-
-    return updatedPoint;
-};
 
 //사용자 베팅 결과_점수차 계산 및 분류
 const classifyScoreDifference = (gameType: string, KoreaScore: number, YonseiScore: number): number => {

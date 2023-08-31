@@ -169,90 +169,38 @@ export const checkBettingResult = async (BettingResultData: BettingResultRespons
 };
 
 
-//미니게임 횟수 저장
-export const saveMiniGameTimes = async (
-    time: number,
-    userId: number
-): Promise<number> => {
-    return prisma.user.findUnique({
-        where: {
-            id: userId
-        }
-    }).then((user) => {
-        if (!user) {
-            throw new Error("User not found");
-        }
-        return prisma.miniGame.findFirst({
-            where: {
-                userId: userId
-            }
-        });
-    }).then((miniGame) => {
-        if (!miniGame) {
-            return prisma.miniGame.create({
-                data: {
-                    userId: userId,
-                    times: 0
-                }
-            });
-        } else {
-            return prisma.miniGame.update({
-                where: {
-                    id: miniGame.id
-                },
-                data: {
-                    times: time + 1
-                }
-            });
-        }
-    }).then((result) => {
-        return result.times;
-    }).catch((e) => {
-        throw new PrismaError(e.message);
+export const saveMiniGameResult = async (userId: number, result: boolean) => {
+    const POINTS_FOR_WIN = 100;
+    const POINTS_FOR_LOSE = 0;
+
+    const user = await prisma.user.findUnique({
+        where: { id: userId }
     });
-};
 
+    if (!user) throw new Error("User not found");
 
-//미니게임 횟수 조회
-export const getTimes = async (userId: number): Promise<number | null> => {
-    return prisma.miniGame.findFirst({
-        where: {
-            userId: userId
-        }
-    }).then((result) => {
-        if (result) {
-            return result.times;
-        } else {
-            return 10000;
-        }
-    }).catch((e) => {
-        throw new PrismaError(e.message);
-    })
-}
+    const miniGame = await prisma.miniGame.findFirst({
+        where: { userId }
+    });
 
-//미니게임 포인트 저장
-export const saveMiniGamePoint = async (userId: number): Promise<number> => {
+    if (!miniGame) {
+        throw new Error("MiniGame record not found");
+    }
 
-        return prisma.user.findUnique({
-            where: {
-                id: userId
-            }
-        }).then((user) => {
-            if (!user) {
-                throw new Error("User not found");
-            }
+    const updatedTimes = miniGame.times + 1;
+    const updatedTotalPoint = user.totalPoint + (result ? POINTS_FOR_WIN : POINTS_FOR_LOSE);
 
-            return prisma.user.update({
-                where: {
-                    id: userId
-                },
-                data: {
-                    totalPoint: user.totalPoint + 300,
-                },
-            });
-        }).then((updatedUser) => {
-            return updatedUser.totalPoint;
-        }).catch((e) => {
-            throw new PrismaError(e.message);
-        });
+    // Update MiniGame times
+    await prisma.miniGame.update({
+        where: { id: miniGame.id },
+        data: { times: updatedTimes }
+    });
+
+    // Update User totalPoint
+    await prisma.user.update({
+        where: { id: userId },
+        data: { totalPoint: updatedTotalPoint }
+    });
+
+    return { times: updatedTimes, totalPoint: updatedTotalPoint };
 };
