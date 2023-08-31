@@ -36,13 +36,13 @@ export const handleApp2AppResultState = async (requestKey: string) : Promise<str
             throw error
         }
 
-        if (error instanceof ClientError) {
+        if (error instanceof ClientError || error instanceof ZodError) {
             throw error
         }
 
-        if (error instanceof ZodError) {
-            throw new ClientError(`invalid response schema. type of request should be "Auth" `)
-        }
+        //if (error instanceof ZodError) {
+        //    throw new ClientError(`invalid response schema. type of request should be "Auth" `)
+        //}
 
         throw new UnexpectedError(error)
     })
