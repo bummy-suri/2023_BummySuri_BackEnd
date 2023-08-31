@@ -1,5 +1,5 @@
 import { ZodError, z } from "zod";
-import { PrismaError } from "../utils/errors";
+import { ClientError, PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
 import { Request, Response } from "express";
 import { grantUserService } from "../services";
@@ -31,6 +31,10 @@ export const authenticate = async (req: Request, res: Response) => {
             res.status(400).send(error.message);
             return
         }
+        if (error instanceof ClientError) {
+            res.status(400).send(error.message);
+            return
+        }
         if (error instanceof PrismaError) {
             res.status(503).send(error.message);
             return
@@ -42,7 +46,7 @@ export const authenticate = async (req: Request, res: Response) => {
         if (error instanceof Error) {
             res.status(500).send(error.message);
             return
-        }        
+        }
     }
 
 }

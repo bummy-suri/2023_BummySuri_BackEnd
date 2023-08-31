@@ -12,17 +12,10 @@ export const isErrorOfPrisma = (error: any) : boolean => {
 
 export class PrismaError extends Error {}
 
-export class UnexpectedError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = "Unexpected Error";
-    
-        Object.setPrototypeOf(this, new.target.prototype);
-      }
-}
+export class UnexpectedError extends Error {}
 
 export class ClientError extends Error {
-    constructor(message: string) {
+    constructor(message: any) {
         super(message);
         this.name = "Client Error";
     
