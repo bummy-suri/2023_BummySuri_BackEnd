@@ -19,7 +19,8 @@ export {
 
 import { checkBettingResult, totalEarnedPoints} from "./bettingResult";
 export {
-    checkBettingResult as checkBettingResultController
+    checkBettingResult as checkBettingResultController,
+    totalEarnedPoints as totalEarnedPointsController
  };
 
 import { createGameResult, getGameResult, updateGameResult } from "./game";

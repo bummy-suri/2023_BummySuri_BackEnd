@@ -11,7 +11,8 @@ import {
     getGameResultController, 
     updateGameResultController,
     saveMiniGameResultController,
-    authenticateController
+    authenticateController,
+    totalEarnedPointsController
 } from '../controllers';
 
 
@@ -30,6 +31,7 @@ authRouter.put('/betting/:gameType', updateBettingController);
 
 // BettingResult routes
 authRouter.post('/bettingResult/:gameType', checkBettingResultController);
+authRouter.put('/bettingResult', totalEarnedPointsController);
 
 // Game routes
 authRouter.post('/game/:gameType', createGameController);
@@ -37,7 +39,7 @@ authRouter.get('/game/:gameType', getGameResultController);
 authRouter.put('/game/:gameType', updateGameResultController);
 
 // MiniGame routes
-authRouter.put('/minigame/points', saveMiniGameResultController);
+authRouter.put('/minigame', saveMiniGameResultController);
 
 
 
