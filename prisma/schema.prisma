@@ -21,6 +21,7 @@ model User {
     univ            TeamType?
     totalPoint     Int       @default(2000)
     isMinted       Boolean   @default(false)
+    isTaken        Boolean  @default(false)
     bettings       Betting[]
     minigames      MiniGame[]
 

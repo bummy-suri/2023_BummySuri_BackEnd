@@ -17,7 +17,7 @@ export {
     updateBetting as updateBettingController
  };
 
-import { checkBettingResult} from "./bettingResult";
+import { checkBettingResult, totalEarnedPoints} from "./bettingResult";
 export {
     checkBettingResult as checkBettingResultController
  };

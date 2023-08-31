@@ -43,3 +43,8 @@ export type BettingResultResponse = {
     earnedPoint: number;
     totalPoint: number;
 }
+
+export type totalEarnedPoint = {
+    totalPoint: number;   
+    isTaken: boolean;
+}

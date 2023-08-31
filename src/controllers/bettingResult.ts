@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-import { checkBettingResultService } from "../services"; // 실제 서비스 호출은 주석 처리
+import { checkBettingResultService, totalEarnedPointService } from "../services"; // 실제 서비스 호출은 주석 처리
 
 // 베팅 결과 확인을 위한 요청 스키마
 export const checkBettingResultRequestSchema = z.object({
@@ -53,6 +53,37 @@ export const checkBettingResult = async (req: Request, res: Response) => {
         if (error instanceof Error) {
             res.status(500).send(error.message);
             return
+        }      
+    }
+};
+export const updateBettingPointsRequestSchema = z.object({
+    totalEarnedPoint: z.number()
+});
+
+export const totalEarnedPoints = async (req: Request, res: Response) => {
+    try {
+        const userid = req.userid;
+        const requestData = updateBettingPointsRequestSchema.parse(req.body);
+
+        const result = await totalEarnedPointService(userid, requestData.totalEarnedPoint);
+        res.json(result);
+
+    } catch (error) {
+        if (error instanceof ZodError) {
+            res.status(400).send(error.message);
+            return;
+        }
+        if (error instanceof PrismaError) {
+            res.status(503).send(error.message);
+            return;
+        }
+        if (error instanceof AxiosError) {
+            res.status(502).send(error.message);
+            return;
+        }
+        if (error instanceof Error) {
+            res.status(500).send(error.message);
+            return;
         }      
     }
 };
