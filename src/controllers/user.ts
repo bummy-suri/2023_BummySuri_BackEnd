@@ -17,10 +17,9 @@ export interface authenticateResponse {
 
 export const authenticate = async (req: Request, res: Response) => {
     try {
-        // const authenticateRequest = authenticateRequestSchema.parse(req.body);
+        const authenticateRequest = authenticateRequestSchema.parse(req.body);
     
-        // const { access } = await grantUserService(authenticateRequest.requestKey)
-        const access = "20394290842"
+        const { access } = await grantUserService(authenticateRequest.requestKey)
 
 
         res.json({
