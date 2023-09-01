@@ -8,7 +8,7 @@ export type UserType = {
     isMinted: boolean;
 }
 
-export type UserTypeIncludeID = UserType & {
+export interface UserTypeIncludeID extends UserType {
     id: number;
 }
 
