@@ -38,11 +38,15 @@ export const whetherMintedSchema = z.object({
     isMinted: z.boolean(),
 });
 
-// export const mintAuthenticateMiddleware = (req: Request, res: Response, next: NextFunction) => {
-//     const whetherMinted = whetherMintedSchema.parse(req.body);
-//     if (!whetherMinted.isMinted) {
-//         return res.sendStatus(403);
-//     }
-//     next();
-// }
+export const mintAuthenticateMiddleware = (req: Request, res: Response, next: NextFunction) => {
+
+    const isMinted = whetherMintedSchema.parse(req.body).isMinted;
+
+    // isMinted 값이 true이고, /mint 라우트로의 요청인 경우 차단
+    if (isMinted && req.originalUrl.includes('/mint')) {
+        return res.status(403).send("Minting not allowed for users with isMinted set to true");
+    }
+
+    next();
+};
 
