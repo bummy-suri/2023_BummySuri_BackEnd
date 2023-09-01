@@ -1,5 +1,5 @@
 import express from 'express';
-import { authenticateMiddleware, mintAuthenticateMiddleware } from './middlewares';
+import { authenticateMiddleware} from './middlewares';
 import { authRouter, nonAuthRouter } from './routes';
 import cors from 'cors';
 
@@ -20,7 +20,7 @@ app.use(cors({
 app.use(nonAuthRouter);
 app.use(authenticateMiddleware);
 app.use(authRouter);
-app.use(mintAuthenticateMiddleware);
+// app.use(mintAuthenticateMiddleware);
 
 const run = async () => {
     app.listen(PORT, () => {

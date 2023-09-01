@@ -33,14 +33,16 @@ export const authenticateMiddleware = (req: Request, res: Response, next: NextFu
 
 
 export const whetherMintedSchema = z.object({
+    cardAddress: z.string(),
+    totalPoint: z.number(),
     isMinted: z.boolean(),
 });
 
-export const mintAuthenticateMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const whetherMinted = whetherMintedSchema.parse(req.body);
-    if (!whetherMinted.isMinted) {
-        return res.sendStatus(403);
-    }
-    next();
-}
+// export const mintAuthenticateMiddleware = (req: Request, res: Response, next: NextFunction) => {
+//     const whetherMinted = whetherMintedSchema.parse(req.body);
+//     if (!whetherMinted.isMinted) {
+//         return res.sendStatus(403);
+//     }
+//     next();
+// }
 
