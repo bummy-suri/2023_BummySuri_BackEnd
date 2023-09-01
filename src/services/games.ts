@@ -3,7 +3,9 @@ import {
     BettingRequest,
     GameResult,
     GameResultUpdate,
-    BettingResultResponse} from "../models/sample";
+    BettingResultResponse,
+    gameType
+} from "../models/sample";
 import {
     saveBetting,
     getBetting,
@@ -19,7 +21,7 @@ totalEarnedPointResult} from "../repositories/games";
 export const saveBettingData = async (
     bettingData: BettingRequest, 
     userId: number, 
-    gameType: string
+    gameType: gameType
 ): Promise<string> => {
     let bettingId: string;
 
@@ -50,9 +52,9 @@ export const getBettingData = async (userId: number, gameType: string): Promise<
 
 //사용자 베팅 수정
 export const updateBettingData = async (
-    bettingData: Partial<BettingRequest>, 
+    bettingData: BettingRequest, 
     userId: number, 
-    gameType: string
+    gameType: gameType
 ) => {
     let updatedData: BettingRequest | null;
     try {
@@ -67,7 +69,7 @@ export const updateBettingData = async (
 };
 
 //게임 결과 저장
-export const saveGameResultData = async (gameType: string, gameData: GameResult): Promise<string> => {
+export const saveGameResultData = async (gameType: gameType, gameData: GameResult): Promise<string> => {
     let resultGameType: string;
 
     try {
@@ -80,7 +82,7 @@ export const saveGameResultData = async (gameType: string, gameData: GameResult)
 };
 
 //게임 결과 조회
-export const getGameResultData = async (gameType: string): Promise<GameResult> => {
+export const getGameResultData = async (gameType: gameType): Promise<GameResult> => {
     let gameResult: GameResult | null;
 
     try {
@@ -96,7 +98,7 @@ export const getGameResultData = async (gameType: string): Promise<GameResult> =
 };
 
 //게임 결과 수정
-export const updateGameResultData = async (gameType: string, gameData: GameResultUpdate): Promise<GameResult> => {
+export const updateGameResultData = async (gameType: gameType, gameData: GameResultUpdate): Promise<GameResult> => {
     let updatedGameResult: GameResult;
 
     try {
@@ -120,7 +122,7 @@ export const saveMiniGameResultData = async (userId: number, result: boolean) =>
 
 
 //사용자 베팅 결과_점수차 계산 및 분류
-const classifyScoreDifference = (gameType: string, KoreaScore: number, YonseiScore: number): number => {
+const classifyScoreDifference = (gameType: gameType, KoreaScore: number, YonseiScore: number): number => {
     const difference = Math.abs(KoreaScore - YonseiScore);
 
     switch (gameType) {
@@ -157,7 +159,7 @@ const classifyScoreDifference = (gameType: string, KoreaScore: number, YonseiSco
 };
 
 // 사용자 베팅 결과_결과 확인
-export const checkBettingResultData = async (userId: number, gameType: string): Promise<BettingResultResponse> => {
+export const checkBettingResultData = async (userId: number, gameType: gameType): Promise<BettingResultResponse> => {
     try {
         const betting = await getBettingData(userId, gameType);
         const gameResult = await getGameResultData(gameType);
@@ -176,13 +178,13 @@ export const checkBettingResultData = async (userId: number, gameType: string): 
 
         if (betting.predictedWinner === winner && Number(betting.predictedScore) === scoreCase) {
             success = true;
-            earnedPoint = betting.bettingPoint * 3;
+            earnedPoint = parseInt(betting.bettingPoint) * 3;
         }
 
         const bettingResponse: BettingResultResponse = {
             success,
             earnedPoint,
-            totalPoint: betting.bettingPoint + earnedPoint,
+            totalPoint: parseInt(betting.bettingPoint) + earnedPoint,
         };
 
         const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);
