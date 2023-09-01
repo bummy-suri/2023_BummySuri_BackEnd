@@ -22,7 +22,7 @@ export const authRouter = Router();
 
 // User routes
 //authRouter.post('/users', registerController);
-// authRouter.get('/users', getUserController);
+authRouter.get('/users', getUserController);
 authRouter.delete('/users', deleteUserController);
 
 // Betting routes
@@ -49,6 +49,6 @@ export const nonAuthRouter = Router();
 
 nonAuthRouter.post('/users', authenticateController);
 
-export const isMintedRouter = Router();
-isMintedRouter.get('/users', getUserController);
+// export const isMintedRouter = Router();
+// authRouter.get('/users', getUserController);
 
