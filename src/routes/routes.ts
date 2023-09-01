@@ -48,7 +48,3 @@ authRouter.get('/mint', getNFTCountController);
 export const nonAuthRouter = Router();
 
 nonAuthRouter.post('/users', authenticateController);
-
-// export const isMintedRouter = Router();
-// authRouter.get('/users', getUserController);
-
