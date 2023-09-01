@@ -21,7 +21,6 @@ export const authenticate = async (req: Request, res: Response) => {
     
         const { access } = await grantUserService(authenticateRequest.requestKey)
 
-
         res.json({
             accessToken: access
         } as authenticateResponse)

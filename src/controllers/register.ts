@@ -77,7 +77,9 @@ export const register = async (req: Request, res: Response) => {
 
 
 export interface getUserResponse {
+    cardAddress: string;
     totalPoint: number;
+    isMinted: boolean;    
 }
 
         
@@ -85,13 +87,12 @@ export const getUser = async (req: Request, res: Response) => {
     try {
         const userid = req.userid;
         const userData = await getUserService(userid);
-        res.json(userData.totalPoint);
-
-        // const dummyUserData = {
-        //     totalPoint: 1000
-        // };
-        
-        // res.json(dummyUserData as getUserResponse);
+        const response: getUserResponse = {
+            cardAddress: userData.userCardAddress,
+            totalPoint: userData.totalPoint,
+            isMinted: userData.isMinted
+        }
+        res.json(response);
 
     } catch (error) {
         if (error instanceof ZodError) {
