@@ -34,8 +34,8 @@ model Betting {
   selected       Boolean
   playing        String
   predictedWinner String
-  predictedScore String
-  bettingPoint   Int
+  predictedScore String?
+  bettingPoint   String
   success        Boolean  @default(false)
   earnedPoint    Int      @default(0)
   user           User     @relation(fields: [userId], references: [id])
@@ -54,7 +54,8 @@ model Game {
 model MiniGame {
   id           Int    @id @default(autoincrement())
   userId       Int
-  times       Int     @default(0)
+  miniGameType String
+  times        Int     @default(0)
   user         User   @relation(fields: [userId], references: [id])
 }
 
