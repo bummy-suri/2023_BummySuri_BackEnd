@@ -4,7 +4,7 @@ import { PrismaError } from "../utils/errors";
 
 const prisma = new PrismaClient();
 
-export const createUser = async (user: UserType): Promise<UserTypeIncludeID> => {
+export const createUser = async (user: UserType): Promise<number> => {
     return prisma.user.create({
         data: {
             userCardAddress: user.userCardAddress,
@@ -13,25 +13,25 @@ export const createUser = async (user: UserType): Promise<UserTypeIncludeID> => 
             isMinted: user.isMinted
         },
     }).then((result) => {
-        return result;
+        return result.id;
     }).catch((e) => {
         throw new PrismaError(e?.message);
     })
 }
 
-export const getUserByCardAddress = async (cardAddress: string): Promise<number | null> => {
+export const getUserByCardAddress = async (cardAddress: string): Promise<{userid: number, exists: boolean}> => {
     return prisma.user.findFirst({
         where: {
             userCardAddress: cardAddress
         }
     }).then((result) => {
-        return result ? result.id : null;
+        return result ? {userid: result.id, exists: true} : {userid: 0, exists: false};
     }).catch((e) => {
         throw new PrismaError(e?.message);
     })
 }
 
-export const getUser = async (userId: number): Promise<UserTypeIncludeID | null> => {
+export const getUser = async (userId: number): Promise<UserType> => {
     // try {
     //     const userData = {
     //       id: 1111,
@@ -56,7 +56,10 @@ export const getUser = async (userId: number): Promise<UserTypeIncludeID | null>
             id: userId
         }
     }).then((result) => {
-        return result ? result : null;
+        if (!result) {
+            throw new Error("User not found");
+        }
+        return result
     }).catch((e) => {
         throw new PrismaError(e?.message);
     })

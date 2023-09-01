@@ -1,5 +1,5 @@
 import { handleApp2AppResultStateAPIs } from "../apis";
-import { TeamType, TokenType, UserType, UserTypeIncludeID } from "../models/sample";
+import { TeamType, TokenType, UserTypeIncludeID } from "../models/sample";
 import { createUser, getUserByCardAddress, getUser, deleteUser } from "../repositories/users";
 import { generateToken } from "./auth";
 
@@ -32,26 +32,14 @@ export const grantUser = async (requestKey: string) : Promise<TokenType> => {
     try {
         const address = await handleApp2AppResultStateAPIs(requestKey);
         
-        let existingUser = await getUserByCardAddress(address);
+        let {userid, exists} = await getUserByCardAddress(address);
 
-        if (!existingUser) {
-            await createUser({userCardAddress: address, totalPoint: 2000, isMinted: false });
+        if (!exists) {
+            userid = await createUser({userCardAddress: address, totalPoint: 2000, isMinted: false });
         }
 
-        existingUser = await getUserByCardAddress(address);
-
-        if (!existingUser) {
-            throw new Error('User not found.');
-        }
-
-        const existingUserData = await getUserData(existingUser);
-
-        if (!existingUserData.isMinted) {
-            throw new Error('User has not minted yet.');
-        }
-
-        const userid = existingUserData.id;
-        const token = generateToken(userid, true);
+        let user = await getUser(userid);
+        const token = generateToken(userid, user.isMinted);
 
         return {
             access: token
@@ -74,7 +62,7 @@ export const getUserData = async (userId: number): Promise<UserTypeIncludeID> =>
             throw new Error("User not found");
         }
         
-        return userData;
+        return {...userData, id: userId};
 
     } catch (e) {
         throw e;
