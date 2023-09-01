@@ -1,5 +1,5 @@
 export type TeamType = 'YONSEI' | 'KOREA';
-
+export type gameType = 'baseball' | 'basketball' | 'hockey' | 'soccer' | 'rugby';
 
 export type UserType = {
     userCardAddress: string;
@@ -21,8 +21,8 @@ export type BettingRequest = {
     selected: boolean;
     playing: string;
     predictedWinner: string;
-    predictedScore: string;
-    bettingPoint: number;
+    predictedScore?: string | null;
+    bettingPoint: string;
 }
 
 export type GameResult = {

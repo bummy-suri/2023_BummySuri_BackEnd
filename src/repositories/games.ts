@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { UserType, BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, totalEarnedPoint } from "../models/sample";
+import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, totalEarnedPoint, gameType } from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export const saveBetting = async (
     bettingData: BettingRequest,
     userId: number, 
-    gameType: string
+    gameType: gameType
 ): Promise<number> => {
     return prisma.betting.create({
         data: {
@@ -53,7 +53,7 @@ export const getBetting = async (userId: number, gameType: string): Promise<Bett
 export const updateBetting = async (
     bettingData: Partial<BettingRequest>,
     userId: number,
-    gameType: string
+    gameType: gameType
 ) => {
     return prisma.betting.update({
         where: {
