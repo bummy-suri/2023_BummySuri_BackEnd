@@ -32,17 +32,20 @@ export const authenticateMiddleware = (req: Request, res: Response, next: NextFu
 };
 
 
-export const whetherMintedSchema = z.object({
-    cardAddress: z.string(),
-    totalPoint: z.number(),
-    isMinted: z.boolean(),
-});
-
 export const mintAuthenticateMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
-    const isMinted = whetherMintedSchema.parse(req.body).isMinted;
+    const token = req.headers.authorization?.split(' ')[1];
 
-    // isMinted 값이 true이고, /mint 라우트로의 요청인 경우 차단
+    if (!token) {
+        return res.sendStatus(401);
+    }
+
+    const { ok, userid, isMinted } = parseToken(token);
+
+    if (!ok || !userid) {
+        return res.sendStatus(403);
+    }
+
     if (isMinted && req.originalUrl.includes('/mint')) {
         return res.status(403).send("Minting not allowed");
     }
