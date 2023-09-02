@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, totalEarnedPoint, gameType } from "../models/sample";
+import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, TotalEarnedPoint, MiniGameType, gameType, UserRankingType, UserRankingListType } from "../models/sample";
+import { promise } from "zod";
 
 const prisma = new PrismaClient();
 
@@ -168,8 +169,8 @@ export const checkBettingResult = async (BettingResultData: BettingResultRespons
         });
 };
 
-//
-export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number): Promise<totalEarnedPoint> => {
+//포인트 가져가기
+export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number): Promise<TotalEarnedPoint> => {
     return prisma.user.findUnique({
         where: { id: userId }
     })
@@ -207,8 +208,8 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
     });
 };
 
-
-export const saveMiniGameResult = async (userId: number, result: boolean) => {
+//미니포인트 결과 저장 및 포인트 반영
+export const saveMiniGameResult = async (userId: number, result: boolean) : Promise<MiniGameType> => {
     const POINTS_FOR_WIN = 100;
     const POINTS_FOR_LOSE = 0;
 
@@ -243,3 +244,28 @@ export const saveMiniGameResult = async (userId: number, result: boolean) => {
 
     return { times: updatedTimes, totalPoint: updatedTotalPoint };
 };
+
+//랭킹 조회
+export const getTop10UsersByTotalPoint = async () : Promise<UserRankingListType> => {
+    return await prisma.user.findMany({
+      select: {
+        userCardAddress: true,
+        totalPoint: true
+      },
+      orderBy: {
+        totalPoint: 'desc',
+      },
+      take: 10,
+    });
+  };
+  
+  export const getUserRankingById = async (userId: number) : Promise< number >=> {
+    const users = await prisma.user.findMany({
+      orderBy: {
+        totalPoint: 'desc',
+      },
+    });
+  
+    const ranking = users.findIndex(user => user.id === userId) + 1;
+    return ranking;
+  };

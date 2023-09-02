@@ -5,7 +5,7 @@ export {
     deleteUserData as deleteUserDataService
 };
 
-import { saveBettingData, getBettingData, updateBettingData, saveGameResultData, getGameResultData, updateGameResultData, saveMiniGameResultData, checkBettingResultData, totalEarnedPointData } from "./games";
+import { saveBettingData, getBettingData, updateBettingData, saveGameResultData, getGameResultData, updateGameResultData, saveMiniGameResultData, checkBettingResultData, totalEarnedPointData, getTop10Rankings, getUserRanking } from "./games";
 export {
     saveBettingData as saveBettingService,
     getBettingData as getBettingService,
@@ -15,7 +15,9 @@ export {
     updateGameResultData as updateGameResultService,
     saveMiniGameResultData as saveMiniGameResultService,
     checkBettingResultData as checkBettingResultService,
-    totalEarnedPointData as totalEarnedPointService
+    totalEarnedPointData as totalEarnedPointService,
+    getTop10Rankings as getTop10RankingsService,
+    getUserRanking as getUserRankingService
 };
 
 import { grantUser } from "./register";

@@ -14,8 +14,11 @@ import {
     getGameResult,
     updateGameResult,
     saveMiniGameResult,
-checkBettingResult, 
-totalEarnedPointResult} from "../repositories/games";
+    checkBettingResult, 
+    totalEarnedPointResult,
+    getTop10UsersByTotalPoint,
+    getUserRankingById
+} from "../repositories/games";
 
 //사용자 베팅 저장시 bettingId 반환
 export const saveBettingData = async (
@@ -202,3 +205,22 @@ export const totalEarnedPointData = async (userId: number, totalEarnedPoint: num
         throw e;
     }
 };
+
+//랭킹 조회
+export const getTop10Rankings = async () => {
+    try {
+        const result = await getTop10UsersByTotalPoint();
+        return result;
+    } catch (e) {
+        throw e;
+    }
+  };
+  
+  export const getUserRanking = async (userId: number) => {
+    try{
+        const result = await getUserRankingById(userId);
+        return result;
+    } catch (e) {
+        throw e;
+    }
+  };

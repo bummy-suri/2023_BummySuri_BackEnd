@@ -13,7 +13,9 @@ import {
     saveMiniGameResultController,
     authenticateController,
     totalEarnedPointsController,
-    getNFTCountController
+    getNFTCountController,
+    getTop10RankingController,
+    getUserRankingController
 } from '../controllers';
 
 
@@ -44,6 +46,10 @@ authRouter.put('/minigame', saveMiniGameResultController);
 
 //Mint routes
 authRouter.get('/mint', getNFTCountController);
+
+//Ranking routes
+authRouter.get('/ranking/top10', getTop10RankingController);
+authRouter.get('/ranking/user', getUserRankingController);
 
 export const nonAuthRouter = Router();
 

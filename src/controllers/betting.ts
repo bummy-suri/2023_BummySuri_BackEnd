@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-import { saveBettingService, getBettingService, updateBettingService } from "../services";
+import { saveBettingService, getBettingService, updateBettingService, getTop10RankingsService, getUserRankingService } from "../services";
 
 // 베팅 저장을 위한 요청 스키마
 export const saveBettingRequestSchema = z.object({
@@ -63,17 +63,6 @@ export const getBetting = async (req: Request, res: Response) => {
         const result = await getBettingService(userid, gameType);
         res.json(result);
 
-        // // 더미 데이터
-        // const dummyData: GetBettingResponse = {
-        //     selected: true,
-        //     playing: "경기 전",
-        //     predictedWinner: "KOREA",
-        //     predictedScore: "1-2점차",
-        //     bettingPoint: 100
-        // };
-
-        // res.json(dummyData);
-
     } catch (error) {
         if (error instanceof ZodError) {
             res.status(400).send(error.message);
@@ -132,4 +121,46 @@ export const updateBetting = async (req: Request, res: Response) => {
     }
 };
 
+const userRankingSchema = z.object({
+    userCardAddress: z.string(),
+    totalPoint: z.number(),
+  });
+  
+  const userRankingsSchema = z.array(userRankingSchema);
+
+export const getTop10RankingController = async (req: Request, res: Response) => {
+    try {
+      const top10Rankings = await getTop10RankingsService();
+      const result = userRankingsSchema.parse(top10Rankings);
+      res.status(200).json(top10Rankings);
+    } catch (error) {
+      handleError(error, res);
+    }
+  };
+  
+  export const getUserRankingController = async (req: Request, res: Response) => {
+    try {
+      const userId = req.userid;
+      const ranking = await getUserRankingService(userId);
+      res.status(200).json({ ranking });
+    } catch (error) {
+      handleError(error, res);
+    }
+  };
+  
+  const handleError = (error: any, res: Response) => {
+    if (error instanceof ZodError) {
+      res.status(400).json({ message: error.message });
+      return;
+    }
+    if (error instanceof PrismaError) {
+      res.status(503).json({ message: error.message });
+      return;
+    }
+    if (error instanceof AxiosError) {
+      res.status(502).json({ message: error.message });
+      return;
+    }
+    res.status(500).json({ message: error.message });
+  };
 

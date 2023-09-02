@@ -10,11 +10,13 @@ export {
     authenticate as authenticateController
  };
 
-import { saveBetting, getBetting, updateBetting } from "./betting";
+import { saveBetting, getBetting, updateBetting, getTop10RankingController, getUserRankingController } from "./betting";
 export {
     saveBetting as saveBettingController,
     getBetting as getBettingController,
-    updateBetting as updateBettingController
+    updateBetting as updateBettingController,
+    getTop10RankingController as getTop10RankingController,
+    getUserRankingController as getUserRankingController
  };
 
 import { checkBettingResult, totalEarnedPoints} from "./bettingResult";
