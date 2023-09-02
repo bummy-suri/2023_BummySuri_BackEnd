@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 import { TokenType } from "../models/sample";
 
 const SECRET = process.env.TOKEN_SECRET as string || (() => { throw new Error('TOKEN_SECRET is not defined'); })();
@@ -20,14 +20,14 @@ export const generateToken = (userid: number, isMinted: boolean): string => {
     return jwt.sign(data, SECRET, { expiresIn: Math.floor(Date.now() / 1000) + EXP });
 };
 
-export const parseToken = (token: string): { ok: boolean, userid: number } => {
+export const parseToken = (token: string): { ok: boolean, userid: number , isMinted: boolean} => {
     try {
         const decoded = jwt.verify(token, SECRET) as JWTData;
         if (!decoded.userid) {
             throw new Error('failed to verify token');
         }
-        return { ok: true, userid: decoded.userid };
+        return { ok: true, userid: decoded.userid, isMinted: decoded.isMinted };
     } catch {
-        return { ok: false, userid: 0};
+        return { ok: false, userid: 0, isMinted: false};
     }
 };
