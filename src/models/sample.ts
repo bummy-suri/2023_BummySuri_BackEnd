@@ -44,7 +44,7 @@ export type BettingResultResponse = {
     totalPoint: number;
 }
 
-export type totalEarnedPoint = {
+export type TotalEarnedPoint = {
     totalPoint: number;   
     isTaken: boolean;
 }
@@ -53,3 +53,15 @@ export type NFTCountType = {
     KoreaCount: number;
     YonseiCount: number;
 }
+
+export type MiniGameType = {
+    times: number;
+    totalPoint: number;
+}
+
+export type UserRankingType = {
+    userCardAddress: string;
+    totalPoint: number;
+  };
+  
+  export type UserRankingListType = UserRankingType[];
