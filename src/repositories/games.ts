@@ -14,7 +14,11 @@ export const saveBetting = async (
         data: {
             userId: userId,
             gameType: gameType,
-            ...bettingData
+            selected: bettingData.selected,
+            playing: bettingData.playing,
+            predictedWinner: bettingData.predictedWinner,
+            predictedScore: bettingData.predictedScore,
+            bettingPoint: (bettingData.bettingPoint).toString()
         }
     }).then((result) => {
         return result.id;
