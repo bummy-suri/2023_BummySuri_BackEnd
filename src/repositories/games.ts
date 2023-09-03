@@ -11,12 +11,12 @@ export const saveBetting = async (
     userId: number, 
     gameType: gameType
 ): Promise<number> => {
+    console.log(typeof bettingData.bettingPoint);
     return prisma.betting.create({
         data: {
             userId: userId,
             gameType: gameType,
             ...bettingData,
-            bettingPoint: bettingData.bettingPoint.toString() 
         }
     }).then((result) => {
         return result.id;
