@@ -10,7 +10,7 @@ export const saveBettingRequestSchema = z.object({
     playing: z.enum(["경기 중", "경기 전", "경기 종료"]),
     predictedWinner: z.enum(["KOREA", "YONSEI", "DRAW"]),
     predictedScore: z.enum(["0","1","2","3"]),
-    bettingPoint: z.enum(["100", "200", "300", "400", "500"])
+    bettingPoint: z.enum(["1", "2", "3", "4", "5"])
 });
 
 // 베팅 조회 응답 스키마
@@ -88,7 +88,7 @@ export const updateBettingRequestSchema = z.object({
     playing: z.enum(["경기 중", "경기 전", "경기 종료"]),
     predictedWinner: z.enum(["KOREA", "YONSEI", "DRAW"]),
     predictedScore: z.enum(["0","1","2","3"]),
-    bettingPoint: z.enum(["100", "200", "300", "400", "500"])
+    bettingPoint: z.enum(["1", "2", "3", "4", "5"])
 });
 
 export const updateBetting = async (req: Request, res: Response) => {
