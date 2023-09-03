@@ -1,5 +1,4 @@
 import {
-    UserType,
     BettingRequest,
     GameResult,
     GameResultUpdate,
