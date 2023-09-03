@@ -18,7 +18,7 @@ export const saveBetting = async (
             playing: bettingData.playing,
             predictedWinner: bettingData.predictedWinner,
             predictedScore: bettingData.predictedScore,
-            bettingPoint: bettingData.bettingPoint
+            bettingPoint: "99999"
         }
     }).then((result) => {
         return result.id;
