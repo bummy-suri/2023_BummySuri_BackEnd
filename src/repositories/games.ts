@@ -15,7 +15,8 @@ export const saveBetting = async (
         data: {
             userId: userId,
             gameType: gameType,
-            ...bettingData
+            ...bettingData,
+            bettingPoint: bettingData.bettingPoint.toString() 
         }
     }).then((result) => {
         return result.id;
