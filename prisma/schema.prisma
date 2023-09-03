@@ -35,7 +35,7 @@ model Betting {
   playing        String
   predictedWinner String
   predictedScore String?
-  bettingPoint   String
+  bettingPoint String
   success        Boolean  @default(false)
   earnedPoint    Int      @default(0)
   user           User     @relation(fields: [userId], references: [id])
