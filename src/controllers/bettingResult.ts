@@ -4,20 +4,13 @@ import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
 import { checkBettingResultService, totalEarnedPointService } from "../services"; // 실제 서비스 호출은 주석 처리
 
-// 베팅 결과 확인을 위한 요청 스키마
-export const checkBettingResultRequestSchema = z.object({
-    selected: z.boolean(),
-    playing: z.enum(["경기 중", "경기 전", "경기 종료"]),
-    predictedWinner: z.enum(["KOREA", "YONSEI", "DRAW"]),
-    predictedScore: z.enum(["0","1","2","3"]),
-    bettingPoint: z.enum(["100", "200", "300", "400", "500"])
-});
-
 // 베팅 결과 확인 응답 스키마
 export interface CheckBettingResultResponse {
     success: boolean;
     earnedPoint: number;
     totalPoint: number;
+    winner: string;
+    difference: number;
 }
 
 export const gameTypeSchema = z.object({
@@ -28,7 +21,6 @@ export const checkBettingResult = async (req: Request, res: Response) => {
     try {
         const userid = req.userid;
         const { gameType } = gameTypeSchema.parse({ gameType: req.params.gameType });
-        const bettingData = checkBettingResultRequestSchema.parse(req.body);
 
         const result = await checkBettingResultService(userid, gameType);
         res.json(result);

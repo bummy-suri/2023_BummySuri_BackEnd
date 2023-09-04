@@ -6,7 +6,7 @@ import { saveMiniGameResultService } from "../services";
 
 
 export const miniGameRequestSchema = z.object({
-    result: z.string(),
+    result: z.enum(["win", "lose"]),
     miniGameType: z.enum(["가위바위보", "그림 퀴즈"])
 });
 export interface getMiniGameResultResponse {
