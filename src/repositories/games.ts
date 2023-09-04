@@ -28,7 +28,7 @@ export const saveBetting = async (
 }
 
 //사용자 베팅 정보 조회
-export const getBetting = async (userId: number, gameType: string): Promise<BettingRequest | null> => {
+export const getBetting = async (userId: number, gameType: string): Promise<BettingRequest> => {
     return prisma.betting.findUnique({
         where: {
             userId_gameType: {
@@ -46,7 +46,7 @@ export const getBetting = async (userId: number, gameType: string): Promise<Bett
                 bettingPoint: result.bettingPoint
             };
         } else {
-            return null;
+            throw new PrismaError("No matching betting record found");
         }
     }).catch((e) => {
         throw new PrismaError(e.message);
@@ -100,7 +100,7 @@ export const saveGameResult = async (gameType: string, gameData: GameResult): Pr
 }
 
 //게임 결과 조회
-export const getGameResult = async (gameType: string): Promise<GameResult | null> => {
+export const getGameResult = async (gameType: string): Promise<GameResult> => {
     return prisma.game.findUnique({
         where: {
             gameType: gameType
@@ -113,12 +113,13 @@ export const getGameResult = async (gameType: string): Promise<GameResult | null
                 YonseiScore: result.YonseiScore,
             };
         } else {
-            return null;
+            throw new PrismaError("No matching game result found");
         }
     }).catch((e) => {
         throw new PrismaError(e.message);
     });
 }
+
 
 //게임 결과 수정
 export const updateGameResult = async (gameType: string, gameData: GameResultUpdate): Promise<GameResult> => {
