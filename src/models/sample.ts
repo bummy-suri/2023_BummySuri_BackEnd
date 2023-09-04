@@ -54,7 +54,15 @@ export type NFTCountType = {
 }
 
 export type MiniGameType = {
+    miniGameType: string;
+    quiz: boolean;
     times: number;
+    totalPoint: number;
+}
+
+export type MiniGameResponse = {
+    times: number;
+    quiz: boolean;
     totalPoint: number;
 }
 

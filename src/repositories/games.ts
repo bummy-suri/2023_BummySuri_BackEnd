@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, TotalEarnedPoint, MiniGameType, gameType, UserRankingType, UserRankingListType } from "../models/sample";
+import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, TotalEarnedPoint, MiniGameType, gameType } from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -211,65 +211,3 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
         }
     });
 };
-
-//미니포인트 결과 저장 및 포인트 반영
-export const saveMiniGameResult = async (userId: number, result: boolean) : Promise<MiniGameType> => {
-    const POINTS_FOR_WIN = 100;
-    const POINTS_FOR_LOSE = 0;
-
-    const user = await prisma.user.findUnique({
-        where: { id: userId }
-    });
-
-    if (!user) throw new Error("User not found");
-
-    const miniGame = await prisma.miniGame.findFirst({
-        where: { userId }
-    });
-
-    if (!miniGame) {
-        throw new Error("MiniGame record not found");
-    }
-
-    const updatedTimes = miniGame.times + 1;
-    const updatedTotalPoint = user.totalPoint + (result ? POINTS_FOR_WIN : POINTS_FOR_LOSE);
-
-    // Update MiniGame times
-    await prisma.miniGame.update({
-        where: { id: miniGame.id },
-        data: { times: updatedTimes }
-    });
-
-    // Update User totalPoint
-    await prisma.user.update({
-        where: { id: userId },
-        data: { totalPoint: updatedTotalPoint }
-    });
-
-    return { times: updatedTimes, totalPoint: updatedTotalPoint };
-};
-
-//랭킹 조회
-export const getTop10UsersByTotalPoint = async () : Promise<UserRankingListType> => {
-    return await prisma.user.findMany({
-      select: {
-        userCardAddress: true,
-        totalPoint: true
-      },
-      orderBy: {
-        totalPoint: 'desc',
-      },
-      take: 10,
-    });
-  };
-  
-  export const getUserRankingById = async (userId: number) : Promise< number >=> {
-    const users = await prisma.user.findMany({
-      orderBy: {
-        totalPoint: 'desc',
-      },
-    });
-  
-    const ranking = users.findIndex(user => user.id === userId) + 1;
-    return ranking;
-  };

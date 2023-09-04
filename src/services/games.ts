@@ -12,11 +12,8 @@ import {
     saveGameResult,
     getGameResult,
     updateGameResult,
-    saveMiniGameResult,
     checkBettingResult, 
-    totalEarnedPointResult,
-    getTop10UsersByTotalPoint,
-    getUserRankingById
+    totalEarnedPointResult
 } from "../repositories/games";
 
 //사용자 베팅 저장시 bettingId 반환
@@ -112,16 +109,6 @@ export const updateGameResultData = async (gameType: gameType, gameData: GameRes
     return updatedGameResult;
 };
 
-//미니게임 결과 저장
-export const saveMiniGameResultData = async (userId: number, result: boolean) => {
-    try {
-        const { times, totalPoint } = await saveMiniGameResult(userId, result);
-        return { times, totalPoint };
-    } catch (e) {
-        throw e;
-    }
-};
-
 
 //사용자 베팅 결과_점수차 계산 및 분류
 const classifyScoreDifference = (gameType: gameType, KoreaScore: number, YonseiScore: number): number => {
@@ -204,22 +191,3 @@ export const totalEarnedPointData = async (userId: number, totalEarnedPoint: num
         throw e;
     }
 };
-
-//랭킹 조회
-export const getTop10Rankings = async () => {
-    try {
-        const result = await getTop10UsersByTotalPoint();
-        return result;
-    } catch (e) {
-        throw e;
-    }
-  };
-  
-  export const getUserRanking = async (userId: number) => {
-    try{
-        const result = await getUserRankingById(userId);
-        return result;
-    } catch (e) {
-        throw e;
-    }
-  };
