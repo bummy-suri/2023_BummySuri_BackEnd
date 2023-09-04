@@ -4,17 +4,19 @@ import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
 import { getNFTCountService } from "../services"; // 추후에 서비스 로직을 추가할 경우
 
-
+export const teamTypeSchema = z.object({
+    teamType: z.enum(["KOREA","YONSEI"])
+});
 
 export interface getNFTCountResponse {
-    KoreaCount: number;
-    YonseiCount: number;
+    count: number;
 }
 
 export const getNFTCount = async (req: Request, res: Response) => {
     try {
-        const NFTCountdData = await getNFTCountService();
-        res.json(NFTCountdData);
+        const team = teamTypeSchema.parse({ teamType: req.params.teamType });
+        const NFTCountdData = await getNFTCountService(team.teamType);
+        res.json(NFTCountdData as getNFTCountResponse);
     } catch (error) {
         if (error instanceof ZodError) {
             res.status(400).send(error.message);

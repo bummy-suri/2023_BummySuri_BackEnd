@@ -50,8 +50,7 @@ export type TotalEarnedPoint = {
 }
 
 export type NFTCountType = {
-    KoreaCount: number;
-    YonseiCount: number;
+    count: number;
 }
 
 export type MiniGameType = {

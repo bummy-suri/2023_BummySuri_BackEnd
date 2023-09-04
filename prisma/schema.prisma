@@ -60,7 +60,6 @@ model MiniGame {
 }
 
 model NFTCount {
-  id           Int    @id @default(autoincrement())
-  KoreaCount   Int     @default(0)
-  YonseiCount  Int     @default(0)
+  team        TeamType @id
+  count       Int      @default(0)
 }

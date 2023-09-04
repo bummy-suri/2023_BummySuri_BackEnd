@@ -1,18 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { NFTCountType } from "../models/sample";
+import { NFTCountType, TeamType } from "../models/sample";
 
 const prisma = new PrismaClient();
 
-export const getNFTCount = async (): Promise<NFTCountType> => {
+export const getNFTCount = async (team: TeamType): Promise<NFTCountType> => {
     return prisma.nFTCount.findFirst({
+        where: {
+            team: team
+        }
     }).then((result) => {
         if (result) {
             return result;
         } else {
-            throw new PrismaError("No matching NFT count found");
+            throw new Error(`No matching NFT count found for team ${team}`);
         }
     }).catch((e) => {
-        throw new PrismaError(e?.message);
-    })
-}
+        throw new Error(e.message);
+    });
+};
