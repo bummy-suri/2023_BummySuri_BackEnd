@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-import { saveBettingService, getBettingService, updateBettingService, getTop10RankingsService, getUserRankingService } from "../services";
+import { getTop10RankingsService, getUserRankingService } from "../services";
 
-export const getTop10RankingController = async (req: Request, res: Response) => {
+export const getTop10Ranking= async (req: Request, res: Response) => {
     try {
       const top10Rankings = await getTop10RankingsService();
       res.status(200).json(top10Rankings);
@@ -13,7 +13,7 @@ export const getTop10RankingController = async (req: Request, res: Response) => 
     }
   };
   
-  export const getUserRankingController = async (req: Request, res: Response) => {
+  export const getUserRanking = async (req: Request, res: Response) => {
     try {
       const userId = req.userid;
       const ranking = await getUserRankingService(userId);
