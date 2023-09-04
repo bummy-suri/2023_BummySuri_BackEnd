@@ -69,8 +69,10 @@ export const updateBettingData = async (
         }
         const lastPoint = parseInt(lastBettingData.bettingPoint);
         let pointChangeResult = await pointChangePersistance(userId, lastPoint);
+
         updatedData = await updateBetting(bettingData, userId, gameType);
         pointChangeResult = await pointChangePersistance(userId, parseInt(bettingData.bettingPoint) * -1);
+
         if (!bettingData) {
             throw new Error("Betting data not found");
         }
