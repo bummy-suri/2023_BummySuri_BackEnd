@@ -214,6 +214,18 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
 };
 
 export const pointChange = async (userId: number, point: number): Promise<number> => {
+    const user = await prisma.user.findUnique({
+        where: { id: userId }
+    });
+
+    if (!user) {
+        throw new PrismaError("User not found");
+    }
+
+    if (user.totalPoint + point < 0) {
+        throw new PrismaError("Not enough points");
+    }
+
     return prisma.user.update({
         where: { id: userId },
         data: {
@@ -226,4 +238,5 @@ export const pointChange = async (userId: number, point: number): Promise<number
     }).catch((e) => {
         throw new PrismaError(e.message);
     });
-}
+};
+
