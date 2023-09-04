@@ -35,7 +35,7 @@ mintedAuthRouter.get('/betting/:gameType', getBettingController);
 mintedAuthRouter.put('/betting/:gameType', updateBettingController);
 
 // BettingResult routes
-mintedAuthRouter.post('/bettingResult/:gameType', checkBettingResultController);
+mintedAuthRouter.get('/bettingResult/:gameType', checkBettingResultController);
 mintedAuthRouter.put('/bettingResult', totalEarnedPointsController);
 
 // Game routes
