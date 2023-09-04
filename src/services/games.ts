@@ -116,9 +116,9 @@ const classifyScoreDifference = (gameType: gameType, KoreaScore: number, YonseiS
 
     switch (gameType) {
         case 'baseball':
-            if (difference >= 1 && difference <= 2) return 0;
-            if (difference >= 3 && difference <= 4) return 1;
-            if (difference >= 5 && difference <= 7) return 2;
+            if (difference == 1) return 0;
+            if (difference == 2) return 1;
+            if (difference == 3) return 2;
             return 3;
         
         case 'basketball':
