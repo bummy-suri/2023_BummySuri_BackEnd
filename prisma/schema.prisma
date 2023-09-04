@@ -56,6 +56,7 @@ model MiniGame {
   userId       Int
   miniGameType String
   times        Int     @default(0)
+  quiz         Boolean  @default(true)
   user         User   @relation(fields: [userId], references: [id])
 }
 

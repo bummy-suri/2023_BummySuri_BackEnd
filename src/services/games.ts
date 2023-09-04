@@ -12,7 +12,6 @@ import {
     saveGameResult,
     getGameResult,
     updateGameResult,
-    saveMiniGameResult,
     checkBettingResult, 
     totalEarnedPointResult
 } from "../repositories/games";
@@ -108,16 +107,6 @@ export const updateGameResultData = async (gameType: gameType, gameData: GameRes
     }
 
     return updatedGameResult;
-};
-
-//미니게임 결과 저장
-export const saveMiniGameResultData = async (userId: number, result: boolean) => {
-    try {
-        const { times, totalPoint } = await saveMiniGameResult(userId, result);
-        return { times, totalPoint };
-    } catch (e) {
-        throw e;
-    }
 };
 
 
