@@ -38,10 +38,19 @@ export type GameResultUpdate = {
 };
 
 //베팅 결과 확인
+export type BettingResult = {
+    success: boolean;
+    earnedPoint: number;
+    totalPoint: number;
+
+}
+
 export type BettingResultResponse = {
     success: boolean;
     earnedPoint: number;
     totalPoint: number;
+    winner: string;
+    difference: number;
 }
 
 export type TotalEarnedPoint = {

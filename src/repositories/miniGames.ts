@@ -15,7 +15,6 @@ export const saveMiniGameResult = async (userId: number, result: string, gameTyp
 
     if (!user) throw new Error("User not found");
 
-    // date와 userId를 기반으로 레코드 찾기
     const miniGame = await prisma.miniGame.findFirst({
         where: { userId, date: currentDate }
     });

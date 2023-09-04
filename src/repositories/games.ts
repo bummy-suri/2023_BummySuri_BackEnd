@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, TotalEarnedPoint, MiniGameType, gameType } from "../models/sample";
+import { BettingRequest, BettingResultResponse,BettingResult, GameResult, GameResultUpdate, TotalEarnedPoint, gameType } from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -85,6 +85,7 @@ export const updateBetting = async (
 };
 
 
+
 //게임 결과 저장
 export const saveGameResult = async (gameType: string, gameData: GameResult): Promise<string> => {
     return prisma.game.create({
@@ -140,7 +141,7 @@ export const updateGameResult = async (gameType: string, gameData: GameResultUpd
 }
 
 //베팅 결과 확인 저장 및 포인트 반영
-export const checkBettingResult = async (BettingResultData: BettingResultResponse, userId: number, gameType: string): Promise<BettingResultResponse> => {
+export const checkBettingResult = async (BettingResultData: BettingResult, userId: number, gameType: string): Promise<BettingResult> => {
     return prisma.betting.update({
             where: {
                 userId_gameType: {
@@ -211,3 +212,18 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
         }
     });
 };
+
+export const pointChange = async (userId: number, point: number): Promise<number> => {
+    return prisma.user.update({
+        where: { id: userId },
+        data: {
+            totalPoint: {
+                increment: point
+            }
+        }
+    }).then((result) => {
+        return result.totalPoint;
+    }).catch((e) => {
+        throw new PrismaError(e.message);
+    });
+}

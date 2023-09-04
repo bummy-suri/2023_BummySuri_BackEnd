@@ -3,8 +3,10 @@ import {
     GameResult,
     GameResultUpdate,
     BettingResultResponse,
+    BettingResult,
     gameType
 } from "../models/sample";
+import { pointChangePersistance } from "../repositories";
 import {
     saveBetting,
     getBetting,
@@ -13,7 +15,7 @@ import {
     getGameResult,
     updateGameResult,
     checkBettingResult, 
-    totalEarnedPointResult
+    totalEarnedPointResult,
 } from "../repositories/games";
 
 //사용자 베팅 저장시 bettingId 반환
@@ -26,6 +28,9 @@ export const saveBettingData = async (
 
     try {
         bettingId = (await saveBetting(bettingData, userId, gameType)).toString();
+        const point = parseInt(bettingData.bettingPoint) * -1;
+        const pointChangeResult = await pointChangePersistance(userId, point);
+
     } catch (e) {
         throw e;
     }
@@ -56,8 +61,16 @@ export const updateBettingData = async (
     gameType: gameType
 ) => {
     let updatedData: BettingRequest | null;
+
     try {
+        const lastBettingData = await getBetting(userId, gameType);
+        if (!lastBettingData) {
+            throw new Error("Betting data not found");
+        }
+        const lastPoint = parseInt(lastBettingData.bettingPoint);
+        let pointChangeResult = await pointChangePersistance(userId, lastPoint);
         updatedData = await updateBetting(bettingData, userId, gameType);
+        pointChangeResult = await pointChangePersistance(userId, parseInt(bettingData.bettingPoint) * -1);
         if (!bettingData) {
             throw new Error("Betting data not found");
         }
@@ -170,14 +183,19 @@ export const checkBettingResultData = async (userId: number, gameType: gameType)
             earnedPoint = parseInt(betting.bettingPoint) * 3;
         }
 
-        const bettingResponse: BettingResultResponse = {
+        const bettingResponse: BettingResult = {
             success,
             earnedPoint,
             totalPoint: parseInt(betting.bettingPoint) + earnedPoint,
         };
 
         const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);
-        return updatedBettingResponse;
+        const result = {
+            ...updatedBettingResponse,
+            winner,
+            difference: Math.abs(gameResult.KoreaScore - gameResult.YonseiScore)
+        }
+        return result;
     } catch (e) {
         throw e;
     }
