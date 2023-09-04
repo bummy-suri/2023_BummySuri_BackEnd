@@ -1,5 +1,6 @@
 import { createUser, getUserByCardAddress, getUser, deleteUser } from "./users";
-import { saveBetting, getBetting, updateBetting, saveGameResult, getGameResult, updateGameResult, saveMiniGameResult, totalEarnedPointResult, getTop10UsersByTotalPoint, getUserRankingById } from "./games";
+import { saveBetting, getBetting, updateBetting, saveGameResult, getGameResult, updateGameResult, saveMiniGameResult, totalEarnedPointResult } from "./games";
+import { getTop10UsersByTotalPoint, getUserRankingById } from "./ranking";
 import { getNFTCount } from "./mint";
 export {
   createUser as createUserPersistence,
