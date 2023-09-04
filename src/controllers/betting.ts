@@ -121,17 +121,10 @@ export const updateBetting = async (req: Request, res: Response) => {
     }
 };
 
-const userRankingSchema = z.object({
-    userCardAddress: z.string(),
-    totalPoint: z.number(),
-  });
-  
-  const userRankingsSchema = z.array(userRankingSchema);
 
 export const getTop10RankingController = async (req: Request, res: Response) => {
     try {
       const top10Rankings = await getTop10RankingsService();
-      const result = userRankingsSchema.parse(top10Rankings);
       res.status(200).json(top10Rankings);
     } catch (error) {
       handleError(error, res);
