@@ -157,7 +157,6 @@ export const checkBettingResult = async (BettingResultData: BettingResult, userI
             return {
                 success: result.success,
                 earnedPoint: result.earnedPoint,
-                totalPoint: BettingResultData.totalPoint
             };
         }).catch((e) => {
             throw new PrismaError(e.message);
