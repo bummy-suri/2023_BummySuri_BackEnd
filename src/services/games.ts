@@ -17,6 +17,7 @@ import {
     checkBettingResult, 
     totalEarnedPointResult,
 } from "../repositories/games";
+import { getUser } from "../repositories/users";
 
 //사용자 베팅 저장시 bettingId 반환
 export const saveBettingData = async (
@@ -167,6 +168,7 @@ export const checkBettingResultData = async (userId: number, gameType: gameType)
     try {
         const betting = await getBettingData(userId, gameType);
         const gameResult = await getGameResultData(gameType);
+        const userData = await getUser(userId);
 
         //승자 확인
         const winner = gameResult.KoreaScore > gameResult.YonseiScore ? 'KOREA' :
@@ -193,7 +195,7 @@ export const checkBettingResultData = async (userId: number, gameType: gameType)
         const bettingResponse: BettingResult = {
             success,
             earnedPoint,
-            totalPoint: parseInt(betting.bettingPoint) + earnedPoint,
+            totalPoint: userData.totalPoint + earnedPoint,
         };
 
         const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);
