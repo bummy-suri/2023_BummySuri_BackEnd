@@ -1,12 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { MiniGameResponse } from "../models/sample";
+import { MiniGameType, MiniGameResponse } from "../models/sample";
 
 const prisma = new PrismaClient();
 
-export const saveMiniGameResult = async (userId: number, result: string, gameType: string) : Promise<MiniGameResponse> => {
+export const saveMiniGameResult = async (userId: number, result: string, minigameType: string) : Promise<MiniGameResponse> => {
     const currentDate = new Date().toISOString();
-    let POINTS_FOR_WIN = gameType === "가위바위보" ? 100 : 200;
+    let POINTS_FOR_WIN = minigameType === "가위바위보" ? 100 : 200;
     const POINTS_FOR_LOSE = 0;
 
     const user = await prisma.user.findUnique({
@@ -18,15 +18,28 @@ export const saveMiniGameResult = async (userId: number, result: string, gameTyp
     const miniGame = await prisma.miniGame.findFirst({
         where: { userId, date: currentDate }
     });
+    let updatedTimes : number;
+    let updatedQuiz : boolean;
+
 
     if (!miniGame) {
-        throw new Error("MiniGame record not found for the current date");
+        const createdMiniGame = await prisma.miniGame.create({
+            data: {
+                userId: userId,
+                date: currentDate,
+                times: minigameType === "가위바위보" ? 1 : 0,
+                quiz: minigameType !== "가위바위보" ? true : false
+            }
+        });
     }
 
-    let updatedTimes = miniGame.times;
-    let updatedQuiz = miniGame.quiz;
+    if (!miniGame)
+        throw new Error("MiniGame not found");
 
-    if(gameType === "가위바위보") {
+    updatedTimes = miniGame.times;
+    updatedQuiz = miniGame.quiz;
+
+    if(minigameType === "가위바위보") {
         updatedTimes += 1;
     } else {
         updatedQuiz = false;
