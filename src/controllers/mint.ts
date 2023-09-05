@@ -39,13 +39,18 @@ export const getNFTCount = async (req: Request, res: Response) => {
     }
 };
 
-
+export interface mintingResponse {
+    accessToken: string;
+    refreshToken?: string;
+}
 
 export const minting = async (req: Request, res: Response) => {
     try{
         const team = teamTypeSchema.parse({ teamType: req.params.teamType });
         const result = await mintingService(team.teamType);
-        res.json(result);
+        res.json({
+            accessToken: "this_is_whare_access_token_will_be",
+        } as mintingResponse);
 
     } catch (error) {
         if (error instanceof ZodError) {
