@@ -20,7 +20,6 @@ export const mintUser = async (userid: number, univ: TeamType): Promise<TokenTyp
     } catch (e) {
         throw e;
     }
-
     return {
         access: token,
     }

@@ -8,7 +8,8 @@ export const getTop10UsersByTotalPoint = async () : Promise<UserRankingListType>
     return await prisma.user.findMany({
       select: {
         userCardAddress: true,
-        totalPoint: true
+        totalPoint: true,
+        pointDate: true 
       },
       orderBy: {
         totalPoint: 'desc',
