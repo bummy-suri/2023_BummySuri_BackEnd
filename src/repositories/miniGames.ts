@@ -5,7 +5,7 @@ import { MiniGameType, MiniGameResponse } from "../models/sample";
 const prisma = new PrismaClient();
 
 export const saveMiniGameResult = async (userId: number, result: string, minigameType: string) : Promise<MiniGameResponse> => {
-    const currentDate = new Date().toISOString();
+    const currentDate = new Date().toISOString().split('T')[0];
     let POINTS_FOR_WIN = minigameType === "가위바위보" ? 100 : 200;
     const POINTS_FOR_LOSE = 0;
 
@@ -28,7 +28,7 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
                 userId: userId,
                 date: currentDate,
                 times: minigameType === "가위바위보" ? 1 : 0,
-                quiz: minigameType !== "가위바위보" ? true : false
+                quiz: minigameType !== "가위바위보" ? false : true
             }
         });
     }
