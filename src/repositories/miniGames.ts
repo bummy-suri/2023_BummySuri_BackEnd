@@ -16,7 +16,10 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
     if (!user) throw new Error("User not found");
 
     let miniGame = await prisma.miniGame.findFirst({
-        where: { userId, date: currentDate }
+        where: {
+            userId,
+            date: currentDate
+        }
     });
     let updatedTimes : number;
     let updatedQuiz : boolean;
@@ -27,14 +30,17 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
             data: {
                 userId: userId,
                 date: currentDate,
-                times: minigameType === "가위바위보" ? 1 : 0,
-                quiz: minigameType !== "가위바위보" ? false : true
+                times: 0,
+                quiz: true
             }
         });
     }
 
     miniGame = await prisma.miniGame.findFirst({
-        where: { userId, date: currentDate }
+        where: {
+            userId,
+            date: currentDate
+        }
     });
 
     if (!miniGame)
