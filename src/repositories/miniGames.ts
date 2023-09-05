@@ -15,7 +15,7 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
 
     if (!user) throw new Error("User not found");
 
-    const miniGame = await prisma.miniGame.findFirst({
+    let miniGame = await prisma.miniGame.findFirst({
         where: { userId, date: currentDate }
     });
     let updatedTimes : number;
@@ -32,6 +32,10 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
             }
         });
     }
+
+    miniGame = await prisma.miniGame.findFirst({
+        where: { userId, date: currentDate }
+    });
 
     if (!miniGame)
         throw new Error("MiniGame not found");
