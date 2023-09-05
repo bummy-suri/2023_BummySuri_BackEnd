@@ -19,27 +19,28 @@ model User {
     id              Int       @id @default(autoincrement())
     userCardAddress String    @unique
     univ            TeamType?
-    totalPoint     Int       @default(2000)
-    isMinted       Boolean   @default(false)
-    isTaken        Boolean  @default(false)
-    bettings       Betting[]
-    minigames      MiniGame[]
+    pointDate       DateTime @default(now())
+    totalPoint      Int       @default(2000)
+    isMinted        Boolean   @default(false)
+    isTaken         Boolean  @default(false)
+    bettings        Betting[]
+    minigames       MiniGame[]
 
 }
 
 model Betting {
-  id             Int      @id @default(autoincrement())
-  gameType       String   
-  userId         Int      
-  selected       Boolean
-  playing        String
+  id              Int      @id @default(autoincrement())
+  gameType        String   
+  userId          Int      
+  selected        Boolean
+  playing         String
   predictedWinner String
-  predictedScore String?
-  bettingPoint String
-  success        Boolean  @default(false)
-  earnedPoint    Int      @default(0)
-  user           User     @relation(fields: [userId], references: [id])
-  game           Game     @relation(fields: [gameType], references: [gameType])
+  predictedScore  String?
+  bettingPoint    String
+  success         Boolean  @default(false)
+  earnedPoint     Int      @default(0)
+  user            User     @relation(fields: [userId], references: [id])
+  game            Game     @relation(fields: [gameType], references: [gameType])
   @@unique([userId, gameType])
 }
 
