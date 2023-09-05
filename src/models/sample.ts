@@ -6,6 +6,8 @@ export type UserType = {
     univ?: TeamType | null;
     totalPoint: number;
     isMinted: boolean;
+    isTaken: boolean;
+    pointDate: Date;
 }
 
 export interface UserTypeIncludeID extends UserType {
