@@ -54,7 +54,7 @@ model Game {
 model MiniGame {
   id           Int    @id @default(autoincrement())
   userId       Int
-  date         DateTime @default(now())
+  date         String
   times        Int     @default(0)
   quiz         Boolean  @default(true)
   user         User   @relation(fields: [userId], references: [id])
