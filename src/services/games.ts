@@ -195,7 +195,7 @@ export const checkBettingResultData = async (userId: number, gameType: gameType)
         const bettingResponse: BettingResult = {
             success,
             earnedPoint,
-            totalPoint: userData.totalPoint + earnedPoint,
+            totalPoint: userData.totalPoint,
         };
 
         const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);
