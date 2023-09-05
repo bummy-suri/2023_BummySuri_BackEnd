@@ -178,7 +178,7 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
         }
 
         const totalPoint = user.totalPoint + totalEarnedPoint;
-        const currentDate = new Date().toISOString();
+        const currentDate = new Date();
         
         return prisma.user.update({
             where: { id: userId },
@@ -216,7 +216,7 @@ export const pointChange = async (userId: number, point: number): Promise<number
     if (user.totalPoint + point < 0) {
         throw new PrismaError("Not enough points");
     }
-    const currentDate = new Date().toISOString();
+    const currentDate = new Date();
 
     return prisma.user.update({
         where: { id: userId },
