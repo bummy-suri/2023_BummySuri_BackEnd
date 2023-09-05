@@ -12,6 +12,7 @@ export const getTop10UsersByTotalPoint = async () : Promise<UserRankingListType>
       },
       orderBy: {
         totalPoint: 'desc',
+        pointDate: 'asc'
       },
       take: 10,
     });
@@ -21,6 +22,7 @@ export const getTop10UsersByTotalPoint = async () : Promise<UserRankingListType>
     const users = await prisma.user.findMany({
       orderBy: {
         totalPoint: 'desc',
+        pointDate: 'asc'
       },
     });
   
