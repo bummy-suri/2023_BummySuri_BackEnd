@@ -19,3 +19,20 @@ export const getNFTCount = async (team: TeamType): Promise<NFTCountType> => {
         throw new Error(e.message);
     });
 };
+
+export const updateNFTCount = async (team: TeamType): Promise<number> => {
+    return prisma.nFTCount.update({
+        where: {
+            team: team
+        },
+        data: {
+            count: {
+                increment: 1
+            }
+        }
+    }).then((result) => {
+        return result.count;
+    }).catch((e) => {
+        throw new Error(e.message);
+    });
+}
