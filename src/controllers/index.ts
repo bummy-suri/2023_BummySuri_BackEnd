@@ -1,23 +1,22 @@
-import { register, getUser, deleteUser } from "./register";
+import { authenticate, getUser, deleteUser  } from "./user";
 export {
-    register as registerController,
+    authenticate as authenticateController,
     getUser as getUserController,
     deleteUser as deleteUserController
  };
 
-import { authenticate } from "./user";
-export {
-    authenticate as authenticateController
- };
-
-import { saveBetting, getBetting, updateBetting, getTop10RankingController, getUserRankingController } from "./betting";
+import { saveBetting, getBetting, updateBetting} from "./betting";
 export {
     saveBetting as saveBettingController,
     getBetting as getBettingController,
     updateBetting as updateBettingController,
-    getTop10RankingController as getTop10RankingController,
-    getUserRankingController as getUserRankingController
- };
+    };
+
+import { getTop10Ranking, getUserRanking } from "./ranking";
+export {
+    getTop10Ranking as getTop10RankingController,
+    getUserRanking as getUserRankingController
+};
 
 import { checkBettingResult, totalEarnedPoints} from "./bettingResult";
 export {

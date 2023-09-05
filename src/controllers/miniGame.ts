@@ -2,23 +2,24 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-import { saveMiniGameResultService } from "../services"; // 추후에 서비스 로직을 추가할 경우
+import { saveMiniGameResultService } from "../services";
 
 
 export const miniGameRequestSchema = z.object({
-    results: z.string(),
-    times: z.number(),
+    result: z.enum(["win", "lose"]),
+    miniGameType: z.enum(["가위바위보", "그림 퀴즈"])
 });
 export interface getMiniGameResultResponse {
     times: number;
-    point: number;
+    quiz: boolean;
+    totalPoint: number;
 }
 
 export const saveMiniGameResultController = async (req: Request, res: Response) => {
     try {
         const userId = req.userid;
-        const { result } = req.body;
-        const updatedData = await saveMiniGameResultService(userId, result);
+        const { result, miniGameType } = miniGameRequestSchema.parse(req.body);
+        const updatedData = await saveMiniGameResultService(userId, result, miniGameType);
         res.json(updatedData);
     } catch (error) {
         if (error instanceof ZodError) {

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { 
-    registerController, 
     getUserController, 
     deleteUserController,
     saveBettingController, 
@@ -18,39 +17,40 @@ import {
     getUserRankingController
 } from '../controllers';
 
+export const nonAuthRouter = Router();
 
+nonAuthRouter.post('/users', authenticateController);
 
 export const authRouter = Router();
 
 // User routes
-//authRouter.post('/users', registerController);
 authRouter.get('/users', getUserController);
 authRouter.delete('/users', deleteUserController);
 
+export const mintedAuthRouter = Router();
+
 // Betting routes
-authRouter.post('/betting/:gameType', saveBettingController);
-authRouter.get('/betting/:gameType', getBettingController);
-authRouter.put('/betting/:gameType', updateBettingController);
+mintedAuthRouter.post('/betting/:gameType', saveBettingController);
+mintedAuthRouter.get('/betting/:gameType', getBettingController);
+mintedAuthRouter.put('/betting/:gameType', updateBettingController);
 
 // BettingResult routes
-authRouter.post('/bettingResult/:gameType', checkBettingResultController);
-authRouter.put('/bettingResult', totalEarnedPointsController);
+mintedAuthRouter.get('/bettingResult/:gameType', checkBettingResultController);
+mintedAuthRouter.put('/bettingResult', totalEarnedPointsController);
 
 // Game routes
-authRouter.post('/game/:gameType', createGameController);
-authRouter.get('/game/:gameType', getGameResultController);
-authRouter.put('/game/:gameType', updateGameResultController);
+mintedAuthRouter.post('/game/:gameType', createGameController);
+mintedAuthRouter.get('/game/:gameType', getGameResultController);
+mintedAuthRouter.put('/game/:gameType', updateGameResultController);
 
 // MiniGame routes
-authRouter.put('/minigame', saveMiniGameResultController);
+mintedAuthRouter.put('/minigame', saveMiniGameResultController);
 
 //Mint routes
-authRouter.get('/mint', getNFTCountController);
+mintedAuthRouter.get('/mint', getNFTCountController);
 
 //Ranking routes
-authRouter.get('/ranking/top10', getTop10RankingController);
-authRouter.get('/ranking/user', getUserRankingController);
+mintedAuthRouter.get('/ranking/top10', getTop10RankingController);
+mintedAuthRouter.get('/ranking/user', getUserRankingController);
 
-export const nonAuthRouter = Router();
 
-nonAuthRouter.post('/users', authenticateController);

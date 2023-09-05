@@ -42,12 +42,8 @@ export const mintAuthenticateMiddleware = (req: Request, res: Response, next: Ne
 
     const { ok, userid, isMinted } = parseToken(token);
 
-    if (!ok || !userid) {
+    if (!ok) {
         return res.sendStatus(403);
-    }
-
-    if (isMinted && req.originalUrl.includes('/mint')) {
-        return res.status(403).send("Minting not allowed");
     }
 
     next();

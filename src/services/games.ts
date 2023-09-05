@@ -3,8 +3,10 @@ import {
     GameResult,
     GameResultUpdate,
     BettingResultResponse,
+    BettingResult,
     gameType
 } from "../models/sample";
+import { pointChangePersistance } from "../repositories";
 import {
     saveBetting,
     getBetting,
@@ -12,11 +14,8 @@ import {
     saveGameResult,
     getGameResult,
     updateGameResult,
-    saveMiniGameResult,
     checkBettingResult, 
     totalEarnedPointResult,
-    getTop10UsersByTotalPoint,
-    getUserRankingById
 } from "../repositories/games";
 
 //사용자 베팅 저장시 bettingId 반환
@@ -29,6 +28,9 @@ export const saveBettingData = async (
 
     try {
         bettingId = (await saveBetting(bettingData, userId, gameType)).toString();
+        const point = parseInt(bettingData.bettingPoint) * -1;
+        const pointChangeResult = await pointChangePersistance(userId, point);
+
     } catch (e) {
         throw e;
     }
@@ -59,8 +61,18 @@ export const updateBettingData = async (
     gameType: gameType
 ) => {
     let updatedData: BettingRequest | null;
+
     try {
+        const lastBettingData = await getBetting(userId, gameType);
+        if (!lastBettingData) {
+            throw new Error("Betting data not found");
+        }
+        const lastPoint = parseInt(lastBettingData.bettingPoint);
+        let pointChangeResult = await pointChangePersistance(userId, lastPoint);
+
         updatedData = await updateBetting(bettingData, userId, gameType);
+        pointChangeResult = await pointChangePersistance(userId, parseInt(bettingData.bettingPoint) * -1);
+
         if (!bettingData) {
             throw new Error("Betting data not found");
         }
@@ -112,16 +124,6 @@ export const updateGameResultData = async (gameType: gameType, gameData: GameRes
     return updatedGameResult;
 };
 
-//미니게임 결과 저장
-export const saveMiniGameResultData = async (userId: number, result: boolean) => {
-    try {
-        const { times, totalPoint } = await saveMiniGameResult(userId, result);
-        return { times, totalPoint };
-    } catch (e) {
-        throw e;
-    }
-};
-
 
 //사용자 베팅 결과_점수차 계산 및 분류
 const classifyScoreDifference = (gameType: gameType, KoreaScore: number, YonseiScore: number): number => {
@@ -129,9 +131,9 @@ const classifyScoreDifference = (gameType: gameType, KoreaScore: number, YonseiS
 
     switch (gameType) {
         case 'baseball':
-            if (difference >= 1 && difference <= 2) return 0;
-            if (difference >= 3 && difference <= 4) return 1;
-            if (difference >= 5 && difference <= 7) return 2;
+            if (difference == 1) return 0;
+            if (difference == 2) return 1;
+            if (difference == 3) return 2;
             return 3;
         
         case 'basketball':
@@ -183,14 +185,19 @@ export const checkBettingResultData = async (userId: number, gameType: gameType)
             earnedPoint = parseInt(betting.bettingPoint) * 3;
         }
 
-        const bettingResponse: BettingResultResponse = {
+        const bettingResponse: BettingResult = {
             success,
             earnedPoint,
             totalPoint: parseInt(betting.bettingPoint) + earnedPoint,
         };
 
         const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);
-        return updatedBettingResponse;
+        const result = {
+            ...updatedBettingResponse,
+            winner,
+            difference: Math.abs(gameResult.KoreaScore - gameResult.YonseiScore)
+        }
+        return result;
     } catch (e) {
         throw e;
     }
@@ -204,22 +211,3 @@ export const totalEarnedPointData = async (userId: number, totalEarnedPoint: num
         throw e;
     }
 };
-
-//랭킹 조회
-export const getTop10Rankings = async () => {
-    try {
-        const result = await getTop10UsersByTotalPoint();
-        return result;
-    } catch (e) {
-        throw e;
-    }
-  };
-  
-  export const getUserRanking = async (userId: number) => {
-    try{
-        const result = await getUserRankingById(userId);
-        return result;
-    } catch (e) {
-        throw e;
-    }
-  };

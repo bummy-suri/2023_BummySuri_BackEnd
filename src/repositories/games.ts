@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, TotalEarnedPoint, MiniGameType, gameType, UserRankingType, UserRankingListType } from "../models/sample";
+import { BettingRequest, BettingResultResponse,BettingResult, GameResult, GameResultUpdate, TotalEarnedPoint, gameType } from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -28,7 +28,7 @@ export const saveBetting = async (
 }
 
 //사용자 베팅 정보 조회
-export const getBetting = async (userId: number, gameType: string): Promise<BettingRequest | null> => {
+export const getBetting = async (userId: number, gameType: string): Promise<BettingRequest> => {
     return prisma.betting.findUnique({
         where: {
             userId_gameType: {
@@ -46,7 +46,7 @@ export const getBetting = async (userId: number, gameType: string): Promise<Bett
                 bettingPoint: result.bettingPoint
             };
         } else {
-            return null;
+            throw new PrismaError("No matching betting record found");
         }
     }).catch((e) => {
         throw new PrismaError(e.message);
@@ -85,6 +85,7 @@ export const updateBetting = async (
 };
 
 
+
 //게임 결과 저장
 export const saveGameResult = async (gameType: string, gameData: GameResult): Promise<string> => {
     return prisma.game.create({
@@ -100,7 +101,7 @@ export const saveGameResult = async (gameType: string, gameData: GameResult): Pr
 }
 
 //게임 결과 조회
-export const getGameResult = async (gameType: string): Promise<GameResult | null> => {
+export const getGameResult = async (gameType: string): Promise<GameResult> => {
     return prisma.game.findUnique({
         where: {
             gameType: gameType
@@ -113,12 +114,13 @@ export const getGameResult = async (gameType: string): Promise<GameResult | null
                 YonseiScore: result.YonseiScore,
             };
         } else {
-            return null;
+            throw new PrismaError("No matching game result found");
         }
     }).catch((e) => {
         throw new PrismaError(e.message);
     });
 }
+
 
 //게임 결과 수정
 export const updateGameResult = async (gameType: string, gameData: GameResultUpdate): Promise<GameResult> => {
@@ -139,7 +141,7 @@ export const updateGameResult = async (gameType: string, gameData: GameResultUpd
 }
 
 //베팅 결과 확인 저장 및 포인트 반영
-export const checkBettingResult = async (BettingResultData: BettingResultResponse, userId: number, gameType: string): Promise<BettingResultResponse> => {
+export const checkBettingResult = async (BettingResultData: BettingResult, userId: number, gameType: string): Promise<BettingResult> => {
     return prisma.betting.update({
             where: {
                 userId_gameType: {
@@ -211,64 +213,30 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
     });
 };
 
-//미니포인트 결과 저장 및 포인트 반영
-export const saveMiniGameResult = async (userId: number, result: boolean) : Promise<MiniGameType> => {
-    const POINTS_FOR_WIN = 100;
-    const POINTS_FOR_LOSE = 0;
-
+export const pointChange = async (userId: number, point: number): Promise<number> => {
     const user = await prisma.user.findUnique({
         where: { id: userId }
     });
 
-    if (!user) throw new Error("User not found");
-
-    const miniGame = await prisma.miniGame.findFirst({
-        where: { userId }
-    });
-
-    if (!miniGame) {
-        throw new Error("MiniGame record not found");
+    if (!user) {
+        throw new PrismaError("User not found");
     }
 
-    const updatedTimes = miniGame.times + 1;
-    const updatedTotalPoint = user.totalPoint + (result ? POINTS_FOR_WIN : POINTS_FOR_LOSE);
+    if (user.totalPoint + point < 0) {
+        throw new PrismaError("Not enough points");
+    }
 
-    // Update MiniGame times
-    await prisma.miniGame.update({
-        where: { id: miniGame.id },
-        data: { times: updatedTimes }
-    });
-
-    // Update User totalPoint
-    await prisma.user.update({
+    return prisma.user.update({
         where: { id: userId },
-        data: { totalPoint: updatedTotalPoint }
+        data: {
+            totalPoint: {
+                increment: point
+            }
+        }
+    }).then((result) => {
+        return result.totalPoint;
+    }).catch((e) => {
+        throw new PrismaError(e.message);
     });
-
-    return { times: updatedTimes, totalPoint: updatedTotalPoint };
 };
 
-//랭킹 조회
-export const getTop10UsersByTotalPoint = async () : Promise<UserRankingListType> => {
-    return await prisma.user.findMany({
-      select: {
-        userCardAddress: true,
-        totalPoint: true
-      },
-      orderBy: {
-        totalPoint: 'desc',
-      },
-      take: 10,
-    });
-  };
-  
-  export const getUserRankingById = async (userId: number) : Promise< number >=> {
-    const users = await prisma.user.findMany({
-      orderBy: {
-        totalPoint: 'desc',
-      },
-    });
-  
-    const ranking = users.findIndex(user => user.id === userId) + 1;
-    return ranking;
-  };

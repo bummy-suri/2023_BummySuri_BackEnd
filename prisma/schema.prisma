@@ -54,13 +54,13 @@ model Game {
 model MiniGame {
   id           Int    @id @default(autoincrement())
   userId       Int
-  miniGameType String
+  date         String
   times        Int     @default(0)
+  quiz         Boolean  @default(true)
   user         User   @relation(fields: [userId], references: [id])
 }
 
 model NFTCount {
-  id           Int    @id @default(autoincrement())
-  KoreaCount   Int     @default(0)
-  YonseiCount  Int     @default(0)
+  team        TeamType @id
+  count       Int      @default(0)
 }

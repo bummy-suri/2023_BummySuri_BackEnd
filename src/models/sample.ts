@@ -38,10 +38,19 @@ export type GameResultUpdate = {
 };
 
 //베팅 결과 확인
+export type BettingResult = {
+    success: boolean;
+    earnedPoint: number;
+    totalPoint: number;
+
+}
+
 export type BettingResultResponse = {
     success: boolean;
     earnedPoint: number;
     totalPoint: number;
+    winner: string;
+    difference: number;
 }
 
 export type TotalEarnedPoint = {
@@ -50,12 +59,19 @@ export type TotalEarnedPoint = {
 }
 
 export type NFTCountType = {
-    KoreaCount: number;
-    YonseiCount: number;
+    count: number;
 }
 
 export type MiniGameType = {
+    miniGameType: string;
+    quiz: boolean;
     times: number;
+    totalPoint: number;
+}
+
+export type MiniGameResponse = {
+    times: number;
+    quiz: boolean;
     totalPoint: number;
 }
 
