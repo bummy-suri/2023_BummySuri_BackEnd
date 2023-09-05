@@ -50,7 +50,7 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
     }
 
     const updatedTotalPoint = user.totalPoint + (result === "win" ? POINTS_FOR_WIN : POINTS_FOR_LOSE);
-    const pointDate = new Date().toISOString();
+    const pointDate = new Date();
 
     // Update MiniGame
     await prisma.miniGame.update({

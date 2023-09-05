@@ -5,7 +5,7 @@ import { PrismaError } from "../utils/errors";
 const prisma = new PrismaClient();
 
 export const createUser = async (user: UserType): Promise<number> => {
-    const currentDate = new Date().toISOString();
+    const currentDate = new Date();
     return prisma.user.create({
         data: {
             userCardAddress: user.userCardAddress,
