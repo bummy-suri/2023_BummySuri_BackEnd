@@ -114,6 +114,6 @@ export type UserRankingListType = UserRankingType[];
 
 export type NFTType = {
     team:        TeamType;
-    tokenId:     string;
     cardAddress: string;
+    tokenId:     number;
 }
