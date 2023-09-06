@@ -31,6 +31,7 @@ export const authRouter = Router();
 // User routes
 authRouter.get('/users', getUserController);
 authRouter.delete('/users', deleteUserController);
+authRouter.post('/mint/:teamType', mintingController);
 
 export const mintedAuthRouter = Router();
 
@@ -54,7 +55,6 @@ mintedAuthRouter.get('/minigame', getMiniGameResultController);
 
 //Mint routes
 mintedAuthRouter.get('/mint/:teamType', getNFTCountController);
-mintedAuthRouter.post('/mint/:teamType', mintingController);
 mintedAuthRouter.post('/mint', saveNFTDataController);
 
 //Ranking routes
