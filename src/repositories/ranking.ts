@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { NFTMetaData, UserRankingType, UserRankingListType } from "../models/sample";
+import {  UserRankingType, UserRankingListType } from "../models/sample";
 
 const prisma = new PrismaClient();
 //랭킹 조회
@@ -12,6 +12,7 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => { // Changed 
       userCardAddress: true,
       totalPoint: true,
       pointDate: true,
+      issued: true
     },
     orderBy: [
       { totalPoint: 'desc' },
@@ -22,17 +23,16 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => { // Changed 
 
   const userWithNFTImages = await Promise.all(
     users.map(async (user) => {
-      const nftMetadata = await prisma.nftMetadata.findUnique({
+      const nftMetadata = await prisma.token.findFirst({
         where: {
-          owner: user.id,
-        },
-        select: {
-          image: true
-        }
-      });
+          id: user.issued[1].tokenid,
+          contractAddr: user.issued[2].contractAddr
+      }
+  });
 
       return {
-        ...user,
+        userCardAddress: user.userCardAddress,
+        totalPoint: user.totalPoint,
         image: nftMetadata ? nftMetadata.image : null,
       };
     })
@@ -47,6 +47,7 @@ export const getUserRankingById = async (userId: number): Promise<{ ranking: num
       id: true,
       totalPoint: true,
       pointDate: true,
+      issued: true
     },
     orderBy: [
       { totalPoint: 'desc' },
@@ -56,14 +57,12 @@ export const getUserRankingById = async (userId: number): Promise<{ ranking: num
 
   const ranking = users.findIndex(user => user.id === userId) + 1;
 
-  const NFTMetaData = await prisma.nftMetadata.findUnique({
+  const NFTMetaData = await prisma.token.findFirst({
     where: {
-      owner: userId,
-    },
-    select: {
-      image: true
-    }
-  });
+      id: users[1].issued[1].tokenid,
+      contractAddr: users[1].issued[2].contractAddr
+  }
+});
 
   return {
     ranking,
