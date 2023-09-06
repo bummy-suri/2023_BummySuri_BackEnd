@@ -37,11 +37,10 @@ export {
     getMiniGame as getMiniGameResultController
  };
 
- import { getNFTCount, saveNFTData, getMetaData, minting } from "./minting";
+ import { getNFTCount, getMetaData, minting } from "./minting";
  export {
         getNFTCount as getNFTCountController,
         minting as mintingController,
-        saveNFTData as saveNFTDataController,
         getMetaData as getMetaDataController
 
 };

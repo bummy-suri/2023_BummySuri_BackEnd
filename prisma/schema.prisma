@@ -73,8 +73,8 @@ model NFTCount {
 
 model NftMetadata {
   owner        Int  @unique
-  contractAddr String
-  tokenId      String
+  contractAddr TeamType
+  tokenId      Int
   image        String
   user         User    @relation(fields: [owner], references: [id])
   @@id([contractAddr, tokenId])
@@ -91,7 +91,7 @@ model Issued {
 }
 
 model Token {
-  id           Int       @id @default(autoincrement())
+  id           Int       @id
   contractAddr TeamType
   image        String
   owned        Boolean
