@@ -26,6 +26,7 @@ model User {
     bettings        Betting[]
     minigames       MiniGame[]
     nftMetadata     NftMetadata[]
+    issued          Issued[]
 
     @@index([totalPoint])
     @@index([pointDate])
@@ -77,4 +78,35 @@ model NftMetadata {
   image        String
   user         User    @relation(fields: [owner], references: [id])
   @@id([contractAddr, tokenId])
+}
+
+model Issued {
+  ownerid      Int
+  tokenid      Int
+  contractAddr TeamType
+  Token        Token @relation(fields: [tokenid, contractAddr], references: [id, contractAddr])
+  User         User  @relation(fields: [ownerid], references: [id])
+
+  @@id([contractAddr, tokenid])
+}
+
+model Token {
+  id           Int       @id @default(autoincrement())
+  contractAddr TeamType
+  image        String
+  owned        Boolean
+  attributes   Attribute[]
+  issuedTokens Issued[]
+
+  @@unique([id, contractAddr])
+  @@index([owned])
+}
+
+model Attribute {
+  tokenid    Int
+  key        String
+  value      String
+  Token      Token @relation(fields: [tokenid], references: [id])
+
+  @@id([tokenid, key])
 }
