@@ -33,7 +33,7 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => { // Changed 
 
       return {
         ...user,
-        nftImage: nftMetadata ? nftMetadata.image : null,
+        image: nftMetadata ? nftMetadata.image : null,
       };
     })
   );
