@@ -53,7 +53,7 @@ export const minting = async (req: Request, res: Response) => {
             res.status(202).send("Already minted");
         }
         res.json({
-            accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjExNTQsImlzTWludGVkIjpmYWxzZSwiaWF0IjoxNjkzOTU4NTA0LCJleHAiOjMzODg1MjE4MDh9.e64bYjXH7P4USYCIG6SnWJyJEjpNkp6YXmUQ9oF5_FM"
+            accessToken: result
         });
 
     } catch (error) {
@@ -91,7 +91,16 @@ export const getMetaData = async (req: Request, res: Response) => {
         const contractAddr = req.params.contractAddress;
         const tokenId = parseInt(req.params.tokenId);
         const metadata = await getMetaDataService(contractAddr, tokenId);
-        return res.json(metadata);
+        return res.json(
+            {
+            "name": "버미와 수리",
+            "description" : "버미와 수리는 고려대-연세대 정기전을 기념하여 찾아오게 된 캐릭터 NFT입니다.",
+            "sendable": true,
+            "hashtags": ["버미와수리","버미","수리", "연고전", "고연전", "정기전", "고려대", "연세대"],
+            "layout": "general",
+            "external_link": "https://www.bummysuri.com",
+            ...metadata
+        });
     } catch (error) {
         if (error instanceof ZodError) {
             res.status(400).send(error.message);

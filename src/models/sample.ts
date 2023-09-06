@@ -89,17 +89,9 @@ export type UserRankingType = {
   
 
 export type MetaDataType = {
-    name: string;
-    description: string;
     image: string;
-    animation_url: URL;   
-    background_color: string;
-    sendable: boolean;
     group_name: string;
-    group_icon: URL;
-    hashtags: string;
-    layout: string;
-    external_link: URL;
+    group_icon: string;
     attributes: AttributeType[];
 }
 
