@@ -43,23 +43,24 @@ export const minting = async (userid: number ,team: TeamType): Promise<number | 
                 return false;
             }
 
-            //get AvailableTokenId
-            const userTokenId = await getAvailableTokenIdPersistance(team);
-            if (!userTokenId) {
-                throw new Error(`AvailableTokenId not found`);
-            }
+            // //get AvailableTokenId
+            // const userTokenId = await getAvailableTokenIdPersistance(team);
+            // if (!userTokenId) {
+            //     throw new Error(`AvailableTokenId not found`);
+            // }
 
-            //minting
-            await acquireNFT({team, tokenId: userTokenId, cardAddress: userCardAddress});
+            // //minting
+            // await acquireNFT({team, tokenId: userTokenId, cardAddress: userCardAddress});
 
-            //issuedRecord
-            await createIssuedRecordPersistance(userid, userTokenId, team);
+            // //issuedRecord
+            // await createIssuedRecordPersistance(userid, userTokenId, team);
 
             //update the user isMinted to true
             userData = await updateUserPersistance(userid, team, true);
 
             //update the NFTcount
             const updatedCountData= await updateNFTCountPersistance(team);
+
             
              //generate accessToken
             const token = parseInt(generateToken(userid, true));

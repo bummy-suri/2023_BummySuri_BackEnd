@@ -66,23 +66,21 @@ export const getMetaData = async (contractAddress: TeamType, tokenId: number) =>
 
 
 export const getAvailableTokenId = async (team: TeamType): Promise<number> => {
-    const tokenId: number = -1;
   
-    // const availableToken = await prisma.token.findFirst({
-    //   where: {
-    //     contractAddr: team,
-    //     owned: false,
-    //   },
-    // });
+    const availableToken = await prisma.token.findFirst({
+      where: {
+        contractAddr: team,
+        owned: false,
+      },
+    });
 
 
   
-    // if (!availableToken) {
-    //   throw new Error("No available token found");
-    // }
+    if (!availableToken) {
+      throw new Error("No available token found");
+    }
   
-    // return availableToken.id;
-    return tokenId;
+    return availableToken.id;
   }
 
   export const createIssuedRecord = async (userId: number, tokenId: number, team: TeamType): Promise<void> => {
