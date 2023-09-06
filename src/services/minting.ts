@@ -1,12 +1,11 @@
 import { TeamType } from "@prisma/client";
-import { NFTCountType } from "../models/sample";
-import { getNFTCount , updateNFTCount} from "../repositories/minting";
-import { updateUser} from "../repositories/users";
+import { MetaDataType, NFTCountType, } from "../models/sample";
+import { getNFTCountPersistance , updateNFTCountPersistance, updateUserPersistance, getMetaDataPersistance} from "../repositories";
 import { generateToken } from "./auth";
 
 export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => {
     try {
-        const NFTCountData = await getNFTCount(team);
+        const NFTCountData = await getNFTCountPersistance(team);
         
         if (!NFTCountData) {
             throw new Error(`NFTCountData not found for team ${team}`);
@@ -21,7 +20,7 @@ export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => 
 export const minting = async (userid: number ,team: TeamType): Promise<number> => {
     try {
         //check the count
-        const countData = await getNFTCount(team);
+        const countData = await getNFTCountPersistance(team);
         if (!countData) {
             throw new Error(`NFTCountData not found for team ${team}`);
         }else{
@@ -33,15 +32,29 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
 
 
             //  if success, update the user
-            const userData = await updateUser(userid, team, true);
+            const userData = await updateUserPersistance(userid, team, true);
 
                 //update the count
-            const updatedCountData= await updateNFTCount(team);
+            const updatedCountData= await updateNFTCountPersistance(team);
                         //generate accessToken
             const token = parseInt(generateToken(userid, true));
             return token;
         }
         
+    } catch (e) {
+        throw e;
+    }
+}
+
+export const getMetaData = async (contractAddr: string, userId: string): Promise<MetaDataType> => {
+    try {
+        const metaData = await getMetaDataPersistance(contractAddr, userId);
+        
+        if (!metaData) {
+            throw new Error(`MetaData not found`);
+        }
+        
+        return metaData;
     } catch (e) {
         throw e;
     }

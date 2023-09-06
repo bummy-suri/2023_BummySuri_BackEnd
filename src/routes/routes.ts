@@ -21,6 +21,7 @@ import {
 export const nonAuthRouter = Router();
 
 nonAuthRouter.post('/users', authenticateController);
+nonAuthRouter.get('/metadata/:contract_addr/:token_id');
 
 export const authRouter = Router();
 
