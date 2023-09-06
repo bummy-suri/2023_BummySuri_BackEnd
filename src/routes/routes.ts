@@ -50,7 +50,7 @@ mintedAuthRouter.put('/minigame', saveMiniGameResultController);
 mintedAuthRouter.get('/minigame', getMiniGameResultController);
 
 //Mint routes
-mintedAuthRouter.get('/mint', getNFTCountController);
+mintedAuthRouter.get('/mint/:teamType', getNFTCountController);
 
 //Ranking routes
 mintedAuthRouter.get('/ranking/top10', getTop10RankingController);

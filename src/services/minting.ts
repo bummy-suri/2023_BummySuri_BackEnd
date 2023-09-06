@@ -1,6 +1,6 @@
 import { TeamType } from "@prisma/client";
-import { MetaDataType, NFTCountType, } from "../models/sample";
-import { getNFTCountPersistance , updateNFTCountPersistance, updateUserPersistance, getMetaDataPersistance} from "../repositories";
+import { MetaDataType, NFTCountType, NFTMetaData, } from "../models/sample";
+import { getNFTCountPersistance , updateNFTCountPersistance, updateUserPersistance, getMetaDataPersistance, saveNFTDataPersistance} from "../repositories";
 import { generateToken } from "./auth";
 
 export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => {
@@ -42,6 +42,19 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
         }
         
     } catch (e) {
+        throw e;
+    }
+}
+
+export const saveNFTData = async (NFTData: NFTMetaData): Promise<NFTMetaData> => {
+    try{
+        const NFTMetaData = await saveNFTDataPersistance(NFTData);
+        if (!NFTMetaData) {
+            throw new Error(`NFTMetaData not found`);
+        }
+        
+        return NFTMetaData;
+    } catch(e) {
         throw e;
     }
 }
