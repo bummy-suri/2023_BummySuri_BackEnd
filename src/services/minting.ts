@@ -22,6 +22,14 @@ export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => 
 
 export const minting = async (userid: number ,team: TeamType): Promise<number | boolean> => {
     try {
+        if (team === "KOREA"){
+            const contractAddr = BUMMY_CONTRACT;
+        }else if(team === "YONSEI"){
+            const contractAddr = SURI_CONTRACT; 
+        }else{
+            throw new Error(`teamType is not selected`);
+        }
+        
         //check the count
         const countData = await getNFTCountPersistance(team);
         if (!countData) {
@@ -43,17 +51,17 @@ export const minting = async (userid: number ,team: TeamType): Promise<number | 
                 return false;
             }
 
-            // //get AvailableTokenId
-            // const userTokenId = await getAvailableTokenIdPersistance(team);
-            // if (!userTokenId) {
-            //     throw new Error(`AvailableTokenId not found`);
-            // }
+            //get AvailableTokenId
+            const userTokenId = await getAvailableTokenIdPersistance(contractAddr);
+            if (!userTokenId) {
+                throw new Error(`AvailableTokenId not found`);
+            }
 
-            // //minting
-            // await acquireNFT({team, tokenId: userTokenId, cardAddress: userCardAddress});
+            //minting
+            await acquireNFT({team, tokenId: userTokenId, cardAddress: userCardAddress});
 
-            // //issuedRecord
-            // await createIssuedRecordPersistance(userid, userTokenId, team);
+            //issuedRecord
+            await createIssuedRecordPersistance(userid, userTokenId, contractAddr);
 
             //update the user isMinted to true
             userData = await updateUserPersistance(userid, team, true);
@@ -73,7 +81,7 @@ export const minting = async (userid: number ,team: TeamType): Promise<number | 
 }
 
 
-export const getMetaData = async (contractAddress: TeamType, tokenId: number): Promise<MetaDataType> => {
+export const getMetaData = async (contractAddress: string, tokenId: number): Promise<MetaDataType> => {
     const tokenData = await getMetaData(contractAddress, tokenId);
 
     const attributes = tokenData.attributes.map(attr => ({
