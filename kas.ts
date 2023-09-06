@@ -20,11 +20,12 @@ import { createContract, getContractList } from "./src/apis/atom"
 const main = async () => {
 
     try {
-        await createContract({ name: "2023DevContract",   alias: "2023-dev-contract",   symbol: "DEV" })
-        await createContract({ name: "2023BummyContract", alias: "2023-bummy-contract", symbol: "BUMMY" })
-        await createContract({ name: "2023SuriContract",  alias: "2023-suri-contract",  symbol: "SURI" })
+        console.log(await getContractList())
+        //await createContract({ name: "2023DevContract",   alias: "dev-contract-2023",   symbol: "DEV" })
+        //await createContract({ name: "2023BummyContract", alias: "bummy-contract-2023", symbol: "BUMMY" })
+        //await createContract({ name: "2023SuriContract",  alias: "suri-contract-2023",  symbol: "SURI" })
     } catch (error) {
-        console.log(error)        
+        console.log(error)
     }
 }
 
