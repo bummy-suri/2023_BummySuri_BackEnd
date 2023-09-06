@@ -48,7 +48,7 @@ export interface mintingResponse {
 export const minting = async (req: Request, res: Response) => {
     try{
         const userid = req.userid;
-        const team = teamTypeSchema.parse({ teamType: req.body.teamType });
+        const team = teamTypeSchema.parse({ teamType: req.params.teamType });
         const result = await mintingService(userid, team.teamType);
         res.json({
             accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjExNTQsImlzTWludGVkIjpmYWxzZSwiaWF0IjoxNjkzOTU4NTA0LCJleHAiOjMzODg1MjE4MDh9.e64bYjXH7P4USYCIG6SnWJyJEjpNkp6YXmUQ9oF5_FM"
