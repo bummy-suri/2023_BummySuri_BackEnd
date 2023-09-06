@@ -31,8 +31,8 @@ export const getTop10Ranking= async (req: Request, res: Response) => {
   export const getUserRanking = async (req: Request, res: Response) => {
     try {
       const userId = req.userid;
-      const ranking = await getUserRankingService(userId);
-      res.status(200).json({ ranking });
+      const result= await getUserRankingService(userId);
+      res.status(200).json({result});
     } catch (error) {
       if (error instanceof ZodError) {
           res.status(400).send(error.message);
