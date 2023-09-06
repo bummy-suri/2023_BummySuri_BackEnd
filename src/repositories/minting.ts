@@ -66,7 +66,7 @@ export const getMetaData = async (contractAddress: TeamType, tokenId: number) =>
 
 
 export const getAvailableTokenId = async (team: TeamType): Promise<number> => {
-    const tokenId: number = 0;
+    const tokenId: number = -1;
   
     // const availableToken = await prisma.token.findFirst({
     //   where: {
