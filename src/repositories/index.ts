@@ -2,7 +2,7 @@ import { createUser, getUserByCardAddress, getUser, deleteUser } from "./users";
 import { saveBetting, getBetting, updateBetting, saveGameResult, getGameResult, updateGameResult, totalEarnedPointResult, pointChange } from "./games";
 import { getTop10UsersByTotalPoint, getUserRankingById } from "./ranking";
 import { saveMiniGameResult, getMiniGame } from "./miniGames";
-import { getNFTCount } from "./mint";
+import { getNFTCount } from "./minting";
 export {
   createUser as createUserPersistence,
   getUserByCardAddress as getUserByCardAddressPersistence,

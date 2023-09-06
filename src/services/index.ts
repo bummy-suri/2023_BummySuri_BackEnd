@@ -28,7 +28,7 @@ export {
     grantUser as grantUserService
 };
 
-import { getNFTCountData, minting } from "./mint";
+import { getNFTCountData, minting } from "./minting";
 export {
     getNFTCountData as getNFTCountService,
     minting as mintingService
