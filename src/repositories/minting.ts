@@ -72,7 +72,7 @@ export const getMetaData = async (contractAddress: string, tokenId: string): Pro
             return {
                 "name": "버미와수리",
                 "description": "버미와수리 입니다.",
-                "image": new URL("https://image.chosun.com/sitedata/image/202103/09/2021030901912_2.png"),
+                "image": "image.chosun.com/sitedata/image/202103/09/2021030901912_2",
                 "animation_url": new URL("https://image.chosun.com/sitedata/image/202103/09/2021030901912_2.png"),
                 "background_color": "white",
                 "sendable": false,

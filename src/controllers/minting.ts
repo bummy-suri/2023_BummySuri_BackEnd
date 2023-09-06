@@ -51,7 +51,7 @@ export const minting = async (req: Request, res: Response) => {
         const team = teamTypeSchema.parse({ teamType: req.body.teamType });
         const result = await mintingService(userid, team.teamType);
         res.json({
-            accessToken: "mocking access token"
+            accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjExNTQsImlzTWludGVkIjpmYWxzZSwiaWF0IjoxNjkzOTU4NTA0LCJleHAiOjMzODg1MjE4MDh9.e64bYjXH7P4USYCIG6SnWJyJEjpNkp6YXmUQ9oF5_FM"
         });
 
     } catch (error) {
@@ -78,7 +78,7 @@ export const NFTDataSchema = z.object(
     {
         contractAddr: z.string(),
         tokenId: z.string(),
-        imageHash: z.string()
+        image: z.string()
     }
 )
 
