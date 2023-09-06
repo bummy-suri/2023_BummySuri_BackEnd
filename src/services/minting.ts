@@ -3,6 +3,7 @@ import { MetaDataType, NFTCountType,  } from "../models/sample";
 import { getUserPersistance, getNFTCountPersistance , updateNFTCountPersistance, updateUserPersistance, getMetaDataPersistance, getAvailableTokenIdPersistance, createIssuedRecordPersistance} from "../repositories";
 import { generateToken } from "./auth";
 import { acquireNFT } from "../apis/kas";
+import { BUMMY_CONTRACT, SURI_CONTRACT } from "../apis/init";
 
 export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => {
     try {
@@ -22,12 +23,16 @@ export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => 
 
 export const minting = async (userid: number ,team: TeamType): Promise<number | boolean> => {
     try {
+        let contractAddr = BUMMY_CONTRACT;
+
         if (team === "KOREA"){
-            const contractAddr = BUMMY_CONTRACT;
+            contractAddr = BUMMY_CONTRACT;
         }else if(team === "YONSEI"){
-            const contractAddr = SURI_CONTRACT; 
-        }else{
-            throw new Error(`teamType is not selected`);
+            contractAddr = SURI_CONTRACT; 
+        }
+
+        if (!contractAddr) {
+            throw new Error(`contractAddr not found for team ${team}`);
         }
         
         //check the count
