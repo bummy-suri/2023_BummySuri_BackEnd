@@ -7,7 +7,9 @@ import { grantUserService , getUserService, deleteUserDataService} from "../serv
 
 
 export const authenticateRequestSchema = z.object({
-    requestKey: z.string(),
+    requestKey: z.string().regex(/^[a-zA-Z0-9]{8}$/, {
+        message: 'Invalid Klaytn address',
+    }),
 });
 
 export interface authenticateResponse {

@@ -1,3 +1,8 @@
-import axios, { AxiosError } from 'axios';
-import { ZodError, z } from 'zod';
-import { ClientError, UnexpectedError } from '../utils/errors';
+import { NFTType, TeamType } from "../models/sample";
+import sleep from "../utils/sleep";
+
+
+
+export const acquireNFT = async ({team, tokenId, cardAddress}: NFTType) => {
+    await sleep(5000);
+}
