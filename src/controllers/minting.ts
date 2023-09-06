@@ -50,7 +50,7 @@ export const minting = async (req: Request, res: Response) => {
         const team = teamTypeSchema.parse({ teamType: req.params.teamType });
         const result = await mintingService(userid, team.teamType);
         res.json({
-            accessToken: result
+            accessToken: "mocking access token"
         });
 
     } catch (error) {
