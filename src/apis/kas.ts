@@ -1,4 +1,4 @@
-import { NFTType, TeamType } from "../models/sample";
+import { NFTType } from "../models/sample";
 import sleep from "../utils/sleep";
 
 
