@@ -18,7 +18,9 @@ export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => 
     }
 };
 
-export const minting = async (userid: number ,team: TeamType): Promise<number> => {
+
+
+export const minting = async (userid: number ,team: TeamType): Promise<number | boolean> => {
     try {
         //check the count
         const countData = await getNFTCountPersistance(team);
@@ -34,10 +36,11 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
                 throw new Error(`userCardAddress not found for user ${userid}`);
             }
 
-            //isMinted check
             const userCardAddress = userData.userCardAddress;
+
+            //isMinted check
             if (userData.isMinted === true) {
-                throw new Error(`Already minted`);
+                return false;
             }
 
             //get AvailableTokenId
@@ -69,16 +72,26 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
 }
 
 
-export const getMetaData = async (contractAddr: TeamType, userId: number): Promise<MetaDataType> => {
-    try {
-        const metaData = await getMetaDataPersistance(contractAddr, userId);
-        
-        if (!metaData) {
-            throw new Error(`MetaData not found`);
-        }
-        
-        return metaData;
-    } catch (e) {
-        throw e;
-    }
-}
+export const getMetaData = async (contractAddress: TeamType, tokenId: number): Promise<MetaDataType> => {
+    const tokenData = await getMetaData(contractAddress, tokenId);
+
+    const attributes = tokenData.attributes.map(attr => ({
+        key: attr.key,
+        value: attr.value
+    }));
+
+    return {
+        "name": "버미와수리",
+        "description": "버미와수리 입니다.",
+        "image": "image.chosun.com/sitedata/image/202103/09/2021030901912_2",
+        "animation_url": new URL("https://image.chosun.com/sitedata/image/202103/09/2021030901912_2.png"),
+        "background_color": "white",
+        "sendable": false,
+        "group_name": "서울시립대",
+        "group_icon": new URL("https://image.chosun.com/sitedata/image/202103/09/2021030901912_2.png"),
+        "hashtags": "#버미와수리",
+        "layout": "general",
+        "external_link": new URL("https://www.bummysuri.com"),
+        "attributes": attributes
+    };
+};

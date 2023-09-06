@@ -46,9 +46,7 @@ export const updateNFTCount = async (team: TeamType): Promise<number> => {
     });
 };
 
-
-export const getMetaData = async (contractAddress: TeamType, tokenId: number): Promise<MetaDataType> => {
-
+export const getMetaData = async (contractAddress: TeamType, tokenId: number) => {
     const tokenData = await prisma.token.findFirst({
         where: {
             id: tokenId,
@@ -63,25 +61,7 @@ export const getMetaData = async (contractAddress: TeamType, tokenId: number): P
         throw new Error(`No matching token found for contract address`);
     }
 
-    const attributes = tokenData.attributes.map(attr => ({
-        key: attr.key,
-        value: attr.value
-    }));
-
-    return {
-        "name": "버미와수리",
-        "description": "버미와수리 입니다.",
-        "image": "image.chosun.com/sitedata/image/202103/09/2021030901912_2",
-        "animation_url": new URL("https://image.chosun.com/sitedata/image/202103/09/2021030901912_2.png"),
-        "background_color": "white",
-        "sendable": false,
-        "group_name": "서울시립대",
-        "group_icon": new URL("https://image.chosun.com/sitedata/image/202103/09/2021030901912_2.png"),
-        "hashtags": "#버미와수리",
-        "layout": "general",
-        "external_link": new URL("https://www.bummysuri.com"),
-        "attributes": attributes
-    };
+    return tokenData;
 };
 
 
