@@ -77,16 +77,34 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
 };
 
 export const getMiniGame = async (userId: number, date: string): Promise<GetMiniGameType> => {
-    const miniGame = await prisma.miniGame.findFirst({
+    let miniGame = await prisma.miniGame.findFirst({
+        where: {
+            userId,
+            date
+        }
+    });
+    const currentDate = new Date().toISOString().split('T')[0];
+    if (!miniGame) {
+        const createdMiniGame = await prisma.miniGame.create({
+            data: {
+                userId: userId,
+                date: currentDate,
+                times: 0,
+                quiz: true
+            }
+        });
+    }
+
+    miniGame = await prisma.miniGame.findFirst({
         where: {
             userId,
             date
         }
     });
 
-    if (!miniGame) {
-        throw new Error("MiniGame not found");
-    }
+    if(!miniGame)
+        throw new Error("MiniGame not found")
+
 
     return { times: miniGame.times, quiz: miniGame.quiz };
 }
