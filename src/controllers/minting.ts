@@ -46,10 +46,11 @@ export interface mintingResponse {
 
 export const minting = async (req: Request, res: Response) => {
     try{
+        const userid = req.userid;
         const team = teamTypeSchema.parse({ teamType: req.params.teamType });
-        const result = await mintingService(team.teamType);
+        const result = await mintingService(userid, team.teamType);
         res.json({
-            accessToken: "this_is_whare_access_token_will_be",
+            accessToken: "this_is_where_access_token_will_be",
         } as mintingResponse);
 
     } catch (error) {

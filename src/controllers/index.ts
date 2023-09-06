@@ -37,7 +37,7 @@ export {
     getMiniGame as getMiniGameResultController
  };
 
- import { getNFTCount} from "./mint";
+ import { getNFTCount} from "./minting";
  export {
         getNFTCount as getNFTCountController
 };

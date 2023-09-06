@@ -1,5 +1,5 @@
 import { UserType, UserTypeIncludeID } from "../models/sample";
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient, TeamType, User } from '@prisma/client';
 import { PrismaError } from "../utils/errors";
 
 const prisma = new PrismaClient();
@@ -76,6 +76,21 @@ export const deleteUser = async (userId: number): Promise<string> => {
         
         return "User successfully deleted.";
 
+    } catch (e: any) {
+        throw new PrismaError(e?.message);
+    }
+}
+
+export const updateUser = async (userId: number, univ: TeamType, isMinted: boolean): Promise<UserType> => {
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                univ: univ,
+                isMinted: isMinted,
+            }
+        });
+        return updatedUser;
     } catch (e: any) {
         throw new PrismaError(e?.message);
     }

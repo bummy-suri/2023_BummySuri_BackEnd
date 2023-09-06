@@ -1,6 +1,8 @@
 import { TeamType } from "@prisma/client";
 import { NFTCountType } from "../models/sample";
-import { getNFTCount , updateNFTCount} from "../repositories/mint";
+import { getNFTCount , updateNFTCount} from "../repositories/minting";
+import { updateUser} from "../repositories/users";
+import { generateToken } from "./auth";
 
 export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => {
     try {
@@ -16,8 +18,9 @@ export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => 
     }
 };
 
-export const minting = async (team: TeamType): Promise<number> => {
+export const minting = async (userid: number ,team: TeamType): Promise<number> => {
     try {
+        //check the count
         const countData = await getNFTCount(team);
         if (!countData) {
             throw new Error(`NFTCountData not found for team ${team}`);
@@ -25,8 +28,18 @@ export const minting = async (team: TeamType): Promise<number> => {
             if(countData.count >= 5000){
                 throw new Error(`NFTCountData is over 5000 for team ${team}`);
             }
+
+            //minting
+
+
+            //  if success, update the user
+            const userData = await updateUser(userid, team, true);
+
+                //update the count
             const updatedCountData= await updateNFTCount(team);
-            return updatedCountData;
+                        //generate accessToken
+            const token = parseInt(generateToken(userid, true));
+            return token;
         }
         
     } catch (e) {
