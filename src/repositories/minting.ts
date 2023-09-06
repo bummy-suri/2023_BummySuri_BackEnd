@@ -90,3 +90,45 @@ export const getMetaData = async (contractAddress: string, tokenId: string): Pro
         throw new PrismaError(e.message);
     });
 };
+
+export const getAvailableTokenId = async (team: TeamType): Promise<number> => {
+  
+    const availableToken = await prisma.token.findFirst({
+      where: {
+        contractAddr: team,
+        owned: false,
+      },
+    });
+  
+    if (!availableToken) {
+      throw new Error("No available token found");
+    }
+  
+    return availableToken.id;
+  }
+
+  export const createIssuedRecord = async (userId: number, tokenId: number, team: TeamType): Promise<void> => {
+
+    await prisma.issued.create({
+      data: {
+        ownerid: userId,
+        tokenid: tokenId,
+        contractAddr: team,
+      },
+    }).catch((e) => {
+      throw new PrismaError(e?.message);
+    });
+  
+    await prisma.token.update({
+      where: {
+        id: tokenId,
+      },
+      data: {
+        owned: true,
+      },
+    }).catch((e) => {
+      throw new PrismaError(e?.message);
+    });
+  }
+  
+  
