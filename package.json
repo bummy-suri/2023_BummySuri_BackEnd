@@ -94,7 +94,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node index.ts",
-    "kas": "ts-node kas.ts"
+    "kas": "ts-node kas.ts",
+    "meta": "ts-node metadata.ts"
   },
   "keywords": [],
   "author": "",
