@@ -87,13 +87,6 @@ export type UserRankingType = {
     image: string;
   };
   
-export type NFTMetaData = {
-    owner: number,
-	contractAddr: string,
-	tokenId: string,
-	image: string,
-
-}
 
 export type MetaDataType = {
     name: string;

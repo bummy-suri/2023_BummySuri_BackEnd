@@ -2,11 +2,15 @@
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userCardAddress` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
-    `univ` ENUM('KOREA', 'YONSEI') NOT NULL,
-    `NFT_image` VARCHAR(191) NULL,
-    `totalPoint` INTEGER NOT NULL,
+    `univ` ENUM('KOREA', 'YONSEI') NULL,
+    `pointDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `totalPoint` INTEGER NOT NULL DEFAULT 2000,
+    `isMinted` BOOLEAN NOT NULL DEFAULT false,
+    `isTaken` BOOLEAN NOT NULL DEFAULT false,
 
+    UNIQUE INDEX `User_userCardAddress_key`(`userCardAddress`),
+    INDEX `User_totalPoint_idx`(`totalPoint`),
+    INDEX `User_pointDate_idx`(`pointDate`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -18,8 +22,8 @@ CREATE TABLE `Betting` (
     `selected` BOOLEAN NOT NULL,
     `playing` VARCHAR(191) NOT NULL,
     `predictedWinner` VARCHAR(191) NOT NULL,
-    `predictedScore` VARCHAR(191) NOT NULL,
-    `bettingPoint` INTEGER NOT NULL,
+    `predictedScore` VARCHAR(191) NULL,
+    `bettingPoint` VARCHAR(191) NOT NULL,
     `success` BOOLEAN NOT NULL DEFAULT false,
     `earnedPoint` INTEGER NOT NULL DEFAULT 0,
 
@@ -41,9 +45,40 @@ CREATE TABLE `Game` (
 CREATE TABLE `MiniGame` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
+    `date` VARCHAR(191) NOT NULL,
     `times` INTEGER NOT NULL DEFAULT 0,
+    `quiz` BOOLEAN NOT NULL DEFAULT true,
 
     PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `NFTCount` (
+    `team` ENUM('KOREA', 'YONSEI') NOT NULL,
+    `count` INTEGER NOT NULL DEFAULT 0,
+
+    PRIMARY KEY (`team`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Token` (
+    `id` INTEGER NOT NULL,
+    `contractAddr` ENUM('KOREA', 'YONSEI') NOT NULL,
+    `image` VARCHAR(191) NOT NULL,
+    `owned` BOOLEAN NOT NULL,
+
+    INDEX `Token_owned_idx`(`owned`),
+    UNIQUE INDEX `Token_id_contractAddr_key`(`id`, `contractAddr`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Attribute` (
+    `tokenid` INTEGER NOT NULL,
+    `key` VARCHAR(191) NOT NULL,
+    `value` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`tokenid`, `key`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -54,3 +89,6 @@ ALTER TABLE `Betting` ADD CONSTRAINT `Betting_gameType_fkey` FOREIGN KEY (`gameT
 
 -- AddForeignKey
 ALTER TABLE `MiniGame` ADD CONSTRAINT `MiniGame_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Attribute` ADD CONSTRAINT `Attribute_tokenid_fkey` FOREIGN KEY (`tokenid`) REFERENCES `Token`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
