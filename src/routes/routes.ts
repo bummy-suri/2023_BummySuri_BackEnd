@@ -15,13 +15,16 @@ import {
     getNFTCountController,
     getTop10RankingController,
     getUserRankingController,
-    getMiniGameResultController
+    getMiniGameResultController,
+    mintingController,
+    saveNFTDataController,
+    getMetaDataController
 } from '../controllers';
 
 export const nonAuthRouter = Router();
 
 nonAuthRouter.post('/users', authenticateController);
-nonAuthRouter.get('/metadata/:contract_addr/:token_id');
+nonAuthRouter.get('/metadata/:contractAddr/:token_id');
 
 export const authRouter = Router();
 
@@ -51,6 +54,8 @@ mintedAuthRouter.get('/minigame', getMiniGameResultController);
 
 //Mint routes
 mintedAuthRouter.get('/mint/:teamType', getNFTCountController);
+mintedAuthRouter.post('/mint/:teamType', mintingController);
+mintedAuthRouter.post('/mint', saveNFTDataController);
 
 //Ranking routes
 mintedAuthRouter.get('/ranking/top10', getTop10RankingController);

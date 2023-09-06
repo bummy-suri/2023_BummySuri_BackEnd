@@ -48,7 +48,7 @@ export interface mintingResponse {
 export const minting = async (req: Request, res: Response) => {
     try{
         const userid = req.userid;
-        const team = teamTypeSchema.parse({ teamType: req.params.teamType });
+        const team = teamTypeSchema.parse({ teamType: req.body.teamType });
         const result = await mintingService(userid, team.teamType);
         res.json({
             accessToken: "mocking access token"
@@ -113,9 +113,9 @@ export const saveNFTData = async (req: Request, res: Response) => {
 
 export const getMetaData = async (req: Request, res: Response) => {
     try{
-        const contractAddress = req.params.contractAddress;
+        const contractAddr = req.params.contractAddress;
         const tokenId = req.params.tokenId;
-        const metadata = await getMetaDataService(contractAddress, tokenId);
+        const metadata = await getMetaDataService(contractAddr, tokenId);
         return res.json(metadata);
     } catch (error) {
         if (error instanceof ZodError) {
