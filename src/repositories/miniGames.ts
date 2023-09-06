@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { MiniGameType, MiniGameResponse } from "../models/sample";
+import { MiniGameResponse , GetMiniGameType} from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -21,6 +21,7 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
             date: currentDate
         }
     });
+
     let updatedTimes : number;
     let updatedQuiz : boolean;
 
@@ -74,3 +75,18 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
 
     return { times: updatedTimes, totalPoint: updatedTotalPoint, quiz: updatedQuiz };
 };
+
+export const getMiniGame = async (userId: number, date: string): Promise<GetMiniGameType> => {
+    const miniGame = await prisma.miniGame.findFirst({
+        where: {
+            userId,
+            date
+        }
+    });
+
+    if (!miniGame) {
+        throw new Error("MiniGame not found");
+    }
+
+    return { times: miniGame.times, quiz: miniGame.quiz };
+}

@@ -1,8 +1,10 @@
 import {
-    MiniGameResponse
+    MiniGameResponse,
+    GetMiniGameType
 } from "../models/sample";
 import {
-    saveMiniGameResult
+    saveMiniGameResult,
+    getMiniGame
 } from "../repositories/miniGames";
 
 export const saveMiniGameResultData = async (userId: number, result: string, miniGameType: string): Promise<MiniGameResponse> => {
@@ -13,3 +15,12 @@ export const saveMiniGameResultData = async (userId: number, result: string, min
         throw e;
     }
 };
+
+export const getMiniGameResultData = async (userId: number, date: string): Promise<GetMiniGameType> => {
+    try {
+        const miniGameResult = await getMiniGame(userId, date);
+        return miniGameResult;
+    } catch (e) {
+        throw e;
+    }
+}
