@@ -59,6 +59,7 @@ export type TotalEarnedPoint = {
 }
 
 export type NFTCountType = {
+    team: TeamType;
     count: number;
 }
 
