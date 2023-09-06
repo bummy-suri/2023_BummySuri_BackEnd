@@ -18,7 +18,9 @@ export const getNFTCountData = async (team: TeamType): Promise<NFTCountType> => 
     }
 };
 
-export const minting = async (userid: number ,team: TeamType): Promise<number> => {
+
+
+export const minting = async (userid: number ,team: TeamType): Promise<number | boolean> => {
     try {
         //check the count
         const countData = await getNFTCountPersistance(team);
@@ -34,10 +36,11 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
                 throw new Error(`userCardAddress not found for user ${userid}`);
             }
 
-            //isMinted check
             const userCardAddress = userData.userCardAddress;
+
+            //isMinted check
             if (userData.isMinted === true) {
-                throw new Error(`Already minted`);
+                return false;
             }
 
             //get AvailableTokenId
