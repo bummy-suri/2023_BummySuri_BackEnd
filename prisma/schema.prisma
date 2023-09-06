@@ -68,12 +68,10 @@ model NFTCount {
 }
 
 model NftMetadata {
-  owner        Int
+  owner        Int  @unique
   contractAddr String
   tokenId      String
   imageHash    String
   user         User    @relation(fields: [owner], references: [id])
-
   @@id([contractAddr, tokenId])
-  @@unique([owner])
 }
