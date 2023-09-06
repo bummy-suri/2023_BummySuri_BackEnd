@@ -1,4 +1,4 @@
-import { caver } from "./init";
+import caver from "./init";
 
 
 // no need to use
@@ -47,4 +47,14 @@ type GetTokenList = {
 
 export const getTokenList = async ({contract}: GetTokenList) => {
     return await caver.kas.kip17.getTokenList(contract);
+}
+
+
+type TransferToken = {
+    from: string
+    to: string
+}
+
+export const transferToken = async ({from, to}: TransferToken) => {
+    
 }
