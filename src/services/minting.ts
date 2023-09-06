@@ -33,7 +33,12 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
             if (!userData) {
                 throw new Error(`userCardAddress not found for user ${userid}`);
             }
+            
+            //isMinted check
             const userCardAddress = userData.userCardAddress;
+            if (userData.isMinted === true) {
+                throw new Error(`Already minted`);
+            }
 
             //get AvailableTokenId
             const userTokenId = await getAvailableTokenIdPersistance(team);
