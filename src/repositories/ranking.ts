@@ -40,8 +40,8 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => { // Changed 
 
   return userWithNFTImages;
 };
-  
-export const getUserRankingById = async (userId: number): Promise<number> => {
+
+export const getUserRankingById = async (userId: number): Promise<{ ranking: number, image: string | null }> => {
   const users = await prisma.user.findMany({
     select: {
       id: true,
@@ -50,10 +50,23 @@ export const getUserRankingById = async (userId: number): Promise<number> => {
     },
     orderBy: [
       { totalPoint: 'desc' },
-      { pointDate: 'asc' }
+      { pointDate: 'asc' },
     ],
   });
 
   const ranking = users.findIndex(user => user.id === userId) + 1;
-  return ranking;
+
+  const NFTMetaData = await prisma.nftMetadata.findUnique({
+    where: {
+      owner: userId,
+    },
+    select: {
+      image: true
+    }
+  });
+
+  return {
+    ranking,
+    image: NFTMetaData ? NFTMetaData.image : null,
+  };
 };
