@@ -1,24 +1,45 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { BettingRequest, BettingResultResponse, GameResult, GameResultUpdate, TotalEarnedPoint, MiniGameType, gameType, UserRankingType, UserRankingListType } from "../models/sample";
+import { NFTMetaData, UserRankingType, UserRankingListType } from "../models/sample";
 
 const prisma = new PrismaClient();
 //랭킹 조회
-export const getTop10UsersByTotalPoint = async () : Promise<UserRankingListType> => {
-  return await prisma.user.findMany({
+
+export const getTop10UsersByTotalPoint = async (): Promise<any> => { // Changed the return type to any for demonstration
+  const users = await prisma.user.findMany({
     select: {
+      id: true,
       userCardAddress: true,
       totalPoint: true,
       pointDate: true,
     },
     orderBy: [
       { totalPoint: 'desc' },
-      { pointDate: 'asc' }
+      { pointDate: 'asc' },
     ],
     take: 10,
   });
-};
 
+  const userWithNFTImages = await Promise.all(
+    users.map(async (user) => {
+      const nftMetadata = await prisma.nftMetadata.findUnique({
+        where: {
+          owner: user.id,
+        },
+        select: {
+          image: true
+        }
+      });
+
+      return {
+        ...user,
+        nftImage: nftMetadata ? nftMetadata.image : null,
+      };
+    })
+  );
+
+  return userWithNFTImages;
+};
   
 export const getUserRankingById = async (userId: number): Promise<number> => {
   const users = await prisma.user.findMany({
