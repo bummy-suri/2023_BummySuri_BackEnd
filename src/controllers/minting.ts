@@ -78,7 +78,7 @@ export const NFTDataSchema = z.object(
     {
         contractAddr: z.string(),
         tokenId: z.string(),
-        imageHash: z.string()
+        image: z.string()
     }
 )
 
