@@ -1,6 +1,6 @@
 import { TeamType } from "@prisma/client";
 import { MetaDataType, NFTCountType, NFTMetaData, } from "../models/sample";
-import { getUserPersistance, getNFTCountPersistance , updateNFTCountPersistance, updateUserPersistance, getMetaDataPersistance, saveNFTDataPersistance} from "../repositories";
+import { getUserPersistance, getNFTCountPersistance , updateNFTCountPersistance, updateUserPersistance, getMetaDataPersistance, saveNFTDataPersistance, getAvailableTokenIdPersistance, createIssuedRecordPersistance} from "../repositories";
 import { generateToken } from "./auth";
 import { acquireNFT } from "../apis/kas";
 
@@ -34,10 +34,18 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
                 throw new Error(`userCardAddress not found for user ${userid}`);
             }
             const userCardAddress = userData.userCardAddress;
-            const userTokenId = 2937
+
+            //get AvailableTokenId
+            const userTokenId = await getAvailableTokenIdPersistance(team);
+            if (!userTokenId) {
+                throw new Error(`AvailableTokenId not found`);
+            }
 
             //minting
             await acquireNFT({team, tokenId: userTokenId, cardAddress: userCardAddress});
+
+            //issuedRecord
+            await createIssuedRecordPersistance(userid, userTokenId, team);
 
             //update the user isMinted to true
             userData = await updateUserPersistance(userid, team, true);
@@ -48,7 +56,7 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
              //generate accessToken
             const token = parseInt(generateToken(userid, true));
             return token;
-    }
+        }
         
     } catch (e) {
         throw e;
