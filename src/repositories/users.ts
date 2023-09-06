@@ -1,17 +1,20 @@
-import { UserType } from "../models/sample";
-import { PrismaClient } from '@prisma/client';
+import { UserType, UserTypeIncludeID } from "../models/sample";
+import { PrismaClient, TeamType, User } from '@prisma/client';
 import { PrismaError } from "../utils/errors";
 
 const prisma = new PrismaClient();
 
 export const createUser = async (user: UserType): Promise<number> => {
+    const currentDate = new Date();
     return prisma.user.create({
         data: {
             userCardAddress: user.userCardAddress,
-            name: user.name,
             univ: user.univ,
-            NFT_image: user.NFT_image,
-            totalPoint: user.totalPoint
+            totalPoint: user.totalPoint,
+            isMinted: user.isMinted,
+            isTaken: false,
+            pointDate: currentDate
+
         },
     }).then((result) => {
         return result.id;
@@ -20,26 +23,75 @@ export const createUser = async (user: UserType): Promise<number> => {
     })
 }
 
-export const getUser = async (userId: number): Promise<UserType | null> => {
-    return prisma.user.findUnique({
+export const getUserByCardAddress = async (cardAddress: string): Promise<{userid: number, exists: boolean}> => {
+    return prisma.user.findFirst({
+        where: {
+            userCardAddress: cardAddress
+        }
+    }).then((result) => {
+        return result ? {userid: result.id, exists: true} : {userid: 0, exists: false};
+    }).catch((e) => {
+        throw new PrismaError(e?.message);
+    })
+}
+
+export const getUser = async (userId: number): Promise<UserType> => {
+
+    return prisma.user.findFirst({
         where: {
             id: userId
         }
     }).then((result) => {
-        return result ? result : null;
+        if (!result) {
+            throw new Error("User not found");
+        }
+        return result
     }).catch((e) => {
         throw new PrismaError(e?.message);
     })
 }
 
 export const deleteUser = async (userId: number): Promise<string> => {
-    return prisma.user.delete({
-        where: {
-            id: userId
-        }
-    }).then((result) => {
+    try {
+        // Delete relatedBettings
+        await prisma.betting.deleteMany({
+            where: {
+                userId: userId
+            }
+        });
+
+        // Delete relatedMiniGames
+        await prisma.miniGame.deleteMany({
+            where: {
+                userId: userId
+            }
+        });
+
+        // Delete User
+        await prisma.user.delete({
+            where: {
+                id: userId
+            }
+        });
+        
         return "User successfully deleted.";
-    }).catch((e) => {
+
+    } catch (e: any) {
         throw new PrismaError(e?.message);
-    })
+    }
+}
+
+export const updateUser = async (userId: number, univ: TeamType, isMinted: boolean): Promise<UserType> => {
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                univ: univ,
+                isMinted: isMinted,
+            }
+        });
+        return updatedUser;
+    } catch (e: any) {
+        throw new PrismaError(e?.message);
+    }
 }

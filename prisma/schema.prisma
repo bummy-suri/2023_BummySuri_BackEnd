@@ -17,29 +17,34 @@ enum TeamType {
 
 model User {
     id              Int       @id @default(autoincrement())
-    userCardAddress String
-    name            String
-    univ            TeamType
-    NFT_image      String?
-    totalPoint     Int
-    bettings       Betting[]
-    minigames      MiniGame[]
+    userCardAddress String    @unique
+    univ            TeamType?
+    pointDate       DateTime @default(now())
+    totalPoint      Int       @default(2000) 
+    isMinted        Boolean   @default(false)
+    isTaken         Boolean  @default(false)
+    bettings        Betting[]
+    minigames       MiniGame[]
+    nftMetadata     NftMetadata[]
+
+    @@index([totalPoint])
+    @@index([pointDate])
 
 }
 
 model Betting {
-  id             Int      @id @default(autoincrement())
-  gameType       String   
-  userId         Int      
-  selected       Boolean
-  playing        String
+  id              Int      @id @default(autoincrement())
+  gameType        String   
+  userId          Int      
+  selected        Boolean
+  playing         String
   predictedWinner String
-  predictedScore String
-  bettingPoint   Int
-  success        Boolean  @default(false)
-  earnedPoint    Int      @default(0)
-  user           User     @relation(fields: [userId], references: [id])
-  game           Game     @relation(fields: [gameType], references: [gameType])
+  predictedScore  String?
+  bettingPoint    String
+  success         Boolean  @default(false)
+  earnedPoint     Int      @default(0)
+  user            User     @relation(fields: [userId], references: [id])
+  game            Game     @relation(fields: [gameType], references: [gameType])
   @@unique([userId, gameType])
 }
 
@@ -54,6 +59,22 @@ model Game {
 model MiniGame {
   id           Int    @id @default(autoincrement())
   userId       Int
-  times       Int     @default(0)
+  date         String
+  times        Int     @default(0)
+  quiz         Boolean  @default(true)
   user         User   @relation(fields: [userId], references: [id])
+}
+
+model NFTCount {
+  team        TeamType @id
+  count       Int      @default(0)
+}
+
+model NftMetadata {
+  owner        Int  @unique
+  contractAddr String
+  tokenId      String
+  image        String
+  user         User    @relation(fields: [owner], references: [id])
+  @@id([contractAddr, tokenId])
 }

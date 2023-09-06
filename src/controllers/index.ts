@@ -1,24 +1,27 @@
-import { register, getUser, deleteUser } from "./register";
+import { authenticate, getUser, deleteUser  } from "./user";
 export {
-    register as registerController,
+    authenticate as authenticateController,
     getUser as getUserController,
     deleteUser as deleteUserController
  };
 
-import { authenticate } from "./user";
-export {
-    authenticate as authenticateController
- };
-
-import { saveBetting, getBetting } from "./betting";
+import { saveBetting, getBetting, updateBetting} from "./betting";
 export {
     saveBetting as saveBettingController,
-    getBetting as getBettingController
- };
+    getBetting as getBettingController,
+    updateBetting as updateBettingController,
+    };
 
-import { checkBettingResult} from "./bettingResult";
+import { getTop10Ranking, getUserRanking } from "./ranking";
 export {
-    checkBettingResult as checkBettingResultController
+    getTop10Ranking as getTop10RankingController,
+    getUserRanking as getUserRankingController
+};
+
+import { checkBettingResult, totalEarnedPoints} from "./bettingResult";
+export {
+    checkBettingResult as checkBettingResultController,
+    totalEarnedPoints as totalEarnedPointsController
  };
 
 import { createGameResult, getGameResult, updateGameResult } from "./game";
@@ -28,9 +31,17 @@ export {
     updateGameResult as updateGameResultController
  };
 
-import { changeMiniGamePoints, miniGameTimes, getTimes } from "./miniGame";
+import { saveMiniGameResult, getMiniGame } from "./miniGame";
 export {
-    changeMiniGamePoints as changeMiniGamePointsController,
-    miniGameTimes as miniGameTimesController,
-    getTimes as getMiniGameTimesController
+    saveMiniGameResult as saveMiniGameResultController,
+    getMiniGame as getMiniGameResultController
  };
+
+ import { getNFTCount, saveNFTData, getMetaData, minting } from "./minting";
+ export {
+        getNFTCount as getNFTCountController,
+        minting as mintingController,
+        saveNFTData as saveNFTDataController,
+        getMetaData as getMetaDataController
+
+};

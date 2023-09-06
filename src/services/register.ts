@@ -1,50 +1,59 @@
 import { handleApp2AppResultStateAPIs } from "../apis";
-import { TokenType, UserType } from "../models/sample";
-import { createUser, getUser, deleteUser } from "../repositories/users";
+import { TeamType, TokenType, UserTypeIncludeID } from "../models/sample";
+import { createUser, getUserByCardAddress, getUser, deleteUser } from "../repositories/users";
 import { generateToken } from "./auth";
 
 
-export const mintUser = async (user: UserType) : Promise<TokenType> => {
-
+export const mintUser = async (userid: number, univ: TeamType): Promise<TokenType> => {
     let token: string = ''
-    let userid: string = ''
 
     try {
-        // TODO: a minting api call
-
-        userid = (await createUser(user)).toString()
-        token = generateToken(userid)
+        /* 
+        1. get card address by userid
+        2. check if user already minted
+        3. mint card calling klaytn api
+        4. check user.univ at user and increase NFTcount of user.univ at NFTCount
+        5. save isMinted = true at user table
+        6. renew token
+        */
 
     } catch (e) {
-
+        throw e;
     }
-
     return {
         access: token,
     }
 }
 
 
+
 export const grantUser = async (requestKey: string) : Promise<TokenType> => {
-
     try {
-        const address = await handleApp2AppResultStateAPIs(requestKey)
+        const address = await handleApp2AppResultStateAPIs(requestKey);
+        
+        let {userid, exists} = await getUserByCardAddress(address);
+        const currentDate = new Date();
 
-        // regard user exists at userid = 1
-        const userid = 1
+        if (!exists) {
+            userid = await createUser({userCardAddress: address, totalPoint: 2000, isMinted: false, isTaken: false, pointDate: currentDate, univ: null});
+        }
 
-        const token = generateToken(userid.toString())
+        let user = await getUser(userid);
+        const token = generateToken(userid, user.isMinted);
 
         return {
-            access: token,
-        }
+            access: token
+        };
 
     } catch (e) {
         throw e;
     }
 }
 
-export const getUserData = async (userId: number): Promise<UserType> => {
+
+
+
+export const getUserData = async (userId: number): Promise<UserTypeIncludeID> => {
     
     try {
         const userData = await getUser(userId);
@@ -53,7 +62,7 @@ export const getUserData = async (userId: number): Promise<UserType> => {
             throw new Error("User not found");
         }
         
-        return userData;
+        return {...userData, id: userId};
 
     } catch (e) {
         throw e;
@@ -61,13 +70,12 @@ export const getUserData = async (userId: number): Promise<UserType> => {
 }
 
 export const deleteUserData = async (userId: number): Promise<string> => {
-    let deletedUserId: string;
+    let deletedUser: string;
 
     try {
-        deletedUserId = (await deleteUser(userId)).toString();
+        deletedUser = (await deleteUser(userId)).toString();
+        return deletedUser;
     } catch (e) {
         throw e;
     }
-
-    return deletedUserId;
 }

@@ -15,28 +15,43 @@ const handleApp2AppResultStateResponseSchema = z.object({
 
 export const handleApp2AppResultState = async (requestKey: string) : Promise<string> => {
 
+    let body: any;
+
     return axios.get("https://a2a-api.klipwallet.com/v2/a2a/result", {
         params: {
             request_key: requestKey
         }
     }).then((res) => {
-        const response = handleApp2AppResultStateResponseSchema.parse(res.data)
+        body = res.data
 
-        if (response.status != "completed") {
-            throw new ClientError(`response status is ${response.status}`)
+        if (res.data?.status && res.data.status != "completed") {
+            throw new ClientError(`response status is ${res.data.status}, should be completed`)
         }
 
+        const response = handleApp2AppResultStateResponseSchema.parse(res.data)
         return response.result.klaytn_address
-    }).catch((error) => {
 
-        if (error instanceof ZodError || error instanceof ClientError) {
+    }).catch((error) => {
+        if (error instanceof AxiosError && error.response?.status == 400) {
+            throw new ClientError(JSON.stringify(error.response?.data))
+        }
+
+        if (error instanceof AxiosError && error.response?.status == 500) {
             throw error
         }
 
-        if (error instanceof AxiosError) {
-            throw new ClientError("invalid request key")
+        if (error instanceof ZodError) {
+            throw new ClientError(`schema error: ${JSON.stringify(error.errors)}, received: ${JSON.stringify(body)}`)
         }
 
-        throw new UnexpectedError(error.message)
+        if (error instanceof ClientError) {
+            throw error
+        }
+
+        //if (error instanceof ZodError) {
+        //    throw new ClientError(`invalid response schema. type of request should be "Auth" `)
+        //}
+
+        throw new UnexpectedError(error)
     })
 }

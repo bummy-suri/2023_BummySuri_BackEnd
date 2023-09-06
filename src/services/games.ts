@@ -1,30 +1,37 @@
 import {
-    UserType,
     BettingRequest,
     GameResult,
     GameResultUpdate,
-    BettingResultResponse} from "../models/sample";
+    BettingResultResponse,
+    BettingResult,
+    gameType
+} from "../models/sample";
+import { pointChangePersistance } from "../repositories";
 import {
     saveBetting,
     getBetting,
+    updateBetting,
     saveGameResult,
     getGameResult,
     updateGameResult,
-    saveMiniGameTimes,
-    getTimes,
-    saveMiniGamePoint,
-checkBettingResult } from "../repositories/games";
+    checkBettingResult, 
+    totalEarnedPointResult,
+} from "../repositories/games";
+import { getUser } from "../repositories/users";
 
 //사용자 베팅 저장시 bettingId 반환
 export const saveBettingData = async (
     bettingData: BettingRequest, 
     userId: number, 
-    gameType: string
+    gameType: gameType
 ): Promise<string> => {
     let bettingId: string;
 
     try {
         bettingId = (await saveBetting(bettingData, userId, gameType)).toString();
+        const point = parseInt(bettingData.bettingPoint) * -1;
+        const pointChangeResult = await pointChangePersistance(userId, point);
+
     } catch (e) {
         throw e;
     }
@@ -48,8 +55,36 @@ export const getBettingData = async (userId: number, gameType: string): Promise<
     return bettingData
 };
 
+//사용자 베팅 수정
+export const updateBettingData = async (
+    bettingData: BettingRequest, 
+    userId: number, 
+    gameType: gameType
+) => {
+    let updatedData: BettingRequest | null;
+
+    try {
+        const lastBettingData = await getBetting(userId, gameType);
+        if (!lastBettingData) {
+            throw new Error("Betting data not found");
+        }
+        const lastPoint = parseInt(lastBettingData.bettingPoint);
+        let pointChangeResult = await pointChangePersistance(userId, lastPoint);
+
+        updatedData = await updateBetting(bettingData, userId, gameType);
+        pointChangeResult = await pointChangePersistance(userId, parseInt(bettingData.bettingPoint) * -1);
+
+        if (!bettingData) {
+            throw new Error("Betting data not found");
+        }
+    } catch (e) {
+        throw e;
+    }
+    return updatedData;
+};
+
 //게임 결과 저장
-export const saveGameResultData = async (gameType: string, gameData: GameResult): Promise<string> => {
+export const saveGameResultData = async (gameType: gameType, gameData: GameResult): Promise<string> => {
     let resultGameType: string;
 
     try {
@@ -62,7 +97,7 @@ export const saveGameResultData = async (gameType: string, gameData: GameResult)
 };
 
 //게임 결과 조회
-export const getGameResultData = async (gameType: string): Promise<GameResult> => {
+export const getGameResultData = async (gameType: gameType): Promise<GameResult> => {
     let gameResult: GameResult | null;
 
     try {
@@ -78,7 +113,7 @@ export const getGameResultData = async (gameType: string): Promise<GameResult> =
 };
 
 //게임 결과 수정
-export const updateGameResultData = async (gameType: string, gameData: GameResultUpdate): Promise<GameResult> => {
+export const updateGameResultData = async (gameType: gameType, gameData: GameResultUpdate): Promise<GameResult> => {
     let updatedGameResult: GameResult;
 
     try {
@@ -89,77 +124,35 @@ export const updateGameResultData = async (gameType: string, gameData: GameResul
 
     return updatedGameResult;
 };
-//미니게임 횟수 반영
-export const saveMiniGameTimesData = async (times: number, userId: number): Promise<string> => {
-    let updatedTimes: number;
 
-    try {
-        updatedTimes = await saveMiniGameTimes(times, userId)
-        if (updatedTimes > 3) {
-            throw new Error("Times is over 3");
-        }
-    } catch (e) {
-        throw e;
-    }
-    
-    return updatedTimes.toString();
-};
-
-//미니게임 횟수 조회
-export const getTimesData = async (userId: number): Promise<number | null> => {
-    let times: number | null;
-    try {
-        times = await getTimes(userId);
-        if (!times) {
-            throw new Error("Times result not found");
-        }
-    } catch (e) {
-        throw e;
-    }
-
-    return times;
-};
-
-//미니게임 결과 포인트에 반영
-export const saveMiniGamePointData = async (userId: number): Promise<string> => {
-    let updatedPoint: string;
-
-    try {
-        updatedPoint = (await saveMiniGamePoint(userId)).toString();
-    } catch (e) {
-        throw e;
-    }
-
-    return updatedPoint;
-};
 
 //사용자 베팅 결과_점수차 계산 및 분류
-const classifyScoreDifference = (gameType: string, KoreaScore: number, YonseiScore: number): number => {
+const classifyScoreDifference = (gameType: gameType, KoreaScore: number, YonseiScore: number): number => {
     const difference = Math.abs(KoreaScore - YonseiScore);
 
     switch (gameType) {
-        case '야구':
-            if (difference >= 1 && difference <= 2) return 0;
-            if (difference >= 3 && difference <= 4) return 1;
-            if (difference >= 5 && difference <= 7) return 2;
+        case 'baseball':
+            if (difference == 1) return 0;
+            if (difference == 2) return 1;
+            if (difference == 3) return 2;
             return 3;
         
-        case '농구':
+        case 'basketball':
             if (difference >= 1 && difference <= 5) return 0;
             if (difference >= 6 && difference <= 10) return 1;
             if (difference >= 11 && difference <= 15) return 2;
             return 3;
-        case '빙구':
+        case 'hockey':
             if (difference == 1) return 0;
             if (difference == 2) return 1;
             if (difference == 3) return 2;
             return 3;
-        case '축구':
+        case 'soccer':
             if (difference == 1) return 0;
             if (difference == 2) return 1;
             if (difference == 3) return 2;
             return 3;
-        case '럭비':
+        case 'rugby':
             if (difference >= 1 && difference <= 5) return 0;
             if (difference >= 6 && difference <= 10) return 1;
             if (difference >= 11 && difference <= 15) return 2;
@@ -171,36 +164,54 @@ const classifyScoreDifference = (gameType: string, KoreaScore: number, YonseiSco
 };
 
 // 사용자 베팅 결과_결과 확인
-export const checkBettingResultData = async (userId: number, gameType: string): Promise<BettingResultResponse> => {
+export const checkBettingResultData = async (userId: number, gameType: gameType): Promise<BettingResultResponse> => {
     try {
         const betting = await getBettingData(userId, gameType);
         const gameResult = await getGameResultData(gameType);
-        
-        const winner = gameResult.KoreaScore > gameResult.YonseiScore ? 'Korea' :
-              gameResult.KoreaScore < gameResult.YonseiScore ? 'Yonsei' : 'draw';
 
+        //승자 확인
+        const winner = gameResult.KoreaScore > gameResult.YonseiScore ? 'KOREA' :
+              gameResult.KoreaScore < gameResult.YonseiScore ? 'YONSEI' : 'DRAW';
+        
+        //점수차 및 분류
         const scoreCase = classifyScoreDifference(gameType, gameResult.KoreaScore, gameResult.YonseiScore);
 
         if (scoreCase === -1) {
             throw new Error("Unknown GameType");
         }
 
-        let success = false;
-        let earnedPoint = 0;
+        let success: boolean;
+        let earnedPoint: number;
 
         if (betting.predictedWinner === winner && Number(betting.predictedScore) === scoreCase) {
             success = true;
-            earnedPoint = betting.bettingPoint * 3;
+            earnedPoint = parseInt(betting.bettingPoint) * 3;
+        }else{
+            success = false;
+            earnedPoint = 0;
         }
 
-        const bettingResponse: BettingResultResponse = {
+        const bettingResponse: BettingResult = {
             success,
-            earnedPoint,
-            totalPoint: betting.bettingPoint + earnedPoint,
+            earnedPoint
         };
 
         const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);
-        return updatedBettingResponse;
+        const result = {
+            ...updatedBettingResponse,
+            winner,
+            difference: Math.abs(gameResult.KoreaScore - gameResult.YonseiScore)
+        }
+        return result;
+    } catch (e) {
+        throw e;
+    }
+};
+
+export const totalEarnedPointData = async (userId: number, totalEarnedPoint: number) => {
+    try {
+        const result = await totalEarnedPointResult(userId, totalEarnedPoint);
+        return result;
     } catch (e) {
         throw e;
     }

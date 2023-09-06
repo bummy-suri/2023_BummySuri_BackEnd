@@ -1,12 +1,17 @@
 export type TeamType = 'YONSEI' | 'KOREA';
+export type gameType = 'baseball' | 'basketball' | 'hockey' | 'soccer' | 'rugby';
 
 export type UserType = {
-    id: number;
     userCardAddress: string;
-    name: string;
-    univ: TeamType;
-    NFT_image?: string | null;
+    univ?: TeamType | null;
     totalPoint: number;
+    isMinted: boolean;
+    isTaken: boolean;
+    pointDate: Date;
+}
+
+export interface UserTypeIncludeID extends UserType {
+    id: number;
 }
 
 export type TokenType = {
@@ -18,8 +23,8 @@ export type BettingRequest = {
     selected: boolean;
     playing: string;
     predictedWinner: string;
-    predictedScore: string;
-    bettingPoint: number;
+    predictedScore?: string | null;
+    bettingPoint: string;
 }
 
 export type GameResult = {
@@ -35,8 +40,80 @@ export type GameResultUpdate = {
 };
 
 //베팅 결과 확인
+export type BettingResult = {
+    success: boolean;
+    earnedPoint: number;
+
+}
+
 export type BettingResultResponse = {
     success: boolean;
     earnedPoint: number;
+    winner: string;
+    difference: number;
+}
+
+export type TotalEarnedPoint = {
+    totalPoint: number;   
+    isTaken: boolean;
+}
+
+export type NFTCountType = {
+    team: TeamType;
+    count: number;
+}
+
+export type MiniGameType = {
+    miniGameType: string;
+    quiz: boolean;
+    times: number;
     totalPoint: number;
+}
+
+export type GetMiniGameType = {
+    quiz: boolean;
+    times: number;
+}
+
+export type MiniGameResponse = {
+    times: number;
+    quiz: boolean;
+    totalPoint: number;
+}
+
+export type UserRankingType = {
+    userCardAddress: string;
+    totalPoint: number;
+    image: string;
+  };
+  
+export type NFTMetaData = {
+    owner: number,
+	contractAddr: string,
+	tokenId: string,
+	image: string,
+
+}
+
+export type MetaDataType = {
+    name: string;
+    description: string;
+    image: string;
+    animation_url: URL;   
+    background_color: string;
+    sendable: boolean;
+    group_name: string;
+    group_icon: URL;
+    hashtags: string;
+    layout: string;
+    external_link: URL;
+}
+
+export type UserRankingListType = UserRankingType[];
+
+
+export type NFTType = {
+    team:        TeamType;
+    cardAddress: string;
+    tokenId:     number;
 }

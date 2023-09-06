@@ -1,47 +1,64 @@
 import { Router } from 'express';
 import { 
-    registerController, 
     getUserController, 
     deleteUserController,
     saveBettingController, 
     getBettingController,
+    updateBettingController,
     checkBettingResultController,
     createGameController, 
     getGameResultController, 
     updateGameResultController,
-    changeMiniGamePointsController,
-    miniGameTimesController,
-    getMiniGameTimesController,
-    authenticateController
+    saveMiniGameResultController,
+    authenticateController,
+    totalEarnedPointsController,
+    getNFTCountController,
+    getTop10RankingController,
+    getUserRankingController,
+    getMiniGameResultController,
+    mintingController,
+    saveNFTDataController,
+    getMetaDataController
 } from '../controllers';
 
+export const nonAuthRouter = Router();
 
+nonAuthRouter.post('/users', authenticateController);
+nonAuthRouter.get('/metadata/:contractAddr/:token_id');
 
 export const authRouter = Router();
 
 // User routes
-authRouter.get('/user', getUserController);
-authRouter.delete('/user', deleteUserController);
+authRouter.get('/users', getUserController);
+authRouter.delete('/users', deleteUserController);
+authRouter.post('/mint/:teamType', mintingController);
+
+export const mintedAuthRouter = Router();
 
 // Betting routes
-authRouter.post('/betting/:gameType', saveBettingController);
-authRouter.get('/betting/:gameType', getBettingController);
+mintedAuthRouter.post('/betting/:gameType', saveBettingController);
+mintedAuthRouter.get('/betting/:gameType', getBettingController);
+mintedAuthRouter.put('/betting/:gameType', updateBettingController);
 
 // BettingResult routes
-authRouter.post('/bettingResult/:gameType', checkBettingResultController);
+mintedAuthRouter.get('/bettingResult/:gameType', checkBettingResultController);
+mintedAuthRouter.put('/bettingResult', totalEarnedPointsController);
 
 // Game routes
-authRouter.post('/game/:gameType', createGameController);
-authRouter.get('/game/:gameType', getGameResultController);
-authRouter.put('/game/:gameType', updateGameResultController);
+mintedAuthRouter.post('/game/:gameType', createGameController);
+mintedAuthRouter.get('/game/:gameType', getGameResultController);
+mintedAuthRouter.put('/game/:gameType', updateGameResultController);
 
 // MiniGame routes
-authRouter.post('/minigame/points', changeMiniGamePointsController);
-authRouter.post('/minigame/times', miniGameTimesController);
-authRouter.get('/minigame/times', getMiniGameTimesController);
+mintedAuthRouter.put('/minigame', saveMiniGameResultController);
+mintedAuthRouter.get('/minigame', getMiniGameResultController);
+
+//Mint routes
+mintedAuthRouter.get('/mint/:teamType', getNFTCountController);
+mintedAuthRouter.post('/mint', saveNFTDataController);
+
+//Ranking routes
+mintedAuthRouter.get('/ranking/top10', getTop10RankingController);
+mintedAuthRouter.get('/ranking/user', getUserRankingController);
 
 
-
-export const nonAuthRouter = Router();
-
-nonAuthRouter.post('/user', authenticateController);

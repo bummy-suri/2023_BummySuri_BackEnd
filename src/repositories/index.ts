@@ -1,18 +1,33 @@
-import { createUser, getUser, deleteUser } from "./users";
-import { saveBetting, getBetting, saveGameResult, getGameResult, updateGameResult, saveMiniGameTimes, getTimes, saveMiniGamePoint } from "./games";
-
+import { createUser, getUserByCardAddress, getUser, deleteUser, updateUser } from "./users";
+import { saveBetting, getBetting, updateBetting, saveGameResult, getGameResult, updateGameResult, totalEarnedPointResult, pointChange } from "./games";
+import { getTop10UsersByTotalPoint, getUserRankingById } from "./ranking";
+import { saveMiniGameResult, getMiniGame } from "./miniGames";
+import { getNFTCount, updateNFTCount, getMetaData, saveNFTData } from "./minting";
 export {
   createUser as createUserPersistence,
+  getUserByCardAddress as getUserByCardAddressPersistence,
   getUser as getUserPersistance,
   deleteUser as deleteUserUserPersistance,
+  updateUser as updateUserPersistance
 }
 export{
   saveBetting as saveBettingPersistence,
   getBetting as getBettingPersistence,
+  updateBetting as updateBettingPersistence,
   saveGameResult as saveGameResultPersistence,
   getGameResult as getGameResultPersistence,
   updateGameResult as updateGameResultPersistance,
-  saveMiniGameTimes as saveMiniGameTimesPersistence,
-  getTimes as getTimesPersistence,
-  saveMiniGamePoint as saveMiniGamePointPersistence
+  totalEarnedPointResult as totalEarnedPointsPersistance,
+  saveMiniGameResult as saveMiniGameResultPersistance,
+  getMiniGame as getMiniGamePersistance,
+  getTop10UsersByTotalPoint as getTop10UsersByTotalPointPersistance,
+  getUserRankingById as getUserRankingByIdPersistance,
+  pointChange as pointChangePersistance
+  
+}
+export{
+  getNFTCount as getNFTCountPersistance,
+  updateNFTCount as updateNFTCountPersistance,
+  getMetaData as getMetaDataPersistance,
+  saveNFTData as saveNFTDataPersistance
 }

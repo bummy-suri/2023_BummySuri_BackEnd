@@ -2,112 +2,67 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-// import { changeMiniGamePointsService } from "../services"; // 추후에 서비스 로직을 추가할 경우
+import { saveMiniGameResultService, getMiniGameResultService } from "../services";
 
-export const miniGamePointChangeRequestSchema = z.object({
-    results: z.string(),
-});
 
-export const miniGameTimesChangeRequestSchema = z.object({
-    times: z.number(),
+export const miniGameRequestSchema = z.object({
+    result: z.enum(["win", "lose"]),
+    miniGameType: z.enum(["가위바위보", "그림 퀴즈"])
 });
-export interface getTimesResponse {
+export interface getMiniGameResultResponse {
     times: number;
+    quiz: boolean;
+    totalPoint: number;
 }
-// 미니게임 횟수 POST
-export const miniGameTimes = async (req: Request, res: Response) => {
+
+export const saveMiniGameResult = async (req: Request, res: Response) => {
     try {
         const userId = req.userid;
-        const times = miniGameTimesChangeRequestSchema.parse(req.body);
-        // const result = miniGameTimesService(userId, times);
-        const dummyTimes = 1;
-        res.json({
-            times: dummyTimes
-        });
-    } catch (error) {
-            if (error instanceof ZodError) {
-                res.status(400).send(error.message);
-                return;
-            }
-            if (error instanceof PrismaError) {
-                res.status(503).send(error.message);
-                return;
-            }
-            if (error instanceof AxiosError) {
-                res.status(502).send(error.message);
-                return;
-            }
-            if (error instanceof Error) {
-                res.status(500).send(error.message);
-                return;
-            }        
-        }
-    };
-
-//미니게임 횟수 GET
-export const getTimes = (req: Request, res: Response) => {
-    try {
-        const userid = req.userid
-        // const result = getTimesService(userId;
-        // dummuData
-        const dummyUserData = {
-            times: 1
-        };
-
-        res.send(dummyUserData as getTimesResponse);
-
-
+        const { result, miniGameType } = miniGameRequestSchema.parse(req.body);
+        const updatedData = await saveMiniGameResultService(userId, result, miniGameType);
+        res.json(updatedData);
     } catch (error) {
         if (error instanceof ZodError) {
             res.status(400).send(error.message);
-            return;
+            return
         }
         if (error instanceof PrismaError) {
             res.status(503).send(error.message);
-            return;
+            return
         }
         if (error instanceof AxiosError) {
             res.status(502).send(error.message);
-            return;
+            return
         }
         if (error instanceof Error) {
             res.status(500).send(error.message);
-            return;
-        }        
+            return
+        }      
     }
 };
 
-// 미니게임 포인트 변동 POST
-export const changeMiniGamePoints = async (req: Request, res: Response) => {
-    try {
+export const getMiniGame = async (req: Request, res: Response) => {
+    try{
         const userId = req.userid;
-        
-        // const totalPoint = await changeMiniGamePointsService(userId);
-
-        // 더미 데이터로 응답
-        const dummyTotalPoint = 100;
-
-        res.json({
-            totalPoint: dummyTotalPoint
-        });
-
-    } catch (error) {
+        const currentDate = new Date().toISOString().split('T')[0];
+        const miniGame = await getMiniGameResultService(userId, currentDate);
+        res.json(miniGame);
+    } catch (error){
         if (error instanceof ZodError) {
             res.status(400).send(error.message);
-            return;
+            return
         }
         if (error instanceof PrismaError) {
             res.status(503).send(error.message);
-            return;
+            return
         }
         if (error instanceof AxiosError) {
             res.status(502).send(error.message);
-            return;
+            return
         }
         if (error instanceof Error) {
             res.status(500).send(error.message);
-            return;
-        }        
+            return
+        }      
     }
 };
-

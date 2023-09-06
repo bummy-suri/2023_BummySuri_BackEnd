@@ -5,20 +5,33 @@ export {
     deleteUserData as deleteUserDataService
 };
 
-import { saveBettingData, getBettingData, saveGameResultData, getGameResultData, updateGameResultData, saveMiniGameTimesData,getTimesData ,saveMiniGamePointData, checkBettingResultData } from "./games";
+import { saveBettingData, getBettingData, updateBettingData, saveGameResultData, getGameResultData, updateGameResultData, checkBettingResultData, totalEarnedPointData} from "./games";
+import {getTop10Rankings, getUserRanking } from "./ranking";
+import { saveMiniGameResultData, getMiniGameResultData } from "./miniGames";
 export {
-    saveBettingData as saveBettingSerVice,
+    saveBettingData as saveBettingService,
     getBettingData as getBettingService,
+    updateBettingData as updateBettingService,
     saveGameResultData as saveGameResultService,
     getGameResultData as getGameResultService,
     updateGameResultData as updateGameResultService,
-    saveMiniGamePointData as saveMiniGamePointService,
-    saveMiniGameTimesData as saveMiniGameTimesService,
-    getTimesData as getTimesService,
-    checkBettingResultData as checkBettingResultService
+    saveMiniGameResultData as saveMiniGameResultService,
+    getMiniGameResultData as getMiniGameResultService,
+    checkBettingResultData as checkBettingResultService,
+    totalEarnedPointData as totalEarnedPointService,
+    getTop10Rankings as getTop10RankingsService,
+    getUserRanking as getUserRankingService
 };
 
 import { grantUser } from "./register";
 export {
     grantUser as grantUserService
+};
+
+import { getNFTCountData, minting, getMetaData, saveNFTData } from "./minting";
+export {
+    getNFTCountData as getNFTCountService,
+    minting as mintingService,
+    getMetaData as getMetaDataService,
+    saveNFTData as saveNFTDataService
 };
