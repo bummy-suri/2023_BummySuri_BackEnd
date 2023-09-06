@@ -73,7 +73,7 @@ model NFTCount {
 model Issued {
   ownerid      Int
   tokenid      Int
-  contractAddr TeamType
+  contractAddr String
   Token        Token @relation(fields: [tokenid, contractAddr], references: [id, contractAddr])
   User         User  @relation(fields: [ownerid], references: [id])
 
@@ -82,7 +82,7 @@ model Issued {
 
 model Token {
   id           Int       @id
-  contractAddr TeamType
+  contractAddr String
   image        String
   owned        Boolean
   attributes   Attribute[]

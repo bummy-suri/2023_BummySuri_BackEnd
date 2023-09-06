@@ -46,7 +46,7 @@ export const updateNFTCount = async (team: TeamType): Promise<number> => {
     });
 };
 
-export const getMetaData = async (contractAddress: TeamType, tokenId: number) => {
+export const getMetaData = async (contractAddress: string, tokenId: number) => {
     const tokenData = await prisma.token.findFirst({
         where: {
             id: tokenId,
@@ -65,16 +65,14 @@ export const getMetaData = async (contractAddress: TeamType, tokenId: number) =>
 };
 
 
-export const getAvailableTokenId = async (team: TeamType): Promise<number> => {
+export const getAvailableTokenId = async (contractAddr: string): Promise<number> => {
   
     const availableToken = await prisma.token.findFirst({
       where: {
-        contractAddr: team,
+        contractAddr: contractAddr,
         owned: false,
       },
     });
-
-
   
     if (!availableToken) {
       throw new Error("No available token found");
@@ -83,13 +81,13 @@ export const getAvailableTokenId = async (team: TeamType): Promise<number> => {
     return availableToken.id;
   }
 
-  export const createIssuedRecord = async (userId: number, tokenId: number, team: TeamType): Promise<void> => {
+  export const createIssuedRecord = async (userId: number, tokenId: number, contractAddr: string): Promise<void> => {
 
     await prisma.issued.create({
       data: {
         ownerid: userId,
         tokenid: tokenId,
-        contractAddr: team,
+        contractAddr: contractAddr,
       },
     }).catch((e) => {
       throw new PrismaError(e?.message);
