@@ -31,9 +31,10 @@ export {
     updateGameResult as updateGameResultController
  };
 
-import { saveMiniGameResultController } from "./miniGame";
+import { saveMiniGameResult, getMiniGame } from "./miniGame";
 export {
-    saveMiniGameResultController as saveMiniGameResultController
+    saveMiniGameResult as saveMiniGameResultController,
+    getMiniGame as getMiniGameResultController
  };
 
  import { getNFTCount} from "./mint";

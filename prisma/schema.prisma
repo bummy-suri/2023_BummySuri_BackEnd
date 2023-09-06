@@ -65,3 +65,11 @@ model NFTCount {
   team        TeamType @id
   count       Int      @default(0)
 }
+
+model NftMetadata {
+  id           Int     @id @default(autoincrement())
+  owner        String
+  contractAddr String
+  tokenId      String
+  imageHash    String
+}

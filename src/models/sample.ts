@@ -69,6 +69,11 @@ export type MiniGameType = {
     totalPoint: number;
 }
 
+export type GetMiniGameType = {
+    quiz: boolean;
+    times: number;
+}
+
 export type MiniGameResponse = {
     times: number;
     quiz: boolean;
