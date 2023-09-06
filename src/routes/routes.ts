@@ -14,12 +14,14 @@ import {
     totalEarnedPointsController,
     getNFTCountController,
     getTop10RankingController,
-    getUserRankingController
+    getUserRankingController,
+    getMiniGameResultController
 } from '../controllers';
 
 export const nonAuthRouter = Router();
 
 nonAuthRouter.post('/users', authenticateController);
+nonAuthRouter.get('/metadata/:contract_addr/:token_id');
 
 export const authRouter = Router();
 
@@ -45,9 +47,10 @@ mintedAuthRouter.put('/game/:gameType', updateGameResultController);
 
 // MiniGame routes
 mintedAuthRouter.put('/minigame', saveMiniGameResultController);
+mintedAuthRouter.get('/minigame', getMiniGameResultController);
 
 //Mint routes
-mintedAuthRouter.get('/mint', getNFTCountController);
+mintedAuthRouter.get('/mint/:teamType', getNFTCountController);
 
 //Ranking routes
 mintedAuthRouter.get('/ranking/top10', getTop10RankingController);

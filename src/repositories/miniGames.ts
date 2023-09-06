@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaError } from "../utils/errors";
-import { MiniGameType, MiniGameResponse } from "../models/sample";
+import { MiniGameResponse , GetMiniGameType} from "../models/sample";
 
 const prisma = new PrismaClient();
 
@@ -16,8 +16,12 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
     if (!user) throw new Error("User not found");
 
     let miniGame = await prisma.miniGame.findFirst({
-        where: { userId, date: currentDate }
+        where: {
+            userId,
+            date: currentDate
+        }
     });
+
     let updatedTimes : number;
     let updatedQuiz : boolean;
 
@@ -27,14 +31,17 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
             data: {
                 userId: userId,
                 date: currentDate,
-                times: minigameType === "가위바위보" ? 1 : 0,
-                quiz: minigameType !== "가위바위보" ? false : true
+                times: 0,
+                quiz: true
             }
         });
     }
 
     miniGame = await prisma.miniGame.findFirst({
-        where: { userId, date: currentDate }
+        where: {
+            userId,
+            date: currentDate
+        }
     });
 
     if (!miniGame)
@@ -50,6 +57,7 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
     }
 
     const updatedTotalPoint = user.totalPoint + (result === "win" ? POINTS_FOR_WIN : POINTS_FOR_LOSE);
+    const pointDate = new Date();
 
     // Update MiniGame
     await prisma.miniGame.update({
@@ -60,8 +68,43 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
     // Update User totalPoint
     await prisma.user.update({
         where: { id: userId },
-        data: { totalPoint: updatedTotalPoint }
+        data: { totalPoint: updatedTotalPoint,
+                pointDate: pointDate
+         }
     });
 
     return { times: updatedTimes, totalPoint: updatedTotalPoint, quiz: updatedQuiz };
 };
+
+export const getMiniGame = async (userId: number, date: string): Promise<GetMiniGameType> => {
+    let miniGame = await prisma.miniGame.findFirst({
+        where: {
+            userId,
+            date
+        }
+    });
+    const currentDate = new Date().toISOString().split('T')[0];
+    if (!miniGame) {
+        const createdMiniGame = await prisma.miniGame.create({
+            data: {
+                userId: userId,
+                date: currentDate,
+                times: 0,
+                quiz: true
+            }
+        });
+    }
+
+    miniGame = await prisma.miniGame.findFirst({
+        where: {
+            userId,
+            date
+        }
+    });
+
+    if(!miniGame)
+        throw new Error("MiniGame not found")
+
+
+    return { times: miniGame.times, quiz: miniGame.quiz };
+}

@@ -14,17 +14,16 @@ declare global {
 
 
 export const authenticateMiddleware = (req: Request, res: Response, next: NextFunction) => {
-
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-        return res.sendStatus(401);
+        return res.status(401).json({ message: 'Authorization token is missing.' });
     }
 
     const { ok, userid } = parseToken(token);
 
     if (!ok) {
-        return res.sendStatus(403);
+        return res.status(403).json({ message: 'Invalid or expired authorization token.' });
     }
 
     req.userid = userid;
@@ -33,17 +32,16 @@ export const authenticateMiddleware = (req: Request, res: Response, next: NextFu
 
 
 export const mintAuthenticateMiddleware = (req: Request, res: Response, next: NextFunction) => {
-
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-        return res.sendStatus(401);
+        return res.status(401).json({ message: 'Authorization token is missing.' });
     }
 
     const { ok, userid, isMinted } = parseToken(token);
 
     if (!ok) {
-        return res.sendStatus(403);
+        return res.status(403).json({ message: 'Invalid or expired authorization token.' });
     }
 
     next();

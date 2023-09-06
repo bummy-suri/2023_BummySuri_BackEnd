@@ -17,6 +17,7 @@ import {
     checkBettingResult, 
     totalEarnedPointResult,
 } from "../repositories/games";
+import { getUser } from "../repositories/users";
 
 //사용자 베팅 저장시 bettingId 반환
 export const saveBettingData = async (
@@ -167,28 +168,32 @@ export const checkBettingResultData = async (userId: number, gameType: gameType)
     try {
         const betting = await getBettingData(userId, gameType);
         const gameResult = await getGameResultData(gameType);
-        
+
+        //승자 확인
         const winner = gameResult.KoreaScore > gameResult.YonseiScore ? 'KOREA' :
               gameResult.KoreaScore < gameResult.YonseiScore ? 'YONSEI' : 'DRAW';
-
+        
+        //점수차 및 분류
         const scoreCase = classifyScoreDifference(gameType, gameResult.KoreaScore, gameResult.YonseiScore);
 
         if (scoreCase === -1) {
             throw new Error("Unknown GameType");
         }
 
-        let success = false;
-        let earnedPoint = 0;
+        let success: boolean;
+        let earnedPoint: number;
 
         if (betting.predictedWinner === winner && Number(betting.predictedScore) === scoreCase) {
             success = true;
             earnedPoint = parseInt(betting.bettingPoint) * 3;
+        }else{
+            success = false;
+            earnedPoint = 0;
         }
 
         const bettingResponse: BettingResult = {
             success,
-            earnedPoint,
-            totalPoint: parseInt(betting.bettingPoint) + earnedPoint,
+            earnedPoint
         };
 
         const updatedBettingResponse = await checkBettingResult(bettingResponse, userId, gameType);

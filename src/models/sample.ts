@@ -6,6 +6,8 @@ export type UserType = {
     univ?: TeamType | null;
     totalPoint: number;
     isMinted: boolean;
+    isTaken: boolean;
+    pointDate: Date;
 }
 
 export interface UserTypeIncludeID extends UserType {
@@ -41,14 +43,12 @@ export type GameResultUpdate = {
 export type BettingResult = {
     success: boolean;
     earnedPoint: number;
-    totalPoint: number;
 
 }
 
 export type BettingResultResponse = {
     success: boolean;
     earnedPoint: number;
-    totalPoint: number;
     winner: string;
     difference: number;
 }
@@ -69,6 +69,11 @@ export type MiniGameType = {
     totalPoint: number;
 }
 
+export type GetMiniGameType = {
+    quiz: boolean;
+    times: number;
+}
+
 export type MiniGameResponse = {
     times: number;
     quiz: boolean;
@@ -80,4 +85,26 @@ export type UserRankingType = {
     totalPoint: number;
   };
   
+export type NFTMetaData = {
+    owner: number,
+	contractAddr: string,
+	tokenId: string,
+	imageHash: string,
+
+}
+
+export type MetaDataType = {
+    name: string;
+    description: string;
+    image: URL;
+    animation_url: URL;   
+    background_color: string;
+    sendable: boolean;
+    group_name: string;
+    group_icon: URL;
+    hashtags: string;
+    layout: string;
+    external_link: URL;
+}
+
   export type UserRankingListType = UserRankingType[];

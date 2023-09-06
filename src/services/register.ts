@@ -20,7 +20,6 @@ export const mintUser = async (userid: number, univ: TeamType): Promise<TokenTyp
     } catch (e) {
         throw e;
     }
-
     return {
         access: token,
     }
@@ -33,9 +32,10 @@ export const grantUser = async (requestKey: string) : Promise<TokenType> => {
         const address = await handleApp2AppResultStateAPIs(requestKey);
         
         let {userid, exists} = await getUserByCardAddress(address);
+        const currentDate = new Date();
 
         if (!exists) {
-            userid = await createUser({userCardAddress: address, totalPoint: 2000, isMinted: false });
+            userid = await createUser({userCardAddress: address, totalPoint: 2000, isMinted: false, isTaken: false, pointDate: currentDate, univ: null});
         }
 
         let user = await getUser(userid);

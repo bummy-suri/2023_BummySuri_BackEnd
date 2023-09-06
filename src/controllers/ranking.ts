@@ -9,7 +9,22 @@ export const getTop10Ranking= async (req: Request, res: Response) => {
       const top10Rankings = await getTop10RankingsService();
       res.status(200).json(top10Rankings);
     } catch (error) {
-      handleError(error, res);
+      if (error instanceof ZodError) {
+          res.status(400).send(error.message);
+          return
+      }
+      if (error instanceof PrismaError) {
+          res.status(503).send(error.message);
+          return
+      }
+      if (error instanceof AxiosError) {
+          res.status(502).send(error.message);
+          return
+      }
+      if (error instanceof Error) {
+          res.status(500).send(error.message);
+          return
+      }      
     }
   };
   
@@ -19,23 +34,22 @@ export const getTop10Ranking= async (req: Request, res: Response) => {
       const ranking = await getUserRankingService(userId);
       res.status(200).json({ ranking });
     } catch (error) {
-      handleError(error, res);
+      if (error instanceof ZodError) {
+          res.status(400).send(error.message);
+          return
+      }
+      if (error instanceof PrismaError) {
+          res.status(503).send(error.message);
+          return
+      }
+      if (error instanceof AxiosError) {
+          res.status(502).send(error.message);
+          return
+      }
+      if (error instanceof Error) {
+          res.status(500).send(error.message);
+          return
+      }      
     }
-  };
-  
-  const handleError = (error: any, res: Response) => {
-    if (error instanceof ZodError) {
-      res.status(400).json({ message: error.message });
-      return;
-    }
-    if (error instanceof PrismaError) {
-      res.status(503).json({ message: error.message });
-      return;
-    }
-    if (error instanceof AxiosError) {
-      res.status(502).json({ message: error.message });
-      return;
-    }
-    res.status(500).json({ message: error.message });
   };
 

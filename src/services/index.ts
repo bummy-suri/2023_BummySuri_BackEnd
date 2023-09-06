@@ -7,7 +7,7 @@ export {
 
 import { saveBettingData, getBettingData, updateBettingData, saveGameResultData, getGameResultData, updateGameResultData, checkBettingResultData, totalEarnedPointData} from "./games";
 import {getTop10Rankings, getUserRanking } from "./ranking";
-import { saveMiniGameResultData } from "./miniGames";
+import { saveMiniGameResultData, getMiniGameResultData } from "./miniGames";
 export {
     saveBettingData as saveBettingService,
     getBettingData as getBettingService,
@@ -16,6 +16,7 @@ export {
     getGameResultData as getGameResultService,
     updateGameResultData as updateGameResultService,
     saveMiniGameResultData as saveMiniGameResultService,
+    getMiniGameResultData as getMiniGameResultService,
     checkBettingResultData as checkBettingResultService,
     totalEarnedPointData as totalEarnedPointService,
     getTop10Rankings as getTop10RankingsService,
@@ -27,8 +28,10 @@ export {
     grantUser as grantUserService
 };
 
-import { getNFTCountData, minting } from "./mint";
+import { getNFTCountData, minting, getMetaData, saveNFTData } from "./minting";
 export {
     getNFTCountData as getNFTCountService,
-    minting as mintingService
+    minting as mintingService,
+    getMetaData as getMetaDataService,
+    saveNFTData as saveNFTDataService
 };

@@ -140,7 +140,7 @@ export const updateGameResult = async (gameType: string, gameData: GameResultUpd
     });
 }
 
-//베팅 결과 확인 저장 및 포인트 반영
+//베팅 결과 확인 저장
 export const checkBettingResult = async (BettingResultData: BettingResult, userId: number, gameType: string): Promise<BettingResult> => {
     return prisma.betting.update({
             where: {
@@ -153,21 +153,10 @@ export const checkBettingResult = async (BettingResultData: BettingResult, userI
                 success: BettingResultData.success,
                 earnedPoint: BettingResultData.earnedPoint
             }
-        }).then(async (result) => {
-
-            await prisma.user.update({
-                where: {
-                    id: userId
-                },
-                data: {
-                    totalPoint: BettingResultData.totalPoint
-                }
-            });
-
+        }).then((result) => {
             return {
                 success: result.success,
                 earnedPoint: result.earnedPoint,
-                totalPoint: BettingResultData.totalPoint
             };
         }).catch((e) => {
             throw new PrismaError(e.message);
@@ -189,12 +178,14 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
         }
 
         const totalPoint = user.totalPoint + totalEarnedPoint;
+        const currentDate = new Date();
         
         return prisma.user.update({
             where: { id: userId },
             data: {
                 totalPoint: totalPoint,
-                isTaken: true
+                isTaken: true,
+                pointDate: currentDate
             }
         });
     })
@@ -225,13 +216,15 @@ export const pointChange = async (userId: number, point: number): Promise<number
     if (user.totalPoint + point < 0) {
         throw new PrismaError("Not enough points");
     }
+    const currentDate = new Date();
 
     return prisma.user.update({
         where: { id: userId },
         data: {
             totalPoint: {
                 increment: point
-            }
+            },
+            pointDate : currentDate
         }
     }).then((result) => {
         return result.totalPoint;
