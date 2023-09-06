@@ -73,14 +73,15 @@ export const getAvailableTokenId = async (team: TeamType): Promise<number> => {
     //     owned: false,
     //   },
     // });
-    const availableToken = {id:0}
+
 
   
-    if (!availableToken) {
-      throw new Error("No available token found");
-    }
+    // if (!availableToken) {
+    //   throw new Error("No available token found");
+    // }
   
-    return availableToken.id;
+    // return availableToken.id;
+    return 0;
   }
 
   export const createIssuedRecord = async (userId: number, tokenId: number, team: TeamType): Promise<void> => {
