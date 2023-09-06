@@ -108,4 +108,11 @@ export type MetaDataType = {
     external_link: URL;
 }
 
-  export type UserRankingListType = UserRankingType[];
+export type UserRankingListType = UserRankingType[];
+
+
+export type NFTType = {
+    team:        TeamType;
+    tokenId:     string;
+    cardAddress: string;
+}
