@@ -1,6 +1,6 @@
 import { TeamType } from "@prisma/client";
-import { MetaDataType, NFTCountType, NFTMetaData, } from "../models/sample";
-import { getUserPersistance, getNFTCountPersistance , updateNFTCountPersistance, updateUserPersistance, getMetaDataPersistance, saveNFTDataPersistance, getAvailableTokenIdPersistance, createIssuedRecordPersistance} from "../repositories";
+import { MetaDataType, NFTCountType,  } from "../models/sample";
+import { getUserPersistance, getNFTCountPersistance , updateNFTCountPersistance, updateUserPersistance, getMetaDataPersistance, getAvailableTokenIdPersistance, createIssuedRecordPersistance} from "../repositories";
 import { generateToken } from "./auth";
 import { acquireNFT } from "../apis/kas";
 
@@ -33,7 +33,7 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
             if (!userData) {
                 throw new Error(`userCardAddress not found for user ${userid}`);
             }
-            
+
             //isMinted check
             const userCardAddress = userData.userCardAddress;
             if (userData.isMinted === true) {
@@ -68,20 +68,8 @@ export const minting = async (userid: number ,team: TeamType): Promise<number> =
     }
 }
 
-export const saveNFTData = async (NFTData: NFTMetaData): Promise<NFTMetaData> => {
-    try{
-        const NFTMetaData = await saveNFTDataPersistance(NFTData);
-        if (!NFTMetaData) {
-            throw new Error(`NFTMetaData not found`);
-        }
-        
-        return NFTMetaData;
-    } catch(e) {
-        throw e;
-    }
-}
 
-export const getMetaData = async (contractAddr: string, userId: string): Promise<MetaDataType> => {
+export const getMetaData = async (contractAddr: TeamType, userId: number): Promise<MetaDataType> => {
     try {
         const metaData = await getMetaDataPersistance(contractAddr, userId);
         

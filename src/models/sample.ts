@@ -107,6 +107,7 @@ export type MetaDataType = {
     hashtags: string;
     layout: string;
     external_link: URL;
+    attributes: AttributeType[];
 }
 
 export type UserRankingListType = UserRankingType[];
@@ -116,4 +117,9 @@ export type NFTType = {
     team:        TeamType;
     cardAddress: string;
     tokenId:     number;
+}
+
+export type AttributeType = {
+    key: string;
+    value: string;
 }
