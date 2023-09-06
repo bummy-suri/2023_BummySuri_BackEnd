@@ -50,8 +50,8 @@ export const minting = async (req: Request, res: Response) => {
         const team = teamTypeSchema.parse({ teamType: req.params.teamType });
         const result = await mintingService(userid, team.teamType);
         res.json({
-            accessToken: "this_is_where_access_token_will_be",
-        } as mintingResponse);
+            accessToken: result
+        });
 
     } catch (error) {
         if (error instanceof ZodError) {
