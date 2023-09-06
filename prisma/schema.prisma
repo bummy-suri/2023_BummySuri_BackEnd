@@ -71,7 +71,7 @@ model NftMetadata {
   owner        Int  @unique
   contractAddr String
   tokenId      String
-  imageHash    String
+  image        String
   user         User    @relation(fields: [owner], references: [id])
   @@id([contractAddr, tokenId])
 }

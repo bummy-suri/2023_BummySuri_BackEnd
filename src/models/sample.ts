@@ -84,20 +84,21 @@ export type MiniGameResponse = {
 export type UserRankingType = {
     userCardAddress: string;
     totalPoint: number;
+    image: string;
   };
   
 export type NFTMetaData = {
     owner: number,
 	contractAddr: string,
 	tokenId: string,
-	imageHash: string,
+	image: string,
 
 }
 
 export type MetaDataType = {
     name: string;
     description: string;
-    image: URL;
+    image: string;
     animation_url: URL;   
     background_color: string;
     sendable: boolean;
