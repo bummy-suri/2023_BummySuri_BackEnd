@@ -11,6 +11,8 @@ const app = express();
 
 app.use(express.json());
 
+const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN || (() => { throw new Error('ALLOW_ORIGIN not defined'); })();
+
 app.use(cors({
     origin: ['http://localhost:3000', CORS_ALLOW_ORIGIN],
     optionsSuccessStatus: 204,
