@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ZodError, z } from "zod";
 import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
-import { getNFTCountService, mintingService, getMetaDataService } from "../services"; // 추후에 서비스 로직을 추가할 경우
+import { getNFTCountService, mintingService, getMetaDataService } from "../services";
 
 export const teamTypeSchema = z.object({
     teamType: z.enum(["KOREA","YONSEI"])

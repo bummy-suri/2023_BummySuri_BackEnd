@@ -26,7 +26,7 @@ export const authenticateMiddleware = (req: Request, res: Response, next: NextFu
         return res.status(403).json({ message: 'Invalid or expired authorization token.' });
     }
 
-    req.userid = userid;  // req 객체에 userid를 저장하여 후속 미들웨어나 라우터에서 사용할 수 있게 함
+    req.userid = userid;
     next();
 };
 
@@ -43,9 +43,6 @@ export const mintAuthenticateMiddleware = (req: Request, res: Response, next: Ne
     if (!ok) {
         return res.status(403).json({ message: 'Invalid or expired authorization token.' });
     }
-
-    // 여기서 userid와 isMinted 등의 값을 다음 미들웨어나 라우터 핸들러에서 사용할 수 있도록 req 객체에 추가할 수 있습니다.
-    // 예: req.userid = userid;
 
     next();
 };

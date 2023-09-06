@@ -85,4 +85,26 @@ export type UserRankingType = {
     totalPoint: number;
   };
   
+export type NFTMetaData = {
+    owner: number,
+	contractAddr: string,
+	tokenId: string,
+	imageHash: string,
+
+}
+
+export type MetaDataType = {
+    name: string;
+    description: string;
+    image: URL;
+    animation_url: URL;   
+    background_color: string;
+    sendable: boolean;
+    group_name: string;
+    group_icon: URL;
+    hashtags: string;
+    layout: string;
+    external_link: URL;
+}
+
   export type UserRankingListType = UserRankingType[];
