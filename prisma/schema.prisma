@@ -25,6 +25,7 @@ model User {
     isTaken         Boolean  @default(false)
     bettings        Betting[]
     minigames       MiniGame[]
+    nftMetadata     NftMetadata[]
 
 }
 
@@ -67,9 +68,12 @@ model NFTCount {
 }
 
 model NftMetadata {
-  id           Int     @id @default(autoincrement())
-  owner        String
+  owner        Int
   contractAddr String
   tokenId      String
   imageHash    String
+  user         User    @relation(fields: [owner], references: [id])
+
+  @@id([contractAddr, tokenId])
+  @@unique([owner])
 }
