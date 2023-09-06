@@ -20,12 +20,15 @@ model User {
     userCardAddress String    @unique
     univ            TeamType?
     pointDate       DateTime @default(now())
-    totalPoint      Int       @default(2000)
+    totalPoint      Int       @default(2000) 
     isMinted        Boolean   @default(false)
     isTaken         Boolean  @default(false)
     bettings        Betting[]
     minigames       MiniGame[]
     nftMetadata     NftMetadata[]
+
+    @@index([totalPoint])
+    @@index([pointDate])
 
 }
 
