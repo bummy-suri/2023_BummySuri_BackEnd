@@ -13,9 +13,3 @@ export const acquireNFT = async ({team, tokenId, cardAddress}: NFTType) => {
     await createToken({contract, cardAddress, tokenId: hexToken, metadataUrl});
     await sleep(15000);
 }
-
-// real function
-export const acquireNFTREAL = async ({team, tokenId, cardAddress}: NFTType) => {
-    await sleep(5000);
-}
-
