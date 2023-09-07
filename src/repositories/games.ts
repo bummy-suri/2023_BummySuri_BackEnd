@@ -29,12 +29,10 @@ export const saveBetting = async (
 
 //사용자 베팅 정보 조회
 export const getBetting = async (userId: number, gameType: string): Promise<BettingRequest> => {
-    return prisma.betting.findUnique({
+    return prisma.betting.findFirst({
         where: {
-            userId_gameType: {
-                userId: userId,
-                gameType: gameType
-            }
+            userId: userId,
+            gameType: gameType
         }
     }).then((result) => {
         if (result) {
