@@ -44,7 +44,6 @@ model Betting {
   success         Boolean  @default(false)
   earnedPoint     Int      @default(0)
   user            User     @relation(fields: [userId], references: [id])
-  game            Game     @relation(fields: [gameType], references: [gameType])
   @@unique([userId, gameType])
 }
 
@@ -53,7 +52,6 @@ model Game {
   playing        String
   KoreaScore     Int
   YonseiScore    Int
-  bettings       Betting[]
 }
 
 model MiniGame {
