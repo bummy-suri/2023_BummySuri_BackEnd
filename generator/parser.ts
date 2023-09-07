@@ -1,9 +1,7 @@
 import { z } from 'zod';
 import fs from 'fs';
-import { parse } from 'qs';
 import { PrismaClient } from '@prisma/client';
 import { BUMMY_CONTRACT } from '../src/apis/init';
-import sleep from '../src/utils/sleep';
 
 
 
@@ -34,7 +32,7 @@ const prisma = new PrismaClient();
 
 export const reader = async () => {
     try {
-        const data = await fs.readFileSync('./metadata.json', 'utf8');
+        const data = fs.readFileSync('./metadata.bummy.json', 'utf8');
         const jsonData = JSON.parse(data);
         const parsedData = jsonSchema.parse(jsonData.collection);
         const processedData = parsedData.map((item): TokenMeta => {
@@ -45,7 +43,7 @@ export const reader = async () => {
             }
         })
 
-        for (let idx = 507; idx < processedData.length; idx++) {
+        for (let idx = 752; idx < processedData.length; idx++) {
             let item = processedData[idx];
 
             console.log(`processing ${idx}th item`)
