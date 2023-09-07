@@ -5,7 +5,7 @@ import {  UserRankingType, UserRankingListType, UserRankingDataType} from "../mo
 const prisma = new PrismaClient();
 //랭킹 조회
 
-export const getTop10UsersByTotalPoint = async (): Promise<any> => { // Changed the return type to any for demonstration
+export const getTop10UsersByTotalPoint = async (): Promise<any> => {
   const users = await prisma.user.findMany({
     select: {
       id: true,
