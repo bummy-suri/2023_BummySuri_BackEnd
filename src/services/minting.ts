@@ -90,7 +90,7 @@ export const getMetaData = async (contractAddr: string, tokenId: number): Promis
     const tokenData = await getMetaDataPersistance(contractAddr, tokenId);
 
     const attributes = tokenData.attributes.map(attr => ({
-        key: attr.key,
+        trait_type: attr.trait_type,
         value: attr.value
     }));
 
