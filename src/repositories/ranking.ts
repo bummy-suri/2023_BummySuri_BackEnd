@@ -25,8 +25,8 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => {
     users.map(async (user) => {
       const nftMetadata = await prisma.token.findFirst({
         where: {
-          id: user.issued[1].tokenid,
-          contractAddr: user.issued[1].contractAddr
+          id: user.issued[0].tokenid,
+          contractAddr: user.issued[0].contractAddr
       }
   });
 
