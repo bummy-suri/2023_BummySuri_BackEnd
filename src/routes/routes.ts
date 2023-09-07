@@ -23,7 +23,7 @@ import {
 export const nonAuthRouter = Router();
 
 nonAuthRouter.post('/users', authenticateController);
-nonAuthRouter.get('/metadata/:contractAddr/:token_id', getMetaDataController);
+nonAuthRouter.get('/metadata/:contractAddr/:tokenId', getMetaDataController);
 
 export const authRouter = Router();
 
