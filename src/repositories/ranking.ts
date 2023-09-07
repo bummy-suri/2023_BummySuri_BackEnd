@@ -67,15 +67,15 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
     throw new PrismaError("users not found");
   }
 
-  if (!users[0].issued || !users[0].issued[0] || !users[0].issued[1]) {
-    throw new PrismaError("Required fields are missing in users array");
-  }
+  // if (!users[0].issued || !users[0].issued[0] || !users[0].issued[1]) {
+  //   throw new PrismaError("Required fields are missing in users array");
+  // }
 
 
   const NFTMetaData = await prisma.token.findFirst({
     where: {
       id: users[0].issued[0].tokenid,
-      contractAddr: users[0].issued[1].contractAddr
+      contractAddr: users[0].issued[0].contractAddr
     }
   });
   if (!NFTMetaData) {
