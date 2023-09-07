@@ -105,6 +105,6 @@ export type NFTType = {
 }
 
 export type AttributeType = {
-    key: string;
+    trait_type: string;
     value: string;
 }
