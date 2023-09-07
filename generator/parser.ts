@@ -61,7 +61,7 @@ export const reader = async () => {
                 data: item.attributes.map((attribute) => {
                     return {
                         tokenid: item.tokenId,
-                        key: attribute.trait_type,
+                        trait_type: attribute.trait_type,
                         value: attribute.value
                     }
                 }),
