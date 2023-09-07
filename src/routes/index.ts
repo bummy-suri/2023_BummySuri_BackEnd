@@ -20,9 +20,9 @@ app.use(cors({
 app.use(nonAuthRouter);
 app.use(authenticateMiddleware);
 app.use(authRouter);
-app.use(mintedAuthRouter);
-app.use(mintAuthenticateMiddleware);
 //app.use(mintedAuthRouter);
+app.use(mintAuthenticateMiddleware);
+app.use(mintedAuthRouter);
 
 const run = async () => {
     app.listen(PORT, () => {
