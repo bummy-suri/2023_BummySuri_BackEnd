@@ -75,7 +75,7 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
   const NFTMetaData = await prisma.token.findFirst({
     where: {
       id: users[0].issued[0].tokenid,
-      contractAddr: users[0].issued[0].contractAddr
+      contractAddr: users[0].issued[1].contractAddr
     }
   });
   if (!NFTMetaData) {
