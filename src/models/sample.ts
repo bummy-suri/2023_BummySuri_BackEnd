@@ -92,6 +92,7 @@ export type UserRankingDataType = {
     totalPoint: number;
     image: string;
     ranking: number;
+    contractAddr: string;
 }
 
   
