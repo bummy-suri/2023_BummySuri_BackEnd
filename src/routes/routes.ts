@@ -24,6 +24,7 @@ export const nonAuthRouter = Router();
 
 nonAuthRouter.post('/users', authenticateController);
 nonAuthRouter.get('/metadata/:contractAddr/:tokenId', getMetaDataController);
+nonAuthRouter.get('/mint/:teamType', getNFTCountController);
 
 export const authRouter = Router();
 
@@ -53,7 +54,6 @@ mintedAuthRouter.put('/minigame', saveMiniGameResultController);
 mintedAuthRouter.get('/minigame', getMiniGameResultController);
 
 //Mint routes
-mintedAuthRouter.get('/mint/:teamType', getNFTCountController);
 
 //Ranking routes
 mintedAuthRouter.get('/ranking/top10', getTop10RankingController);
