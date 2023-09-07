@@ -74,7 +74,7 @@ export const getAvailableTokenId = async (contractAddr: string): Promise<number>
       },
     });
   
-    if (!availableToken) {
+    if (availableToken === null) {
       throw new Error("No available token found");
     }
   
