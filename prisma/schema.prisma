@@ -94,7 +94,7 @@ model Token {
 
 model Attribute {
   tokenid    Int
-  trait_type        String
+  trait_type String
   value      String
   Token      Token @relation(fields: [tokenid], references: [id])
 
