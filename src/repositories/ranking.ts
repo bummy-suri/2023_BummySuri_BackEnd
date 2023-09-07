@@ -59,9 +59,9 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
   if (!users) {
     throw new PrismaError("users not found");
   }
-  const userCardAddress = users[0].userCardAddress;
-  const totalPoint = users[0].totalPoint;
   const ranking = users.findIndex(user => user.id === userId) + 1;
+  const userCardAddress = users[ranking-1].userCardAddress;
+  const totalPoint = users[ranking-1].totalPoint;
 
   if (!users || !users[0] || !users[1]) {
     throw new PrismaError("users not found");
@@ -74,8 +74,8 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
 
   const NFTMetaData = await prisma.token.findFirst({
     where: {
-      id: users[0].issued[0].tokenid,
-      contractAddr: users[0].issued[0].contractAddr
+      id: users[ranking-1].issued[0].tokenid,
+      contractAddr: users[ranking-1].issued[0].contractAddr
     }
   });
   if (!NFTMetaData) {
@@ -83,7 +83,7 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
   }
 
   const image = NFTMetaData.image;
-  const contractAddr = users[0].issued[0].contractAddr;
+  const contractAddr = users[ranking-1].issued[0].contractAddr;
 
   return {
     userCardAddress: userCardAddress,
