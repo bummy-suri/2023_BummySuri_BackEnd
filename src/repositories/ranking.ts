@@ -7,6 +7,9 @@ const prisma = new PrismaClient();
 
 export const getTop10UsersByTotalPoint = async (): Promise<any> => {
   const users = await prisma.user.findMany({
+    where: {
+      isMinted: true
+    },
     select: {
       id: true,
       userCardAddress: true,
@@ -22,15 +25,14 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => {
   });
 
   const userWithNFTImages = await Promise.all(
-    users
-      .filter(user => user.issued && user.issued.length > 0)
-      .map(async (user) => {
-        const nftMetadata = await prisma.token.findFirst({
-          where: {
-            id: user.issued[0].tokenid,
-            contractAddr: user.issued[0].contractAddr
-          }
-        });
+    users.map(async (user) => {
+      const nftMetadata = await prisma.token.findFirst({
+        where: {
+          id: user.issued[0].tokenid,
+          contractAddr: user.issued[0].contractAddr
+
+      }
+  });
 
       return {
         userCardAddress: user.userCardAddress,
