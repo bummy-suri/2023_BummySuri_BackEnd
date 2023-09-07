@@ -83,7 +83,7 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
   }
 
   const image = NFTMetaData.image;
-  const contractAddr = users[0].issued[1].contractAddr;
+  const contractAddr = users[0].issued[2].contractAddr;
 
   return {
     userCardAddress: userCardAddress,
