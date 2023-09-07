@@ -95,7 +95,7 @@ export const getMetaData = async (req: Request, res: Response) => {
             {
             "name": "버미와 수리",
             "description" : "버미와 수리는 고려대-연세대 정기전을 기념하여 찾아오게 된 캐릭터 NFT입니다.",
-            "sendable": true,
+            "sendable": false,
             "hashtags": ["버미와수리","버미","수리", "연고전", "고연전", "정기전", "고려대", "연세대"],
             "layout": "general",
             "external_link": "https://www.bummysuri.com",
