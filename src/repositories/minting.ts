@@ -13,7 +13,7 @@ export const getNFTCount = async (team: TeamType): Promise<NFTCountType | undefi
         if (result) {
             return result;
         } else {
-            prisma.nFTCount.create({
+            return prisma.nFTCount.create({
                 data: {
                     team: team,
                     count: 0
