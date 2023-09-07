@@ -4,7 +4,6 @@ import { PrismaError } from "../utils/errors";
 import { AxiosError } from "axios";
 import { checkBettingResultService, totalEarnedPointService } from "../services";
 
-// 베팅 결과 확인 응답 스키마
 export interface CheckBettingResultResponse {
     success: boolean;
     earnedPoint: number;
