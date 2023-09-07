@@ -25,8 +25,8 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => {
     users.map(async (user) => {
       const nftMetadata = await prisma.token.findFirst({
         where: {
-          id: user.issued[0].tokenid,
-          contractAddr: user.issued[0].contractAddr
+          id: user.issued[1].tokenid,
+          contractAddr: user.issued[1].contractAddr
       }
   });
 
@@ -63,13 +63,7 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
   const userCardAddress = users[ranking-1].userCardAddress;
   const totalPoint = users[ranking-1].totalPoint;
 
-  if (!users || !users[0] || !users[1]) {
-    throw new PrismaError("users not found");
-  }
 
-  // if (!users[0].issued || !users[0].issued[0] || !users[0].issued[1]) {
-  //   throw new PrismaError("Required fields are missing in users array");
-  // }
 
 
   const NFTMetaData = await prisma.token.findFirst({
