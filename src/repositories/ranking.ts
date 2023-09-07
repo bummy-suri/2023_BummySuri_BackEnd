@@ -34,6 +34,7 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => { // Changed 
         userCardAddress: user.userCardAddress,
         totalPoint: user.totalPoint,
         image: nftMetadata ? nftMetadata.image : null,
+        contractAddr: user.issued[2].contractAddr
       };
     })
   );
