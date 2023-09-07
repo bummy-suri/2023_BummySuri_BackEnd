@@ -56,6 +56,9 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
       { pointDate: 'asc' },
     ],
   });
+  if (!users) {
+    throw new PrismaError("users not found");
+  }
   const userCardAddress = users[0].userCardAddress;
   const totalPoint = users[0].totalPoint;
   const ranking = users.findIndex(user => user.id === userId) + 1;
