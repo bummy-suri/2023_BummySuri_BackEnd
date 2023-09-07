@@ -84,6 +84,7 @@ export const getMiniGame = async (userId: number, date: string): Promise<GetMini
         }
     });
     const currentDate = new Date().toISOString().split('T')[0];
+    console.log(currentDate);
     if (!miniGame) {
         const createdMiniGame = await prisma.miniGame.create({
             data: {
