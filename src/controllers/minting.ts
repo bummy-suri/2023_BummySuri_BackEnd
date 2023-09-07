@@ -50,7 +50,7 @@ export const minting = async (req: Request, res: Response) => {
         const team = teamTypeSchema.parse({ teamType: req.params.teamType });
         const result = await mintingService(userid, team.teamType);
         if (result === false) {
-            res.status(202).send("Already minted");
+            return res.status(202).send("Already minted");
         }
         res.json({
             accessToken: result

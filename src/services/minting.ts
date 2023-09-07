@@ -86,8 +86,8 @@ export const minting = async (userid: number ,team: TeamType): Promise<number | 
 }
 
 
-export const getMetaData = async (contractAddress: string, tokenId: number): Promise<MetaDataType> => {
-    const tokenData = await getMetaDataPersistance(contractAddress, tokenId);
+export const getMetaData = async (contractAddr: string, tokenId: number): Promise<MetaDataType> => {
+    const tokenData = await getMetaDataPersistance(contractAddr, tokenId);
 
     const attributes = tokenData.attributes.map(attr => ({
         key: attr.key,
@@ -97,16 +97,16 @@ export const getMetaData = async (contractAddress: string, tokenId: number): Pro
     let group_name = "";
     let group_icon = "";
 
-    if (contractAddress === BUMMY_CONTRACT){
+    if (contractAddr === BUMMY_CONTRACT){
         group_name = "버미";
         group_icon = "https://static.bummysuri.com/asset/bummy_badge.png";
-    }else if(contractAddress === SURI_CONTRACT){
+    }else if(contractAddr === SURI_CONTRACT){
         group_name = "수리";
         group_icon = "https://static.bummysuri.com/asset/suri_badge.png";
     }
 
     return {
-        "image": "https://static.bummysuri.com/asset/"+contractAddress+"/"+tokenData.image,
+        "image": "https://static.bummysuri.com/asset/"+contractAddr+"/"+tokenData.image,
         "group_name": group_name,
         "group_icon": group_icon,
         "attributes": attributes
