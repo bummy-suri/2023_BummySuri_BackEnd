@@ -21,6 +21,7 @@ export const getTop10Ranking= async (req: Request, res: Response) => {
           res.status(502).send(error.message);
           return
       }
+      
       if (error instanceof Error) {
           res.status(500).send(error.message);
           return
