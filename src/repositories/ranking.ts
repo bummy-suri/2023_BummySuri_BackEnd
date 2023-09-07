@@ -77,10 +77,6 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
   const contractAddr = users[1].issued[2].contractAddr;
 
   return {
-    userCardAddress: userCardAddress,
-    totalPoint: totalPoint,
-    ranking: ranking,
-    image: image,
-    contractAddr: contractAddr
+    userCardAddress, totalPoint, ranking, image, contractAddr
   };
 };
