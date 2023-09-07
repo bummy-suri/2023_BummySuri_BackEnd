@@ -88,7 +88,7 @@ export const NFTDataSchema = z.object(
 export const getMetaData = async (req: Request, res: Response) => {
     try{
 
-        const contractAddr = req.params.contractAddress;
+        const contractAddr = req.params.contractAddr;
         const tokenId = parseInt(req.params.tokenId);
         const metadata = await getMetaDataService(contractAddr, tokenId);
         return res.json(
