@@ -83,26 +83,28 @@ export const getAvailableTokenId = async (contractAddr: string): Promise<number>
 
   export const createIssuedRecord = async (userId: number, tokenId: number, contractAddr: string): Promise<void> => {
 
-    await prisma.issued.create({
+    const issuedResult = await prisma.issued.create({
       data: {
         ownerid: userId,
         tokenid: tokenId,
         contractAddr: contractAddr,
       },
+    }).then((result) => {
+        const updatedResult = prisma.token.update({
+            where: {
+              id: tokenId,
+            },
+            data: {
+              owned: true,
+            },
+          }).catch((e) => {
+            throw new PrismaError(e?.message);
+          });
+        return result;
     }).catch((e) => {
       throw new PrismaError(e?.message);
     });
-  
-    await prisma.token.update({
-      where: {
-        id: tokenId,
-      },
-      data: {
-        owned: true,
-      },
-    }).catch((e) => {
-      throw new PrismaError(e?.message);
-    });
+
   }
   
   
