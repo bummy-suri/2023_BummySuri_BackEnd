@@ -165,6 +165,7 @@ export const checkBettingResult = async (BettingResultData: BettingResult, userI
 
 //포인트 가져가기
 export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number): Promise<TotalEarnedPoint> => {
+    const currentDate = new Date();
     return prisma.user.findUnique({
         where: { id: userId }
     })
@@ -178,7 +179,6 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
         }
 
         const totalPoint = user.totalPoint + totalEarnedPoint;
-        const currentDate = new Date();
         
         return prisma.user.update({
             where: { id: userId },
@@ -205,6 +205,7 @@ export const totalEarnedPointResult = (userId: number, totalEarnedPoint: number)
 };
 
 export const pointChange = async (userId: number, point: number): Promise<number> => {
+    const currentDate = new Date();
     const user = await prisma.user.findUnique({
         where: { id: userId }
     });
@@ -216,7 +217,6 @@ export const pointChange = async (userId: number, point: number): Promise<number
     if (user.totalPoint + point < 0) {
         throw new PrismaError("Not enough points");
     }
-    const currentDate = new Date();
 
     return prisma.user.update({
         where: { id: userId },

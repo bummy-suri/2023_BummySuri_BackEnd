@@ -79,14 +79,14 @@ export const saveMiniGameResult = async (userId: number, result: string, minigam
 export const getMiniGame = async (userId: number, date: string): Promise<GetMiniGameType> => {
 
     const currentDate = new Date().toISOString().split('T')[0];
-    
+    console.log(currentDate); 
+
     let miniGame = await prisma.miniGame.findFirst({
         where: {
             userId,
             date
         }
     })
-    console.log(currentDate); 
 
     if (!miniGame) {
         const createdMiniGame = await prisma.miniGame.create({
