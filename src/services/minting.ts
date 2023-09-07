@@ -58,6 +58,7 @@ export const minting = async (userid: number ,team: TeamType): Promise<number | 
 
             //get AvailableTokenId
             const userTokenId = await getAvailableTokenIdPersistance(contractAddr);
+
             if (!userTokenId) {
                 throw new Error(`AvailableTokenId not found`);
             }
@@ -73,7 +74,6 @@ export const minting = async (userid: number ,team: TeamType): Promise<number | 
 
             //update the NFTcount
             const updatedCountData= await updateNFTCountPersistance(team);
-
             
              //generate accessToken
             const token = parseInt(generateToken(userid, true));

@@ -76,13 +76,6 @@ export const minting = async (req: Request, res: Response) => {
     }
 };        
 
-export const NFTDataSchema = z.object(
-    {
-        contractAddr: z.string(),
-        tokenId: z.string(),
-        image: z.string()
-    }
-)
 
 
 export const getMetaData = async (req: Request, res: Response) => {
