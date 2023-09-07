@@ -61,9 +61,18 @@ CREATE TABLE `NFTCount` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Issued` (
+    `ownerid` INTEGER NOT NULL,
+    `tokenid` INTEGER NOT NULL,
+    `contractAddr` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`contractAddr`, `tokenid`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Token` (
     `id` INTEGER NOT NULL,
-    `contractAddr` ENUM('KOREA', 'YONSEI') NOT NULL,
+    `contractAddr` VARCHAR(191) NOT NULL,
     `image` VARCHAR(191) NOT NULL,
     `owned` BOOLEAN NOT NULL,
 
@@ -85,10 +94,13 @@ CREATE TABLE `Attribute` (
 ALTER TABLE `Betting` ADD CONSTRAINT `Betting_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Betting` ADD CONSTRAINT `Betting_gameType_fkey` FOREIGN KEY (`gameType`) REFERENCES `Game`(`gameType`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `MiniGame` ADD CONSTRAINT `MiniGame_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `MiniGame` ADD CONSTRAINT `MiniGame_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Issued` ADD CONSTRAINT `Issued_tokenid_contractAddr_fkey` FOREIGN KEY (`tokenid`, `contractAddr`) REFERENCES `Token`(`id`, `contractAddr`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Issued` ADD CONSTRAINT `Issued_ownerid_fkey` FOREIGN KEY (`ownerid`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Attribute` ADD CONSTRAINT `Attribute_tokenid_fkey` FOREIGN KEY (`tokenid`) REFERENCES `Token`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
