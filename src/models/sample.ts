@@ -86,6 +86,14 @@ export type UserRankingType = {
     totalPoint: number;
     image: string;
   };
+
+export type UserRankingDataType = {
+    userCardAddress: string;
+    totalPoint: number;
+    image: string;
+    ranking: number;
+}
+
   
 
 export type MetaDataType = {
