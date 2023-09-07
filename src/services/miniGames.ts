@@ -18,6 +18,7 @@ export const saveMiniGameResultData = async (userId: number, result: string, min
 
 export const getMiniGameResultData = async (userId: number, date: string): Promise<GetMiniGameType> => {
     try {
+        console.log(date)
         const miniGameResult = await getMiniGame(userId, date);
         return miniGameResult;
     } catch (e) {
