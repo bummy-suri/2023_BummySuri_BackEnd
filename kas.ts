@@ -21,11 +21,11 @@ import sleep from "./src/utils/sleep";
 
 const main = async () => {
 
-    const contract = "dev-contract-2023"
+    const contract = "suri-contract-2023"
     const cardAddress = "0x07A2ce3cADBb0051Ae5bCD0B1F17e1B1D4c59d7f" // gyumin
-    const num = 1
+    const num = 12346
     const tokenId = '0x'+num.toString(16)
-    const metadataUrl = "https://api.dev.bummysuri.com/metadata/bummy-contract-2023/1"
+    const metadataUrl = "https://metadata.bummysuri.com/suri-contract-2023/4443"
 
     try {
         //await createContract({ name: "2023DevContract",   alias: "dev-contract-2023",   symbol: "DEV" })
