@@ -17,7 +17,7 @@ export const generateToken = (userid: number, isMinted: boolean): string => {
         userid: userid,
         isMinted: isMinted
     }
-    return jwt.sign(data, SECRET, { expiresIn: Math.floor(Date.now() / 1000) + EXP });
+    return jwt.sign(data, SECRET, { expiresIn: EXP });
 };
 
 export const parseToken = (token: string): { ok: boolean, userid: number , isMinted: boolean} => {
