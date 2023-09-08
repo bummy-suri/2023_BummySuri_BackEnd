@@ -80,7 +80,7 @@ export const minting = async (
 
 
       let userTokenId = 0;
-      for (var i=0; i<10; i++) {
+      for (var i=0; i<5; i++) {
 
         try {
             userTokenId = await getAvailableTokenIdPersistance(contractAddr);
@@ -95,6 +95,7 @@ export const minting = async (
             });
 
         } catch (e) {
+            console.log(e)
             if (i == 4) {
                 throw e;
             }            

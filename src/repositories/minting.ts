@@ -93,7 +93,8 @@ export const getAvailableTokenId = async (contractAddr: string): Promise<number>
       });
   
       if (!availableToken) {
-        throw new Error("No available token found");
+        console.log(`No available token found`);
+        throw new Error("No availalble token found");
       }
   
       // Save the original priority before updating
@@ -113,11 +114,14 @@ export const getAvailableTokenId = async (contractAddr: string): Promise<number>
   
       // Return the original priority
       if (!originalPriority) {
+        console.log(`No original priority found`)
+
         throw new Error("No original priority found");
       }
       return originalPriority;
   
     } catch (e) {
+        console.log(`nexpected happen`)
       throw new Error(`unexpected happen`);
     }
   }
