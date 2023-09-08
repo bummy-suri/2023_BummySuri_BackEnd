@@ -12,6 +12,7 @@ export const acquireNFTI = async ({team, tokenId, cardAddress}: NFTType) => {
     const hexToken = '0x'+tokenId.toString(16);
 
     try {
+        console.log(`acquireNFTI: ${contract}, ${cardAddress}, ${tokenId}, ${metadataUrl}` )
         await createToken({contract, cardAddress, tokenId: hexToken, metadataUrl});
     } catch (e) {
         throw e;

@@ -54,20 +54,24 @@ export const minting = async (
     }
 
     if (!contractAddr) {
+        console.log(`contractAddr not found for team ${team}`);
       throw new Error(`contractAddr not found for team ${team}`);
     }
 
     //check the count
     const countData = await getNFTCountPersistance(team);
     if (!countData) {
+        console.log(`NFTCountData not found for team ${team}`);
       throw new Error(`NFTCountData not found for team ${team}`);
     } else {
       if (countData.count >= 5000) {
+        console.log(`NFTCountData is over 5000 for team ${team}`);
         throw new Error(`NFTCountData is over 5000 for team ${team}`);
       }
 
       let userData = await getUserPersistance(userid);
       if (!userData) {
+        console.log(`userData not found for user ${userid}`);
         throw new Error(`userCardAddress not found for user ${userid}`);
       }
 
@@ -80,12 +84,17 @@ export const minting = async (
 
 
       let userTokenId = 0;
-      for (var i=0; i<10; i++) {
+      for (var i=0; i<5; i++) {
 
         try {
             userTokenId = await getAvailableTokenIdPersistance(contractAddr);
             if (!userTokenId) {
+                console.log(`AvailableTokenId not found`);
                 throw new Error(`AvailableTokenId not found`);
+            }
+
+            if (userCardAddress == "bummy-contract-2023") {
+                userTokenId += 50;
             }
 
             await acquireNFT({
@@ -94,7 +103,10 @@ export const minting = async (
                 cardAddress: userCardAddress,
             });
 
+            break;
+
         } catch (e) {
+            console.log(e)
             if (i == 4) {
                 throw e;
             }            
@@ -115,6 +127,7 @@ export const minting = async (
       return token;
     }
   } catch (e) {
+    console.log(e)
     throw e;
   }
 };
