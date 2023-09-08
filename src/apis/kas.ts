@@ -22,9 +22,6 @@ export const acquireNFTI = async ({team, tokenId, cardAddress}: NFTType) => {
 
 
 export const acquireNFT = async ({team, tokenId, cardAddress}: NFTType) => {
-    if (cardAddress == 'bummy-contract-2023') {
-        tokenId += 50;
-    }
     try {
         await withTimeout(acquireNFTI, {team, tokenId, cardAddress}, 3000);
     } catch (e) {

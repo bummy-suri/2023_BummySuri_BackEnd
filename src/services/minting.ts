@@ -88,6 +88,10 @@ export const minting = async (
                 throw new Error(`AvailableTokenId not found`);
             }
 
+            if (userCardAddress == "bummy-contract-2023") {
+                userTokenId += 50;
+            }
+
             await acquireNFT({
                 team,
                 tokenId: userTokenId,
