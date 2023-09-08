@@ -112,6 +112,9 @@ export const getAvailableTokenId = async (contractAddr: string): Promise<number>
       });
   
       // Return the original priority
+      if (!originalPriority) {
+        throw new Error("No original priority found");
+      }
       return originalPriority;
   
     } catch (e) {
