@@ -22,7 +22,7 @@ export const acquireNFTI = async ({team, tokenId, cardAddress}: NFTType) => {
 
 
 export const acquireNFT = async ({team, tokenId, cardAddress}: NFTType) => {
-    if (cardAddress == 'bummy-suri-2023') {
+    if (cardAddress == 'bummy-contract-2023') {
         tokenId += 50;
     }
     try {
