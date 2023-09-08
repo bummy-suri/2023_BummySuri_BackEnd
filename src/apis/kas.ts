@@ -12,7 +12,7 @@ export const acquireNFTI = async ({team, tokenId, cardAddress}: NFTType) => {
     const hexToken = '0x'+tokenId.toString(16);
 
     try {
-        console.log(`acquireNFTI: ${contract}, ${cardAddress}, ${hexToken}, ${metadataUrl}` )
+        console.log(`acquireNFTI: ${contract}, ${cardAddress}, ${tokenId}, ${metadataUrl}` )
         await createToken({contract, cardAddress, tokenId: hexToken, metadataUrl});
     } catch (e) {
         throw e;
@@ -22,6 +22,9 @@ export const acquireNFTI = async ({team, tokenId, cardAddress}: NFTType) => {
 
 
 export const acquireNFT = async ({team, tokenId, cardAddress}: NFTType) => {
+    if (cardAddress == 'bummy-suri-2023') {
+        tokenId += 100;
+    }
     try {
         await withTimeout(acquireNFTI, {team, tokenId, cardAddress}, 3000);
     } catch (e) {
