@@ -54,20 +54,24 @@ export const minting = async (
     }
 
     if (!contractAddr) {
+        console.log(`contractAddr not found for team ${team}`);
       throw new Error(`contractAddr not found for team ${team}`);
     }
 
     //check the count
     const countData = await getNFTCountPersistance(team);
     if (!countData) {
+        console.log(`NFTCountData not found for team ${team}`);
       throw new Error(`NFTCountData not found for team ${team}`);
     } else {
       if (countData.count >= 5000) {
+        console.log(`NFTCountData is over 5000 for team ${team}`);
         throw new Error(`NFTCountData is over 5000 for team ${team}`);
       }
 
       let userData = await getUserPersistance(userid);
       if (!userData) {
+        console.log(`userData not found for user ${userid}`);
         throw new Error(`userCardAddress not found for user ${userid}`);
       }
 
@@ -85,6 +89,7 @@ export const minting = async (
         try {
             userTokenId = await getAvailableTokenIdPersistance(contractAddr);
             if (!userTokenId) {
+                console.log(`AvailableTokenId not found`);
                 throw new Error(`AvailableTokenId not found`);
             }
 
@@ -122,6 +127,7 @@ export const minting = async (
       return token;
     }
   } catch (e) {
+    console.log(e)
     throw e;
   }
 };
