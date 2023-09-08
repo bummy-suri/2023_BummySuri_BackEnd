@@ -94,6 +94,8 @@ export const minting = async (
                 cardAddress: userCardAddress,
             });
 
+            break;
+
         } catch (e) {
             console.log(e)
             if (i == 4) {
