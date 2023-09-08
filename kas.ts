@@ -20,7 +20,13 @@ import sleep from "./src/utils/sleep";
 
 
 const main = async () => {
-
+    try {
+        const result = await caver.kas.kip17.getTokenList("suri-contract-2023");
+        console.log(result.items.length)
+    } catch (e) {
+        console.log(e)
+    }
+/*
     const contract = "suri-contract-2023"
     const cardAddress = "0x07A2ce3cADBb0051Ae5bCD0B1F17e1B1D4c59d7f" // gyumin
     const num = 12346
@@ -46,7 +52,7 @@ const main = async () => {
 
     } catch (error) {
         console.log(error)
-    }
+    }*/
 }
 
 main();

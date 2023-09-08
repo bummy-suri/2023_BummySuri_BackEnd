@@ -8,10 +8,21 @@ import {
   getMetaDataPersistance,
   getAvailableTokenIdPersistance,
   createIssuedRecordPersistance,
+  initNFTCountPersistance,
 } from "../repositories";
 import { generateToken } from "./auth";
-import { acquireNFT } from "../apis/kas";
+import { acquireNFT, fetchMintedCount } from "../apis/kas";
 import { BUMMY_CONTRACT, SURI_CONTRACT } from "../apis/init";
+
+export const initNFTCoount = async () => {
+    try {
+        await initNFTCountPersistance('KOREA', await fetchMintedCount('KOREA'));
+        await initNFTCountPersistance('YONSEI', await fetchMintedCount('YONSEI'));
+    } catch (e) {
+        throw e;
+    }
+}
+
 
 export const getNFTCountData = async (
   team: TeamType

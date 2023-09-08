@@ -29,6 +29,21 @@ export const getNFTCount = async (team: TeamType): Promise<NFTCountType | undefi
     });
 };
 
+export const initNFTCount = async (team: TeamType, count: number): Promise<void> => {
+    return prisma.nFTCount.update({
+        where: {
+            team: team
+        },
+        data: {
+            count: count
+        }
+    }).then((result) => {
+        return;
+    }).catch((e) => {
+        throw new PrismaError(e.message);
+    });
+}
+
 export const updateNFTCount = async (team: TeamType): Promise<number> => {
     return prisma.nFTCount.update({
         where: {
@@ -64,22 +79,46 @@ export const getMetaData = async (contractAddress: string, tokenId: number) => {
     return tokenData;
 };
 
-
 export const getAvailableTokenId = async (contractAddr: string): Promise<number> => {
   
-    const availableToken = await prisma.token.findFirst({
-      where: {
-        contractAddr: contractAddr,
-        owned: false,
-      },
-    });
+    try {
+      const availableToken = await prisma.token.findFirst({
+        where: {
+          contractAddr: contractAddr,
+          owned: false,
+        },
+        orderBy: {
+          priority: 'asc',  // Order by priority ascending to get the closest to 0
+        },
+      });
   
-    if (availableToken === null) {
-      throw new Error("No available token found");
+      if (!availableToken) {
+        throw new Error("No available token found");
+      }
+  
+      // Save the original priority before updating
+      const originalPriority = availableToken.priority;
+  
+      // Update the token to set the new priority
+      await prisma.token.update({
+        where: {
+          id: availableToken.id
+        },
+        data: {
+          priority: {
+            increment: 100000  // Increment priority by 100000
+          }
+        }
+      });
+  
+      // Return the original priority
+      return originalPriority;
+  
+    } catch (e) {
+      throw new Error(`unexpected happen`);
     }
-  
-    return availableToken.id;
   }
+  
 
   export const createIssuedRecord = async (userId: number, tokenId: number, contractAddr: string): Promise<void> => {
 
