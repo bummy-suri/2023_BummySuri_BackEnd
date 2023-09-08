@@ -2,6 +2,7 @@ require('dotenv').config();
 
 import { createContract, createToken, createWallet, getContractList } from "./src/apis/atom"
 import caver from "./src/apis/init";
+import { acquireNFT } from "./src/apis/kas";
 import sleep from "./src/utils/sleep";
 
 // KASKLL5HLB44QZCE0KZPWVQZ
@@ -18,7 +19,7 @@ import sleep from "./src/utils/sleep";
 //})
 
 
-
+/*
 const main = async () => {
     try {
         const result = await caver.kas.kip17.getTokenList("suri-contract-2023");
@@ -26,10 +27,12 @@ const main = async () => {
     } catch (e) {
         console.log(e)
     }
-/*
+*/
+
+const main = async () => {
     const contract = "suri-contract-2023"
     const cardAddress = "0x07A2ce3cADBb0051Ae5bCD0B1F17e1B1D4c59d7f" // gyumin
-    const num = 12346
+    const num = 4
     const tokenId = '0x'+num.toString(16)
     const metadataUrl = "https://metadata.bummysuri.com/suri-contract-2023/4443"
 
@@ -40,19 +43,13 @@ const main = async () => {
         //await sleep(15000)
         //console.log(await getContractList())
 
-        console.log(await createToken({ contract, cardAddress, tokenId, metadataUrl}))
+        //console.log(await createToken({ contract, cardAddress, tokenId, metadataUrl}))
 
-
-
-        //const transactionHash = '0xf75700aeadf9eb4b6f317b148d8d4bcc89d68ae24a70f0efd6fabc8bf3f43dad'
-        //console.log(await caver.kas.wallet.getTransaction(transactionHash));
-        // console.log(await createToken({ contract, cardAddress, tokenId, metadataUrl: url}))
-
-
+        console.log(await acquireNFT({team: 'KOREA', tokenId: num, cardAddress: cardAddress}))
 
     } catch (error) {
         console.log(error)
-    }*/
+    }
 }
 
 main();
