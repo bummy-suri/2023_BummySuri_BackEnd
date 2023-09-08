@@ -85,14 +85,16 @@ model Token {
   owned        Boolean
   attributes   Attribute[]
   issuedTokens Issued[]
+  priority     Int
 
   @@unique([id, contractAddr])
   @@index([owned])
+  @@index([priority])
 }
 
 model Attribute {
   tokenid    Int
-  key String
+  key        String
   value      String
   Token      Token @relation(fields: [tokenid], references: [id])
 
