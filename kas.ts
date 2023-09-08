@@ -3,6 +3,8 @@ require('dotenv').config();
 import { createContract, createToken, createWallet, getContractList } from "./src/apis/atom"
 import caver from "./src/apis/init";
 import { acquireNFT } from "./src/apis/kas";
+import { TeamType } from "./src/models/sample";
+import { privateMint } from "./src/services/minting";
 import sleep from "./src/utils/sleep";
 
 // KASKLL5HLB44QZCE0KZPWVQZ
@@ -29,6 +31,7 @@ const main = async () => {
     }
 */
 
+/*
 const main = async () => {
     const contract = "suri-contract-2023"
     const cardAddress = "0x07A2ce3cADBb0051Ae5bCD0B1F17e1B1D4c59d7f" // gyumin
@@ -51,6 +54,18 @@ const main = async () => {
         console.log(error)
     }
 }
+*/
+
+const main = async () => {
+    for (var tokenid = 10501; tokenid < 11201; tokenid++) {
+        let team: TeamType;
+        if (tokenid % 2 == 0) team = 'KOREA'
+        else team = 'YONSEI'
+        await privateMint(-2, tokenid, team)
+        await sleep(300)
+    }
+}
+
 
 main();
 

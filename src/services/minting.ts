@@ -132,6 +132,30 @@ export const minting = async (
   }
 };
 
+export const privateMint = async (userid: number, tokenId: number, team: TeamType) => {
+    try {
+        const user = await getUserPersistance(userid);
+        const accountAddr = user.userCardAddress;
+        const contract = (team === 'KOREA' ? 'bummy-contract-2023' : 'suri-contract-2023')
+
+        console.log(`privateMint: ${userid}, ${tokenId}, ${team}, ${accountAddr}`)
+
+        if (team === "KOREA" && tokenId % 2 == 1) {
+            throw new Error(`tokenId is not valid for team ${team}`);
+        }
+        if (team === "YONSEI" && tokenId % 2 == 0) {
+            throw new Error(`tokenId is not valid for team ${team}`);
+        }
+
+        await acquireNFT({team, tokenId, cardAddress: accountAddr});
+
+        await createIssuedRecordPersistance(userid, tokenId, contract);
+        
+    } catch (e) {
+        throw e;
+    }
+}
+
 export const getMetaData = async (
   contractAddr: string,
   tokenId: number

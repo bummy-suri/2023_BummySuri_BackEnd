@@ -6,7 +6,7 @@ import { withTimeout } from "../utils/timeout";
 // here are where the function external module calls exists
 
 // mock function
-export const acquireNFTI = async ({team, tokenId, cardAddress}: NFTType) => {
+export const acquireNFTIWithoutWait = async ({team, tokenId, cardAddress}: NFTType) => {
     const contract = (team === 'KOREA' ? 'bummy-contract-2023' : 'suri-contract-2023')
     const metadataUrl = `https://metadata.bummysuri.com/${contract}/${tokenId}`
     const hexToken = '0x'+tokenId.toString(16);
@@ -23,12 +23,11 @@ export const acquireNFTI = async ({team, tokenId, cardAddress}: NFTType) => {
 
 export const acquireNFT = async ({team, tokenId, cardAddress}: NFTType) => {
     try {
-        await withTimeout(acquireNFTI, {team, tokenId, cardAddress}, 3000);
+        await withTimeout(acquireNFTIWithoutWait, {team, tokenId, cardAddress}, 3000);
     } catch (e) {
         throw e;
     }
 }
-
 
 
 
