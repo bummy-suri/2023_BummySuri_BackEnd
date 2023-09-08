@@ -2,7 +2,7 @@
 
 type AsyncFunction<T, U> = (data: T) => Promise<U>;
 
-const withTimeout = async <T, U>(
+export const withTimeout = async <T, U>(
     fn: AsyncFunction<T, U>,
     data: T,
     timeout: number

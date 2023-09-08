@@ -78,29 +78,28 @@ export const minting = async (
         return false;
       }
 
-      //get AvailableTokenId
-      const userTokenId = await getAvailableTokenIdPersistance(contractAddr);
 
-      if (!userTokenId) {
-        throw new Error(`AvailableTokenId not found`);
-      }
+      let userTokenId = 0;
+      for (var i=0; i<10; i++) {
 
-      if (team === "KOREA") {
-        if (userTokenId % 2 !== 0) {
-          throw new Error(`AvailableTokenId is not even number`);
+        try {
+            userTokenId = await getAvailableTokenIdPersistance(contractAddr);
+            if (!userTokenId) {
+                throw new Error(`AvailableTokenId not found`);
+            }
+
+            await acquireNFT({
+                team,
+                tokenId: userTokenId,
+                cardAddress: userCardAddress,
+            });
+
+        } catch (e) {
+            if (i == 4) {
+                throw e;
+            }            
         }
-      } else if (team === "YONSEI") {
-        if (userTokenId % 2 !== 1) {
-          throw new Error(`AvailableTokenId is not odd number`);
-        }
       }
-
-      //minting
-      await acquireNFT({
-        team,
-        tokenId: userTokenId,
-        cardAddress: userCardAddress,
-      });
 
       //issuedRecord
       await createIssuedRecordPersistance(userid, userTokenId, contractAddr);

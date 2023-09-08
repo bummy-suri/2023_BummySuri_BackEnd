@@ -85,7 +85,7 @@ model Token {
   owned        Boolean
   attributes   Attribute[]
   issuedTokens Issued[]
-  priority     Int
+  priority     Int?
 
   @@unique([id, contractAddr])
   @@index([owned])
