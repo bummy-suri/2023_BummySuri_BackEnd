@@ -64,9 +64,9 @@ export const minting = async (
         console.log(`NFTCountData not found for team ${team}`);
       throw new Error(`NFTCountData not found for team ${team}`);
     } else {
-      if (countData.count >= 5000) {
-        console.log(`NFTCountData is over 5000 for team ${team}`);
-        throw new Error(`NFTCountData is over 5000 for team ${team}`);
+      if (countData.count >= 5600) {
+        console.log(`NFTCountData is over 5600 for team ${team}`);
+        throw new Error(`NFTCountData is over 5600 for team ${team}`);
       }
 
       let userData = await getUserPersistance(userid);

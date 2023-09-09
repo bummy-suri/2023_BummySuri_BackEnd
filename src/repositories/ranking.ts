@@ -21,7 +21,7 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => {
       { totalPoint: 'desc' },
       { pointDate: 'asc' },
     ],
-    take: 10,
+    take: 12,
   });
 
   console.log(users)
