@@ -24,15 +24,19 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => {
     take: 10,
   });
 
+  console.log(users)
+
   const userWithNFTImages = await Promise.all(
     users.map(async (user) => {
+        if (!user.issued || !user.issued[0]) {
+            return null; // or return {}; based on your requirement
+          }
       const nftMetadata = await prisma.token.findFirst({
         where: {
           id: user.issued[0].tokenid,
           contractAddr: user.issued[0].contractAddr
-
       }
-  });
+      });
 
       return {
         userCardAddress: user.userCardAddress,
@@ -43,7 +47,7 @@ export const getTop10UsersByTotalPoint = async (): Promise<any> => {
     })
   );
 
-  return userWithNFTImages;
+  return userWithNFTImages.filter((user) => user !== null);
 };
 
 export const getUserRankingById = async (userId: number): Promise<UserRankingDataType> => {
@@ -53,7 +57,8 @@ export const getUserRankingById = async (userId: number): Promise<UserRankingDat
       userCardAddress: true,
       totalPoint: true,
       pointDate: true,
-      issued: true
+      issued: true,
+      isMinted: true
     },
     orderBy: [
       { totalPoint: 'desc' },
