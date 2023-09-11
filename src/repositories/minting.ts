@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 
 export const getNFTCount = async (team: TeamType): Promise<NFTCountType | undefined> => {
     return prisma.nFTCount.findFirst({
+      
         where: {
             team: team
         }
